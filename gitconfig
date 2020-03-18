@@ -11,7 +11,7 @@
 
 [core]
   pager = less -FRSX
-	editor = subl -n -w  >/dev/null 2>&1
+  editor = subl -n -w  >/dev/null 2>&1
 
 [alias]
   co = checkout
@@ -42,10 +42,10 @@
   autocorrect = 1
 
 [push]
-	default = simple
+  default = simple
 
 [branch "master"]
   mergeoptions = --no-edit
 [user]
-	email = vaskafig@gmail.com
-	name = Vasco Figueiredo
+  name = kauredo
+  email = vaskafig@gmail.com
