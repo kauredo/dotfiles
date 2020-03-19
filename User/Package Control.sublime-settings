@@ -1,0 +1,24 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"Alignment",
+		"All Autocomplete",
+		"AutoFileName",
+		"Color Highlighter",
+		"ColorPicker",
+		"CSS3",
+		"Emmet",
+		"Highlight Duplicates",
+		"Indent XML",
+		"Package Control",
+		"SideBarEnhancements",
+		"Theme - Afterglow",
+		"ToDone",
+		"View In Browser"
+	]
+}
