@@ -7,4 +7,4 @@ alias speedtest="wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 alias serve='ruby -run -e httpd . -p 8000'  # Or python -m SimpleHTTPServer :)
 
 # remove merged branches
-alias grmb="git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d"
+alias grmb="git branch --merged | egrep -v '(^\*|master|dev)' | xargs git branch -d"
