@@ -29,13 +29,20 @@ rbenv rehash
 sudo add-apt-repository ppa:webupd8team/nemo
 sudo apt-get update
 sudo apt install -y postgresql-11 libpq-dev plank zsh
-sudo apt-get install nemo nemo-fileroller
+sudo apt-get install -y nemo nemo-fileroller
+
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 yes
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 source ~/.zshrc
+
+rm ~/.zshrc
+yes
+cp dotfiles/aliases ~/.aliases
+cp dotfiles/zshrc ~/.zshrc
+source ~/.zshrc  
 
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
