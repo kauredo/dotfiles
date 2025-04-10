@@ -11,7 +11,7 @@ echo "=========================================="
 if ! command -v brew &> /dev/null; then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    
+
     # Add Homebrew to PATH for Apple Silicon Macs if needed
     if [[ $(uname -m) == 'arm64' ]]; then
         echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
@@ -20,6 +20,14 @@ if ! command -v brew &> /dev/null; then
 else
     echo "Homebrew already installed, updating..."
     brew update
+fi
+
+# Install Xcode Command Line Tools if not already installed
+if ! xcode-select -p &> /dev/null; then
+    echo "Installing Xcode Command Line Tools..."
+    xcode-select --install
+    echo "When the installation completes, press any key to continue..."
+    read -n 1
 fi
 
 # Install packages from Brewfile
@@ -36,7 +44,7 @@ git config --global user.email "vaskafig@gmail.com"
 if [ ! -f ~/.ssh/id_rsa ]; then
     echo "Generating SSH key..."
     ssh-keygen -t rsa -b 4096 -C "vaskafig@gmail.com"
-    
+
     echo "=========================================="
     echo "Your SSH public key is:"
     cat ~/.ssh/id_rsa.pub
@@ -51,10 +59,10 @@ fi
 if [ ! -d ~/.oh-my-zsh ]; then
     echo "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    
+
     # Install zsh-syntax-highlighting plugin
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    
+
     # Install zsh-autosuggestions plugin
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 else
@@ -69,7 +77,7 @@ if command -v rbenv &> /dev/null; then
     echo "Installing Ruby $latest_stable..."
     rbenv install $latest_stable
     rbenv global $latest_stable
-    
+
     # Install bundler and Rails
     echo "Installing bundler and Rails..."
     gem install bundler
@@ -89,9 +97,12 @@ nvm install --lts
 nvm use --lts
 nvm alias default 'lts/*'
 
-# Set up Python with pyenv
+# Set up Python environment with pyenv
 if command -v pyenv &> /dev/null; then
     echo "Setting up Python environment..."
+    # Initialize pyenv-virtualenv if installed
+    eval "$(pyenv virtualenv-init -)"
+
     # Install latest stable Python
     latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | tail -1 | tr -d '[:space:]')
     echo "Installing Python $latest_python..."
