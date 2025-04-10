@@ -31,14 +31,22 @@ if ! xcode-select -p &> /dev/null; then
 fi
 
 # Install packages from Brewfile
-echo "Installing packages from Brewfile..."
-brew bundle
+if [ -f Brewfile ]; then
+    echo "Installing packages from Brewfile..."
+    brew bundle --file=Brewfile
+else
+    echo "Brewfile not found. Skipping package installation."
+fi
 
 # Set up Git configuration
 echo "Setting up Git..."
 git config --global color.ui true
 git config --global user.name "kauredo"
 git config --global user.email "vaskafig@gmail.com"
+
+# Set up global .gitignore
+echo "Setting up global .gitignore..."
+git config --global core.excludesfile ~/.gitignore_global
 
 # Create SSH key if it doesn't exist
 if [ ! -f ~/.ssh/id_rsa ]; then
@@ -88,14 +96,18 @@ else
 fi
 
 # Set up Node.js with nvm
-echo "Setting up Node.js environment..."
-export NVM_DIR="$HOME/.nvm"
-source $(brew --prefix nvm)/nvm.sh
-# Install latest LTS version of Node.js
-echo "Installing Node.js LTS..."
-nvm install --lts
-nvm use --lts
-nvm alias default 'lts/*'
+if command -v nvm &> /dev/null; then
+    echo "Setting up Node.js environment..."
+    export NVM_DIR="$HOME/.nvm"
+    source $(brew --prefix nvm)/nvm.sh
+    # Install latest LTS version of Node.js
+    echo "Installing Node.js LTS..."
+    nvm install --lts
+    nvm use --lts
+    nvm alias default 'lts/*'
+else
+    echo "nvm not found. Make sure it was installed via Homebrew."
+fi
 
 # Set up Python environment with pyenv
 if command -v pyenv &> /dev/null; then
@@ -112,15 +124,16 @@ else
     echo "pyenv not found. Make sure it was installed via Homebrew."
 fi
 
-# Copy config files
+# Copy config files if they exist
 echo "Setting up dotfiles..."
-cp .gitconfig ~/.gitconfig
-cp .zshrc ~/.zshrc
-cp .aliases ~/.aliases
+[ -f gitconfig ] && cp gitconfig ~/.gitconfig
+[ -f zshrc ] && cp zshrc ~/.zshrc
+[ -f aliases ] && cp aliases ~/.aliases
+[ -f gitignore_global ] && cp gitignore_global ~/.gitignore_global
 
 # Source the updated files
 echo "Sourcing new configuration..."
-source ~/.zshrc
+exec zsh
 
 echo "=========================================="
 echo "Setup complete! Your Mac development environment is ready."

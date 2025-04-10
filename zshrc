@@ -21,12 +21,11 @@ export NVM_DIR="$HOME/.nvm"
 
 # rbenv setup
 export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+command -v rbenv >/dev/null && eval "$(rbenv init -)"  # Only initialize if rbenv is installed
 
 # pyenv setup
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+command -v pyenv >/dev/null && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"  # Only initialize if pyenv is installed
 
 # Platform-specific paths
 if [[ $(uname) == "Darwin" ]]; then
