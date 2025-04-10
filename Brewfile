@@ -1,5 +1,4 @@
 # Third-party package repositories
-tap "heroku/brew"              # Heroku CLI tools
 tap "homebrew/services"        # Manage brew services (start/stop background services)
 
 # Core utilities and dependencies

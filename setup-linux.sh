@@ -28,6 +28,10 @@ git config --global color.ui true
 git config --global user.name "kauredo"
 git config --global user.email "vaskafig@gmail.com"
 
+# Set up global .gitignore
+echo "Setting up global .gitignore..."
+git config --global core.excludesfile ~/.gitignore_global
+
 # Create SSH key if it doesn't exist
 if [ ! -f ~/.ssh/id_rsa ]; then
     echo "Generating SSH key..."
@@ -115,10 +119,6 @@ eval "$(pyenv virtualenv-init -)"
 echo "Installing Fly.io CLI..."
 curl -L https://fly.io/install.sh | sh
 
-# Install Heroku CLI (alternative to Homebrew's heroku/brew tap)
-echo "Installing Heroku CLI..."
-curl https://cli-assets.heroku.com/install.sh | sh
-
 # Install zsh if not already installed
 echo "Installing and configuring Zsh..."
 if ! command -v zsh &> /dev/null; then
@@ -141,13 +141,14 @@ if [ ! -d ~/.oh-my-zsh ]; then
     chsh -s $(which zsh)
 fi
 
-# Copy config files
+# Copy config files if they exist
 echo "Setting up dotfiles..."
-cp .gitconfig ~/.gitconfig
-cp .zshrc ~/.zshrc
-cp .aliases ~/.aliases
+[ -f gitconfig ] && cp gitconfig ~/.gitconfig
+[ -f zshrc ] && cp zshrc ~/.zshrc
+[ -f aliases ] && cp aliases ~/.aliases
+[ -f gitignore_global ] && cp gitignore_global ~/.gitignore_global
 
-# Install Finicky alternative (this is browser selector for macOS, Linux needs an alternative)
+# Install Finicky alternative
 echo "Note: Finicky (browser selector) is macOS-only. Consider installing an alternative like 'browser-select' for Linux."
 
 echo "=========================================="
