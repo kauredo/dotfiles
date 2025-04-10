@@ -135,6 +135,65 @@ echo "Setting up dotfiles..."
 echo "Sourcing new configuration..."
 exec zsh
 
+# Interactive app installation
+echo "Would you like to install additional applications? (y/n)"
+read -r install_apps
+
+if [[ $install_apps =~ ^[Yy]$ ]]; then
+    echo "Installing applications..."
+
+    read -p "Install Finicky (browser selector)? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask finicky
+    fi
+
+    read -p "Install Visual Studio Code? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask visual-studio-code
+    fi
+
+    read -p "Install Sublime Text? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask sublime-text
+    fi
+
+    read -p "Install iTerm2? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask iterm2
+    fi
+
+    read -p "Install Zen Browser? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask zen-browser
+    fi
+
+    read -p "Install Google Chrome? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask google-chrome
+    fi
+
+    read -p "Install Slack? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask slack
+    fi
+
+    read -p "Install Spotify? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        brew install --cask spotify
+    fi
+fi
+
 echo "=========================================="
 echo "Setup complete! Your Mac development environment is ready."
+echo ""
+echo "To install additional applications in bulk, visit:"
+echo "https://macapps.link"
 echo "=========================================="

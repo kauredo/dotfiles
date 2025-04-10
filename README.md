@@ -50,6 +50,17 @@ The scripts will:
 - Install programming language environments (Ruby, Node.js, Python)
 - Set up Zsh with Oh My Zsh
 - Copy your dotfiles to the appropriate locations
+- Prompt for installation of common applications:
+  - Visual Studio Code
+  - Sublime Text
+  - iTerm2 (macOS only)
+  - Zen Browser (macOS only)
+  - Google Chrome
+  - Slack
+  - Spotify
+  - Finicky (macOS only)
+
+The script will ask for confirmation before installing each application.
 
 ### 4. Add SSH Key to GitHub
 
@@ -103,8 +114,11 @@ The setup should be complete! Open a new terminal and check that:
 
 - Edit `.zshrc` to customize your shell
 - Add new aliases to `.aliases`
-- Edit `Brewfile` to add/remove macOS packages
-- Modify the setup scripts to install additional software as needed
+- Edit `Brewfile` to add/remove core macOS packages
+- Modify the setup scripts to:
+  - Change the list of applications in the interactive installation
+  - Add new development tools
+  - Customize language versions and defaults
 
 ## Updating Your Environment
 
@@ -133,3 +147,8 @@ If you encounter any issues:
    - nvm: https://github.com/nvm-sh/nvm
    - rbenv: https://github.com/rbenv/rbenv
    - pyenv: https://github.com/pyenv/pyenv
+
+## Additional Resources
+
+- For bulk application installation on macOS: https://macapps.link
+- For bulk application installation on Windows/Linux: https://ninite.com

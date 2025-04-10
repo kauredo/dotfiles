@@ -151,7 +151,70 @@ echo "Setting up dotfiles..."
 # Install Finicky alternative
 echo "Note: Finicky (browser selector) is macOS-only. Consider installing an alternative like 'browser-select' for Linux."
 
+# Install snap if not present
+if ! command -v snap &> /dev/null; then
+    echo "Installing snap..."
+    sudo apt-get update
+    sudo apt-get install -y snapd
+    # Ensure snap's core is installed and up to date
+    sudo snap install core
+    # Ensure snap paths are set up correctly
+    sudo ln -s /var/lib/snapd/snap /snap 2>/dev/null || true
+
+    echo "Reloading shell to enable snap..."
+    exec zsh
+fi
+
+# Interactive app installation
+echo "Would you like to install additional applications? (y/n)"
+read -r install_apps
+
+if [[ $install_apps =~ ^[Yy]$ ]]; then
+    echo "Installing applications..."
+
+    read -p "Install Visual Studio Code? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        sudo snap install code --classic
+    fi
+
+    read -p "Install Sublime Text? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+        echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+        sudo apt-get update
+        sudo apt-get install -y sublime-text
+    fi
+
+    read -p "Install Google Chrome? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt-get install -f -y
+        rm google-chrome-stable_current_amd64.deb
+    fi
+
+    read -p "Install Slack? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        sudo snap install slack --classic
+    fi
+
+    read -p "Install Spotify? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        sudo snap install spotify
+    fi
+
+    echo "Note: Zen Browser and iTerm2 are macOS-only applications and cannot be installed on Linux."
+fi
+
 echo "=========================================="
 echo "Setup complete! Your Linux development environment is ready."
 echo "Please log out and log back in for all changes to take effect."
+echo ""
+echo "To install additional applications in bulk (on Windows), visit:"
+echo "https://ninite.com"
 echo "=========================================="

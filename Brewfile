@@ -1,5 +1,6 @@
 # Third-party package repositories
 tap "homebrew/services"        # Manage brew services (start/stop background services)
+tap "homebrew/cask"            # GUI applications
 
 # Core utilities and dependencies
 brew "zstd"                    # Fast compression algorithm
@@ -28,4 +29,4 @@ brew "pyenv"                   # Python environment manager
 brew "pyenv-virtualenv"        # Python virtual environment manager
 
 # Applications (GUI)
-cask "finicky"                 # Browser selector
+# (empty for now, apps are installed via interactive prompts)
