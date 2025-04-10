@@ -32,7 +32,7 @@ git config --global user.email "vaskafig@gmail.com"
 if [ ! -f ~/.ssh/id_rsa ]; then
     echo "Generating SSH key..."
     ssh-keygen -t rsa -b 4096 -C "vaskafig@gmail.com"
-    
+
     echo "=========================================="
     echo "Your SSH public key is:"
     cat ~/.ssh/id_rsa.pub
@@ -69,13 +69,13 @@ if [ ! -d ~/.rbenv ]; then
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
     echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-    
+
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init -)"
-    
+
     git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
     echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-    
+
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 fi
 
@@ -104,6 +104,13 @@ echo "Installing Python $latest_python..."
 pyenv install $latest_python
 pyenv global $latest_python
 
+# Install pyenv-virtualenv
+echo "Installing pyenv-virtualenv..."
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
+eval "$(pyenv virtualenv-init -)"
+
 # Install Fly.io CLI
 echo "Installing Fly.io CLI..."
 curl -L https://fly.io/install.sh | sh
@@ -121,12 +128,12 @@ fi
 # Install Oh My Zsh if not already installed
 if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    
+
     # Install zsh-syntax-highlighting plugin if not already installed
     if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     fi
-    
+
     # Install zsh-autosuggestions plugin
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
