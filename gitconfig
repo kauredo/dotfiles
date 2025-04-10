@@ -9,43 +9,23 @@
   current = green
   remote = yellow
 
+[user]
+	name = kauredo
+	email = vaskafig@gmail.com
+
 [core]
-  pager = less -FRSX
-  editor = subl -n -w  >/dev/null 2>&1
+	editor = nano
+
+[sequence]
+	editor = code --wait
+
+[init]
+	defaultBranch = main
 
 [alias]
-  co = checkout
-  st = status -sb
-  br = branch
-  ci = commit
-  fo = fetch origin
-  d = !git --no-pager diff
-  dt  = difftool
-  stat = !git --no-pager diff --stat
-
   # Clean merged branches
   sweep = !git branch --merged master | grep -v 'master$' | xargs git branch -d && git remote prune origin
-
-  # http://www.jukie.net/bart/blog/pimping-out-git-log
-  lg = log --graph --all --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)%an%Creset %C(yellow)%d%Creset'
-
-  # Serve local repo. http://coderwall.com/p/eybtga
-  # Then other can access via `git clone git://#{YOUR_IP_ADDRESS}/
-  serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
-
-  m = checkout master
-
-  # Removes a file from the index
-  unstage = reset HEAD --
+  recent = "!r() { count=$1; git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)|%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always --count=${count:-20} | while read line; do branch=$(echo \"$line\" | awk 'BEGIN { FS = \"|\" }; { print $1 }' | tr -d '*'); ahead=$(git rev-list --count \"${master:-origin/master}..${branch}\"); behind=$(git rev-list --count \"${branch}..${master:-origin/master}\"); colorline=$(echo \"$line\" | sed 's/^[^|]*|//'); echo \"$ahead|$behind|$colorline\" | awk -F'|' -vOFS='|' '{$5=substr($5,1,70)}1' ; done | ( echo \"ahead|behind||branch|lastcommit|message|author\\n\" && cat) | column -ts'|';}; r"
 
 [help]
   autocorrect = 1
-
-[push]
-  default = simple
-
-[branch "master"]
-  mergeoptions = --no-edit
-[user]
-  name = kauredo
-  email = vaskafig@gmail.com

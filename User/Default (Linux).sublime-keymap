@@ -1,3 +1,0 @@
-[
-	{ "keys": ["ctrl+º"], "command": "toggle_comment", "args": { "block": false } }
-]

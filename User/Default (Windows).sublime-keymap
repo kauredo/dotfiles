@@ -1,5 +1,0 @@
-[
-	{ "keys": ["ctrl+alt+a"], "command": "alignment" },
-	{ "keys": ["alt+shift+h"], "command": "toggle_highlight_duplicates" },
-	{ "keys": ["alt+shift+s"], "command": "toggle_select_duplicates" }
-]
