@@ -1,7 +1,3 @@
-# Third-party package repositories
-tap "homebrew/services"        # Manage brew services (start/stop background services)
-tap "homebrew/cask"            # GUI applications
-
 # Core utilities and dependencies
 brew "zstd"                    # Fast compression algorithm
 brew "openssl@3"               # SSL/TLS cryptography library
