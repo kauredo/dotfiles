@@ -82,6 +82,20 @@ if command -v nvm &> /dev/null; then
         nvm use --lts
         nvm alias default 'lts/*'
     fi
+    
+    # Update npm to the latest version
+    echo "Updating npm to the latest version..."
+    npm install -g npm@latest
+    
+    # Verify the npm version
+    echo "npm version:"
+    npm --version
+    
+    # Install commonly used global npm packages
+    echo "Installing common global npm packages..."
+    npm install -g yarn
+    
+    echo "Node.js environment setup complete!"
 else
     echo "NVM not properly loaded. Please check your installation."
 fi
@@ -227,6 +241,92 @@ else
     echo "pyenv command not found. Please check your installation and PATH."
 fi
 
+# Install PostgreSQL for Rails development
+echo "Installing PostgreSQL for Rails development..."
+
+# Check if PostgreSQL is already installed
+if command -v psql &> /dev/null; then
+  echo "PostgreSQL is already installed"
+else
+  # Add PostgreSQL repository
+  echo "Adding PostgreSQL repository..."
+  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+  
+  # Update package lists
+  sudo apt-get update
+  
+  # Install PostgreSQL 14 (or the latest version compatible with your Rails projects)
+  echo "Installing PostgreSQL 14..."
+  sudo apt-get install -y postgresql-14 postgresql-contrib libpq-dev
+  
+  # Ensure the PostgreSQL service is started
+  sudo systemctl enable postgresql
+  sudo systemctl start postgresql
+  
+  # Set up a PostgreSQL user with the same name as your system user (Rails convention)
+  echo "Setting up PostgreSQL user..."
+  # Use conditional logic to avoid errors if the user already exists
+  sudo -u postgres psql -c "DO \$\$
+  BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$(whoami)') THEN
+      CREATE ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN PASSWORD '$(whoami)';
+    ELSE
+      ALTER ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN PASSWORD '$(whoami)';
+    END IF;
+  END
+  \$\$;"
+  
+  # Create a database with the same name as your user if it doesn't exist
+  echo "Creating a default database for Rails development..."
+  # Check if the database already exists
+  if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw "$(whoami)"; then
+    sudo -u postgres createdb "$(whoami)"
+    echo "Database '$(whoami)' created."
+  else
+    echo "Database '$(whoami)' already exists."
+  fi
+  
+  echo "PostgreSQL setup complete!"
+  echo "You can connect to the default database with: psql"
+  echo "Or if password required: psql -U $(whoami) -d $(whoami) -W"
+fi
+
+# Install pgAdmin (optional GUI tool)
+echo "Would you like to install pgAdmin (PostgreSQL GUI tool)? (y/n)"
+read install_pgadmin
+
+if [[ $install_pgadmin =~ ^[Yy]$ ]]; then
+  # Install the public key for the repository
+  curl -fsS https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /usr/share/keyrings/packages-pgadmin-org.gpg
+  
+  # Create the repository configuration file
+  sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list'
+  
+  # Update package lists
+  sudo apt-get update
+  
+  # Install pgAdmin for both desktop and web modes
+  sudo apt-get install -y pgadmin4
+  
+  echo "pgAdmin installed!"
+fi
+
+# Install Redis (commonly used with Rails for background jobs, caching, etc.)
+echo "Would you like to install Redis (commonly used with Rails)? (y/n)"
+read install_redis
+
+if [[ $install_redis =~ ^[Yy]$ ]]; then
+  if command -v redis-server &> /dev/null; then
+    echo "Redis is already installed"
+  else
+    sudo apt-get install -y redis-server
+    sudo systemctl enable redis-server
+    sudo systemctl start redis-server
+    echo "Redis installed and started!"
+  fi
+fi
+
 # Install Fly.io CLI
 echo "Installing Fly.io CLI..."
 if ! command -v flyctl &> /dev/null && ! command -v fly &> /dev/null; then
@@ -355,4 +455,6 @@ echo "Please log out and log back in for all changes to take effect."
 echo ""
 echo "To install additional applications in bulk (on Windows), visit:"
 echo "https://ninite.com"
+echo ""
+echo "Your Node.js, Ruby, Python, and PostgreSQL environments are now set up and ready to use."
 echo "=========================================="
