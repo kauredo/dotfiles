@@ -20,7 +20,7 @@ sudo apt-get install -y git git-core curl zlib1g-dev build-essential libssl-dev 
 
 # Install zsh-syntax-highlighting
 echo "Installing zsh-syntax-highlighting..."
-sudo apt-get install -y zsh-syntax-highlighting
+sudo apt-get install -y zsh-syntax-highlighting || echo "Could not install zsh-syntax-highlighting, continuing..."
 
 # Set up Git configuration
 echo "Setting up Git..."
@@ -49,75 +49,195 @@ fi
 
 # Install GitHub CLI
 echo "Installing GitHub CLI..."
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-sudo apt-get update
-sudo apt-get install -y gh
+if ! command -v gh &> /dev/null; then
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install -y gh
+else
+    echo "GitHub CLI already installed"
+fi
 
 # Install Node.js via nvm
 echo "Setting up Node Version Manager (nvm)..."
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+if [ ! -d "$HOME/.nvm" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+fi
+
+# Load nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Install latest LTS version of Node.js
-echo "Installing Node.js LTS..."
-nvm install --lts
-nvm use --lts
-nvm alias default 'lts/*'
+# Check if an LTS version is already installed
+if command -v nvm &> /dev/null; then
+    if nvm ls | grep -q "lts"; then
+        echo "Node.js LTS is already installed"
+        # Use the installed LTS version
+        nvm use --lts
+    else
+        # Install latest LTS version of Node.js
+        echo "Installing Node.js LTS..."
+        nvm install --lts
+        nvm use --lts
+        nvm alias default 'lts/*'
+    fi
+else
+    echo "NVM not properly loaded. Please check your installation."
+fi
 
 # Install rbenv and ruby-build
 echo "Setting up rbenv and Ruby..."
 if [ ! -d ~/.rbenv ]; then
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-    echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-
+    
+    # Add rbenv to PATH for current session
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    
+    # Add rbenv to PATH permanently (if not already there)
+    if ! grep -q 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.bashrc; then
+        echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+    fi
+    
+    if ! grep -q 'eval "$(rbenv init -)"' ~/.bashrc; then
+        echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+    fi
+    
+    # Also add to zshrc if it exists
+    if [ -f ~/.zshrc ]; then
+        if ! grep -q 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.zshrc; then
+            echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+        fi
+        
+        if ! grep -q 'eval "$(rbenv init -)"' ~/.zshrc; then
+            echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+        fi
+    fi
+    
+    # Initialize rbenv for current session
+    eval "$(rbenv init -)"
+    
+    # Install ruby-build if not already installed
+    if [ ! -d ~/.rbenv/plugins/ruby-build ]; then
+        git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+        
+        if ! grep -q 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' ~/.bashrc; then
+            echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+        fi
+        
+        # Also add to zshrc if it exists
+        if [ -f ~/.zshrc ]; then
+            if ! grep -q 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' ~/.zshrc; then
+                echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.zshrc
+            fi
+        fi
+        
+        # Update path for current session
+        export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+    fi
+else
+    # Add rbenv to PATH for current session if not already initialized
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init -)"
-
-    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-    echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-
-    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+    echo "rbenv already installed"
 fi
 
-# Install Ruby
-latest_stable=$(~/.rbenv/bin/rbenv install -l 2>/dev/null | grep -v - | tail -1 | tr -d '[:space:]')
-echo "Installing Ruby $latest_stable..."
-~/.rbenv/bin/rbenv install $latest_stable
-~/.rbenv/bin/rbenv global $latest_stable
-
-# Install bundler
-echo "Installing bundler and Rails..."
-~/.rbenv/shims/gem install bundler
-~/.rbenv/shims/gem install rails
-~/.rbenv/bin/rbenv rehash
+# Verify rbenv is working
+if command -v rbenv &> /dev/null; then
+    # Install latest stable Ruby if not already installed
+    latest_stable=$(rbenv install -l 2>/dev/null | grep -v - | tail -1 | tr -d '[:space:]')
+    
+    # Check if this version is already installed
+    if rbenv versions | grep -q "$latest_stable"; then
+        echo "Ruby $latest_stable is already installed"
+    else
+        echo "Installing Ruby $latest_stable..."
+        rbenv install $latest_stable
+    fi
+    
+    # Set as global version
+    echo "Setting Ruby $latest_stable as global version..."
+    rbenv global $latest_stable
+    
+    # Ensure the correct Ruby is being used
+    eval "$(rbenv init -)"
+    rbenv rehash
+    
+    # Install bundler and Rails
+    echo "Installing bundler and Rails..."
+    gem install bundler
+    gem install rails
+    
+    # Rehash again to update paths
+    rbenv rehash
+else
+    echo "rbenv command not found. Please check your installation and PATH."
+fi
 
 # Install pyenv
 echo "Installing pyenv..."
-curl https://pyenv.run | bash
+if [ ! -d "$HOME/.pyenv" ]; then
+    curl https://pyenv.run | bash
+fi
+
+# Set up pyenv environment
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
-# Install latest Python
-latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | tail -1 | tr -d '[:space:]')
-echo "Installing Python $latest_python..."
-pyenv install $latest_python
-pyenv global $latest_python
-
-# Install pyenv-virtualenv
-echo "Installing pyenv-virtualenv..."
-git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
-echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
-eval "$(pyenv virtualenv-init -)"
+# Initialize pyenv if available
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init -)"
+    
+    # Find latest stable Python version
+    latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | grep -v rc | tail -1 | tr -d '[:space:]')
+    
+    # Check if this version is already installed
+    if pyenv versions | grep -q "$latest_python"; then
+        echo "Python $latest_python is already installed"
+    else
+        echo "Installing Python $latest_python..."
+        pyenv install $latest_python
+    fi
+    
+    # Set as global version
+    echo "Setting Python $latest_python as global version..."
+    pyenv global $latest_python
+    
+    # Install pyenv-virtualenv
+    echo "Installing pyenv-virtualenv..."
+    if [ ! -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
+        git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+        
+        # Add to shell configuration files if not already there
+        if ! grep -q 'eval "$(pyenv virtualenv-init -)"' ~/.bashrc; then
+            echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+        fi
+        
+        if [ -f ~/.zshrc ]; then
+            if ! grep -q 'eval "$(pyenv virtualenv-init -)"' ~/.zshrc; then
+                echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
+            fi
+        fi
+        
+        eval "$(pyenv virtualenv-init -)"
+    else
+        echo "pyenv-virtualenv already installed"
+    fi
+else
+    echo "pyenv command not found. Please check your installation and PATH."
+fi
 
 # Install Fly.io CLI
 echo "Installing Fly.io CLI..."
-curl -L https://fly.io/install.sh | sh
+if ! command -v flyctl &> /dev/null && ! command -v fly &> /dev/null; then
+    curl -L https://fly.io/install.sh | sh
+    
+    # Add Fly.io to PATH for current session
+    export FLYCTL_INSTALL="/home/$USER/.fly"
+    export PATH="$FLYCTL_INSTALL/bin:$PATH"
+else
+    echo "Fly.io CLI already installed"
+fi
 
 # Install zsh if not already installed
 echo "Installing and configuring Zsh..."
@@ -135,10 +255,14 @@ if [ ! -d ~/.oh-my-zsh ]; then
     fi
 
     # Install zsh-autosuggestions plugin
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    fi
 
     # Make zsh the default shell
     chsh -s $(which zsh)
+else
+    echo "Oh My Zsh already installed"
 fi
 
 # Copy config files if they exist
@@ -160,52 +284,66 @@ if ! command -v snap &> /dev/null; then
     sudo snap install core
     # Ensure snap paths are set up correctly
     sudo ln -s /var/lib/snapd/snap /snap 2>/dev/null || true
-
-    echo "Reloading shell to enable snap..."
-    exec zsh
+    
+    echo "Snap installed. You'll need to log out and back in for snap to function properly."
+else
+    echo "Snap already installed"
 fi
 
 # Interactive app installation
 echo "Would you like to install additional applications? (y/n)"
-read -r install_apps
+read install_apps
 
 if [[ $install_apps =~ ^[Yy]$ ]]; then
     echo "Installing applications..."
 
-    read -p "Install Visual Studio Code? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        sudo snap install code --classic
+    read -p "Install Visual Studio Code? (y/n) " install_vscode
+    if [[ $install_vscode =~ ^[Yy]$ ]]; then
+        if command -v snap &> /dev/null; then
+            sudo snap install code --classic
+        else
+            echo "Snap not available. Installing VS Code via apt..."
+            wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+            sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+            sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+            rm -f packages.microsoft.gpg
+            sudo apt-get update
+            sudo apt-get install -y code
+        fi
     fi
 
-    read -p "Install Sublime Text? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Sublime Text? (y/n) " install_sublime
+    if [[ $install_sublime =~ ^[Yy]$ ]]; then
         wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
         echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
         sudo apt-get update
         sudo apt-get install -y sublime-text
     fi
 
-    read -p "Install Google Chrome? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Google Chrome? (y/n) " install_chrome
+    if [[ $install_chrome =~ ^[Yy]$ ]]; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt-get install -f -y
         rm google-chrome-stable_current_amd64.deb
     fi
 
-    read -p "Install Slack? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        sudo snap install slack --classic
+    read -p "Install Slack? (y/n) " install_slack
+    if [[ $install_slack =~ ^[Yy]$ ]]; then
+        if command -v snap &> /dev/null; then
+            sudo snap install slack --classic
+        else
+            echo "Snap not available. You may need to install Slack manually."
+        fi
     fi
 
-    read -p "Install Spotify? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        sudo snap install spotify
+    read -p "Install Spotify? (y/n) " install_spotify
+    if [[ $install_spotify =~ ^[Yy]$ ]]; then
+        if command -v snap &> /dev/null; then
+            sudo snap install spotify
+        else
+            echo "Snap not available. You may need to install Spotify manually."
+        fi
     fi
 
     echo "Note: Zen Browser and iTerm2 are macOS-only applications and cannot be installed on Linux."

@@ -80,31 +80,59 @@ fi
 # Set up Ruby environment with rbenv
 if command -v rbenv &> /dev/null; then
     echo "Setting up Ruby environment..."
-    # Install latest stable Ruby
+    
+    # Ensure rbenv is initialized properly
+    eval "$(rbenv init -)"
+    
+    # Install latest stable Ruby if not already installed
     latest_stable=$(rbenv install -l | grep -v - | tail -1 | tr -d '[:space:]')
-    echo "Installing Ruby $latest_stable..."
-    rbenv install $latest_stable
+    
+    # Check if this version is already installed
+    if rbenv versions | grep -q "$latest_stable"; then
+        echo "Ruby $latest_stable is already installed"
+    else
+        echo "Installing Ruby $latest_stable..."
+        rbenv install $latest_stable
+    fi
+    
+    # Set as global version
+    echo "Setting Ruby $latest_stable as global version..."
     rbenv global $latest_stable
-
+    
+    # Ensure the correct Ruby is being used
+    eval "$(rbenv init -)"
+    rbenv rehash
+    
     # Install bundler and Rails
     echo "Installing bundler and Rails..."
     gem install bundler
     gem install rails
+    
+    # Rehash again to update paths
     rbenv rehash
 else
     echo "rbenv not found. Make sure it was installed via Homebrew."
 fi
 
 # Set up Node.js with nvm
-if command -v nvm &> /dev/null; then
+if [ -f "$(brew --prefix)/opt/nvm/nvm.sh" ]; then
     echo "Setting up Node.js environment..."
     export NVM_DIR="$HOME/.nvm"
-    source $(brew --prefix nvm)/nvm.sh
-    # Install latest LTS version of Node.js
-    echo "Installing Node.js LTS..."
-    nvm install --lts
-    nvm use --lts
-    nvm alias default 'lts/*'
+    mkdir -p "$NVM_DIR"
+    source "$(brew --prefix)/opt/nvm/nvm.sh"
+    
+    # Check if an LTS version is already installed
+    if nvm ls | grep -q "lts"; then
+        echo "Node.js LTS is already installed"
+        # Use the installed LTS version
+        nvm use --lts
+    else
+        # Install latest LTS version of Node.js
+        echo "Installing Node.js LTS..."
+        nvm install --lts
+        nvm use --lts
+        nvm alias default 'lts/*'
+    fi
 else
     echo "nvm not found. Make sure it was installed via Homebrew."
 fi
@@ -112,13 +140,27 @@ fi
 # Set up Python environment with pyenv
 if command -v pyenv &> /dev/null; then
     echo "Setting up Python environment..."
+    # Add pyenv init to shell
+    eval "$(pyenv init -)"
+    
     # Initialize pyenv-virtualenv if installed
-    eval "$(pyenv virtualenv-init -)"
+    if command -v pyenv-virtualenv-init &> /dev/null; then
+        eval "$(pyenv virtualenv-init -)"
+    fi
 
-    # Install latest stable Python
-    latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | tail -1 | tr -d '[:space:]')
-    echo "Installing Python $latest_python..."
-    pyenv install $latest_python
+    # Find latest stable Python version
+    latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | grep -v rc | tail -1 | tr -d '[:space:]')
+    
+    # Check if this version is already installed
+    if pyenv versions | grep -q "$latest_python"; then
+        echo "Python $latest_python is already installed"
+    else
+        echo "Installing Python $latest_python..."
+        pyenv install $latest_python
+    fi
+    
+    # Set as global version
+    echo "Setting Python $latest_python as global version..."
     pyenv global $latest_python
 else
     echo "pyenv not found. Make sure it was installed via Homebrew."
@@ -131,68 +173,59 @@ echo "Setting up dotfiles..."
 [ -f aliases ] && cp aliases ~/.aliases
 [ -f gitignore_global ] && cp gitignore_global ~/.gitignore_global
 
-# Source the updated files
-echo "Sourcing new configuration..."
-exec zsh
-
 # Interactive app installation
 echo "Would you like to install additional applications? (y/n)"
-read -r install_apps
+read install_apps
 
 if [[ $install_apps =~ ^[Yy]$ ]]; then
     echo "Installing applications..."
 
-    read -p "Install Finicky (browser selector)? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Finicky (browser selector)? (y/n) " install_finicky
+    if [[ $install_finicky =~ ^[Yy]$ ]]; then
         brew install --cask finicky
     fi
 
-    read -p "Install Visual Studio Code? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Visual Studio Code? (y/n) " install_vscode
+    if [[ $install_vscode =~ ^[Yy]$ ]]; then
         brew install --cask visual-studio-code
     fi
 
-    read -p "Install Sublime Text? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Sublime Text? (y/n) " install_sublime
+    if [[ $install_sublime =~ ^[Yy]$ ]]; then
         brew install --cask sublime-text
     fi
 
-    read -p "Install iTerm2? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install iTerm2? (y/n) " install_iterm
+    if [[ $install_iterm =~ ^[Yy]$ ]]; then
         brew install --cask iterm2
     fi
 
-    read -p "Install Zen Browser? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Zen Browser? (y/n) " install_zen
+    if [[ $install_zen =~ ^[Yy]$ ]]; then
         brew install --cask zen-browser
     fi
 
-    read -p "Install Google Chrome? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Google Chrome? (y/n) " install_chrome
+    if [[ $install_chrome =~ ^[Yy]$ ]]; then
         brew install --cask google-chrome
     fi
 
-    read -p "Install Slack? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Slack? (y/n) " install_slack
+    if [[ $install_slack =~ ^[Yy]$ ]]; then
         brew install --cask slack
     fi
 
-    read -p "Install Spotify? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "Install Spotify? (y/n) " install_spotify
+    if [[ $install_spotify =~ ^[Yy]$ ]]; then
         brew install --cask spotify
     fi
 fi
 
 echo "=========================================="
 echo "Setup complete! Your Mac development environment is ready."
+echo ""
+echo "IMPORTANT: To ensure all changes take effect, please restart your terminal or run:"
+echo "exec zsh"
 echo ""
 echo "To install additional applications in bulk, visit:"
 echo "https://macapps.link"

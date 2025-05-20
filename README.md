@@ -11,8 +11,8 @@ This repository contains scripts and configuration files to quickly set up a con
   - `.aliases` - Custom command aliases
 
 - **Setup Scripts**:
-  - `setup_mac.sh` - Setup script for macOS
-  - `setup_linux.sh` - Setup script for Linux (Ubuntu/Debian-based)
+  - `setup-mac.sh` - Setup script for macOS
+  - `setup-linux.sh` - Setup script for Linux (Ubuntu/Debian-based)
   - `Brewfile` - Package definitions for Homebrew (macOS)
 
 ## Getting Started on a New Machine
@@ -29,15 +29,15 @@ cd dotfiles
 #### For macOS:
 
 ```bash
-chmod +x setup_mac.sh
-./setup_mac.sh
+chmod +x setup-mac.sh
+./setup-mac.sh
 ```
 
 #### For Linux (Ubuntu/Debian-based):
 
 ```bash
-chmod +x setup_linux.sh
-./setup_linux.sh
+chmod +x setup-linux.sh
+./setup-linux.sh
 ```
 
 ### 3. Follow any on-screen instructions
