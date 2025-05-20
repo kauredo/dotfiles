@@ -77,6 +77,43 @@ else
     echo "Oh My Zsh already installed"
 fi
 
+# Set up Node.js with nvm
+if [ -f "$(brew --prefix)/opt/nvm/nvm.sh" ]; then
+    echo "Setting up Node.js environment..."
+    export NVM_DIR="$HOME/.nvm"
+    mkdir -p "$NVM_DIR"
+    source "$(brew --prefix)/opt/nvm/nvm.sh"
+    
+    # Check if an LTS version is already installed
+    if nvm ls | grep -q "lts"; then
+        echo "Node.js LTS is already installed"
+        # Use the installed LTS version
+        nvm use --lts
+    else
+        # Install latest LTS version of Node.js
+        echo "Installing Node.js LTS..."
+        nvm install --lts
+        nvm use --lts
+        nvm alias default 'lts/*'
+    fi
+    
+    # Update npm to the latest version
+    echo "Updating npm to the latest version..."
+    npm install -g npm@latest
+    
+    # Verify the npm version
+    echo "npm version:"
+    npm --version
+    
+    # Install commonly used global npm packages
+    echo "Installing common global npm packages..."
+    npm install -g yarn
+    
+    echo "Node.js environment setup complete!"
+else
+    echo "nvm not found. Make sure it was installed via Homebrew."
+fi
+
 # Set up Ruby environment with rbenv
 if command -v rbenv &> /dev/null; then
     echo "Setting up Ruby environment..."
@@ -114,29 +151,6 @@ else
     echo "rbenv not found. Make sure it was installed via Homebrew."
 fi
 
-# Set up Node.js with nvm
-if [ -f "$(brew --prefix)/opt/nvm/nvm.sh" ]; then
-    echo "Setting up Node.js environment..."
-    export NVM_DIR="$HOME/.nvm"
-    mkdir -p "$NVM_DIR"
-    source "$(brew --prefix)/opt/nvm/nvm.sh"
-    
-    # Check if an LTS version is already installed
-    if nvm ls | grep -q "lts"; then
-        echo "Node.js LTS is already installed"
-        # Use the installed LTS version
-        nvm use --lts
-    else
-        # Install latest LTS version of Node.js
-        echo "Installing Node.js LTS..."
-        nvm install --lts
-        nvm use --lts
-        nvm alias default 'lts/*'
-    fi
-else
-    echo "nvm not found. Make sure it was installed via Homebrew."
-fi
-
 # Set up Python environment with pyenv
 if command -v pyenv &> /dev/null; then
     echo "Setting up Python environment..."
@@ -164,6 +178,71 @@ if command -v pyenv &> /dev/null; then
     pyenv global $latest_python
 else
     echo "pyenv not found. Make sure it was installed via Homebrew."
+fi
+
+# Install PostgreSQL using Homebrew
+echo "Installing PostgreSQL..."
+if brew list postgresql@14 &>/dev/null; then
+  echo "PostgreSQL is already installed"
+else
+  brew install postgresql@14
+  
+  # Start PostgreSQL service
+  brew services start postgresql@14
+  
+  # Create a database with the same name as your user (Rails convention)
+  echo "Creating a default database for Rails development..."
+  createdb "$(whoami)"
+  
+  # Wait a moment for PostgreSQL to fully start
+  sleep 3
+  
+  # Check if PostgreSQL is running
+  if pg_isready &>/dev/null; then
+    echo "PostgreSQL is running successfully!"
+  else
+    echo "PostgreSQL may not be running. You might need to start it manually with:"
+    echo "brew services start postgresql@14"
+  fi
+  
+  # Optional: Set up a PostgreSQL superuser with the same name as your system user
+  echo "Setting up PostgreSQL user..."
+  # Use conditional logic to avoid errors if the user already exists
+  psql -d postgres -c "DO \$\$
+  BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$(whoami)') THEN
+      CREATE ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN;
+    ELSE
+      ALTER ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN;
+    END IF;
+  END
+  \$\$;"
+  
+  echo "PostgreSQL setup complete!"
+  echo "You can connect to the default database with: psql"
+fi
+
+# Install pgAdmin (optional GUI tool)
+echo "Would you like to install pgAdmin (PostgreSQL GUI tool)? (y/n)"
+read install_pgadmin
+
+if [[ $install_pgadmin =~ ^[Yy]$ ]]; then
+  brew install --cask pgadmin4
+  echo "pgAdmin installed!"
+fi
+
+# Install Redis (commonly used with Rails for background jobs)
+echo "Would you like to install Redis (commonly used with Rails)? (y/n)"
+read install_redis
+
+if [[ $install_redis =~ ^[Yy]$ ]]; then
+  if brew list redis &>/dev/null; then
+    echo "Redis is already installed"
+  else
+    brew install redis
+    brew services start redis
+    echo "Redis installed and started!"
+  fi
 fi
 
 # Copy config files if they exist
@@ -225,8 +304,10 @@ echo "=========================================="
 echo "Setup complete! Your Mac development environment is ready."
 echo ""
 echo "IMPORTANT: To ensure all changes take effect, please restart your terminal or run:"
-echo "exec zsh"
+echo "source ~/.zshrc"
 echo ""
 echo "To install additional applications in bulk, visit:"
 echo "https://macapps.link"
+echo ""
+echo "Your Node.js, Ruby, Python, and PostgreSQL environments are now set up and ready to use."
 echo "=========================================="
