@@ -446,6 +446,73 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
         fi
     fi
 
+    read -p "Install Caffeine alternative (prevents system sleep)? (y/n) " install_caffeine
+    if [[ $install_caffeine =~ ^[Yy]$ ]]; then
+        sudo apt-get install -y caffeine
+    fi
+
+    read -p "Install CopyQ (clipboard manager, alternative to Flycut)? (y/n) " install_copyq
+    if [[ $install_copyq =~ ^[Yy]$ ]]; then
+        sudo apt-get install -y copyq
+    fi
+
+    read -p "Install MEGAsync? (y/n) " install_megasync
+    if [[ $install_megasync =~ ^[Yy]$ ]]; then
+        # Add MEGA repository
+        wget https://mega.nz/linux/repo/xUbuntu_$(lsb_release -rs)/amd64/megasync-xUbuntu_$(lsb_release -rs)_amd64.deb
+        sudo apt-get install -y ./megasync-xUbuntu_$(lsb_release -rs)_amd64.deb
+        rm megasync-xUbuntu_$(lsb_release -rs)_amd64.deb
+    fi
+
+    read -p "Install Albert (application launcher, alternative to Raycast)? (y/n) " install_albert
+    if [[ $install_albert =~ ^[Yy]$ ]]; then
+        sudo apt-get install -y albert
+    fi
+
+    read -p "Install OneDrive client? (y/n) " install_onedrive
+    if [[ $install_onedrive =~ ^[Yy]$ ]]; then
+        # Install OneDrive client for Linux
+        sudo apt-get install -y onedrive
+    fi
+
+    read -p "Install Gummy (window manager, alternative to Rectangle)? (y/n) " install_gummy
+    if [[ $install_gummy =~ ^[Yy]$ ]]; then
+        sudo add-apt-repository -y ppa:danielpinto8zz6/gummy
+        sudo apt-get update
+        sudo apt-get install -y gummy
+    fi
+
+    read -p "Install Obsidian (knowledge management)? (y/n) " install_obsidian
+    if [[ $install_obsidian =~ ^[Yy]$ ]]; then
+        # Download the latest .deb package
+        wget -O obsidian.deb "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.4.16/obsidian_1.4.16_amd64.deb"
+        sudo apt-get install -y ./obsidian.deb
+        rm obsidian.deb
+    fi
+
+    read -p "Install Docker Engine (Orbstack alternative for Linux)? (y/n) " install_docker
+    if [[ $install_docker =~ ^[Yy]$ ]]; then
+        # Set up Docker's apt repository
+        sudo apt-get update
+        sudo apt-get install -y ca-certificates curl gnupg
+        sudo install -m 0755 -d /etc/apt/keyrings
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        sudo chmod a+r /etc/apt/keyrings/docker.gpg
+        
+        # Add the repository to Apt sources
+        echo \
+        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+        
+        # Add user to docker group to run docker without sudo
+        sudo usermod -aG docker $USER
+        echo "Docker installed. You'll need to log out and back in for docker group changes to take effect."
+    fi
+
     echo "Note: Zen Browser and iTerm2 are macOS-only applications and cannot be installed on Linux."
 fi
 

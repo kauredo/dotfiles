@@ -298,6 +298,46 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
     if [[ $install_spotify =~ ^[Yy]$ ]]; then
         brew install --cask spotify
     fi
+
+    read -p "Install Caffeine (prevent Mac from sleeping)? (y/n) " install_caffeine
+    if [[ $install_caffeine =~ ^[Yy]$ ]]; then
+        brew install --cask caffeine
+    fi
+
+    read -p "Install Flycut (clipboard manager)? (y/n) " install_flycut
+    if [[ $install_flycut =~ ^[Yy]$ ]]; then
+        brew install --cask flycut
+    fi
+
+    read -p "Install MEGAsync? (y/n) " install_megasync
+    if [[ $install_megasync =~ ^[Yy]$ ]]; then
+        brew install --cask megasync
+    fi
+
+    read -p "Install Raycast (launcher)? (y/n) " install_raycast
+    if [[ $install_raycast =~ ^[Yy]$ ]]; then
+        brew install --cask raycast
+    fi
+
+    read -p "Install OneDrive? (y/n) " install_onedrive
+    if [[ $install_onedrive =~ ^[Yy]$ ]]; then
+        brew install --cask onedrive
+    fi
+
+    read -p "Install Rectangle (window manager)? (y/n) " install_rectangle
+    if [[ $install_rectangle =~ ^[Yy]$ ]]; then
+        brew install --cask rectangle
+    fi
+
+    read -p "Install Obsidian (knowledge management)? (y/n) " install_obsidian
+    if [[ $install_obsidian =~ ^[Yy]$ ]]; then
+        brew install --cask obsidian
+    fi
+
+    read -p "Install Orbstack (Docker Desktop alternative)? (y/n) " install_orbstack
+    if [[ $install_orbstack =~ ^[Yy]$ ]]; then
+        brew install --cask orbstack
+    fi
 fi
 
 echo "=========================================="
