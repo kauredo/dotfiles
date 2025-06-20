@@ -301,7 +301,7 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
 
     read -p "Install Caffeine (prevent Mac from sleeping)? (y/n) " install_caffeine
     if [[ $install_caffeine =~ ^[Yy]$ ]]; then
-        brew install --cask caffeine
+        brew install --cask domzilla-caffeine
     fi
 
     read -p "Install Flycut (clipboard manager)? (y/n) " install_flycut
