@@ -10,9 +10,16 @@ This repository contains scripts and configuration files to quickly set up a con
   - `.gitconfig` - Git configuration
   - `.aliases` - Custom command aliases
 
+- **Claude Code config** (`claude/`):
+
+  - Global instructions (`CLAUDE.md`, `RTK.md`, `github-pending-review.md`)
+  - `settings.json`, custom `commands/`, `agents/`, `hooks/`, `scripts/`, and hand-written `skills/`
+  - Symlinked into `~/.claude` so edits in this repo are live on the machine
+
 - **Setup Scripts**:
   - `setup-mac.sh` - Setup script for macOS
   - `setup-linux.sh` - Setup script for Linux (Ubuntu/Debian-based)
+  - `link-claude.sh` - Symlinks `claude/` into `~/.claude` (run by the setup scripts)
   - `Brewfile` - Package definitions for Homebrew (macOS)
 
 ## Getting Started on a New Machine
@@ -49,6 +56,7 @@ The scripts will:
 - Generate SSH keys if needed (and show instructions for adding to GitHub)
 - Install programming language environments (Ruby, Node.js, Python)
 - Set up Zsh with Oh My Zsh
+- Install Claude Code (native, self-updating installer)
 - Copy your dotfiles to the appropriate locations
 - Prompt for installation of common applications:
   - Visual Studio Code
@@ -109,6 +117,28 @@ The setup should be complete! Open a new terminal and check that:
 - Your aliases are working
 - Git is configured correctly
 - Language version managers (rbenv, nvm, pyenv) are working
+
+## Claude Code Config
+
+Claude Code itself is installed by the setup scripts via the native installer
+(`curl -fsSL https://claude.ai/install.sh | bash`), which self-updates. The
+`claude/` directory holds versioned Claude Code config. The setup scripts then
+run `link-claude.sh`, which symlinks each item into `~/.claude`, so editing a
+file in this repo immediately affects the running config (and vice versa).
+
+```bash
+./link-claude.sh   # (re)create the symlinks; run manually anytime
+```
+
+Notes:
+
+- Plugins are **not** versioned. They are reinstalled from the `enabledPlugins`
+  and `extraKnownMarketplaces` entries in `claude/settings.json`.
+- Runtime data (`projects/`, `sessions/`, `history.jsonl`, caches) is left out.
+- `settings.json` uses `$HOME` rather than absolute paths, so it works across
+  machines regardless of username.
+- If `~/.claude` already has real files, `link-claude.sh` moves them aside to
+  `<name>.bak.<timestamp>` before linking.
 
 ## Customizing the Setup
 

@@ -245,12 +245,27 @@ if [[ $install_redis =~ ^[Yy]$ ]]; then
   fi
 fi
 
+# Install Claude Code (native, self-updating installer)
+if ! command -v claude &> /dev/null; then
+    echo "Installing Claude Code..."
+    curl -fsSL https://claude.ai/install.sh | bash
+else
+    echo "Claude Code already installed"
+fi
+
 # Copy config files if they exist
 echo "Setting up dotfiles..."
 [ -f gitconfig ] && cp gitconfig ~/.gitconfig
 [ -f zshrc ] && cp zshrc ~/.zshrc
 [ -f aliases ] && cp aliases ~/.aliases
 [ -f gitignore_global ] && cp gitignore_global ~/.gitignore_global
+
+# Symlink Claude Code config into ~/.claude (edits in this repo stay live)
+if [ -f link-claude.sh ]; then
+    echo "Linking Claude Code config..."
+    chmod +x link-claude.sh
+    ./link-claude.sh
+fi
 
 # Interactive app installation
 echo "Would you like to install additional applications? (y/n)"
