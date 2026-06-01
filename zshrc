@@ -9,15 +9,23 @@ ZSH_THEME="robbyrussell"
 DISABLE_UPDATE_PROMPT="true"
 
 # Plugins
-plugins=(git gitfast last-working-dir common-aliases sublime zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
+plugins=(git gitfast last-working-dir common-aliases sublime zsh-autosuggestions zsh-syntax-highlighting history-substring-search nvm)
 
 # Load Oh My Zsh
+zstyle ':omz:plugins:nvm' autoload yes
 source $ZSH/oh-my-zsh.sh
 
 # NVM setup
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# History settings
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
 
 # rbenv setup
 export PATH="$HOME/.rbenv/bin:$PATH"

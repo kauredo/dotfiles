@@ -14,3 +14,8 @@ alias hg="history | grep"
 alias rr="bundle exec bin/rails routes"
 alias rrg="bundle exec bin/rails routes | grep"
 alias rt="bundle exec rails test "
+
+# Claude Code
+alias cc="claude --dangerously-skip-permissions"
+alias claude-work="CLAUDE_CONFIG_DIR=~/.claude-work claude"
+alias claude-ujet="CLAUDE_CONFIG_DIR=~/.claude-ujet claude"
