@@ -191,18 +191,6 @@ if [[ $install_redis =~ ^[Yy]$ ]]; then
   fi
 fi
 
-# Install Fly.io CLI
-echo "Installing Fly.io CLI..."
-if ! command -v flyctl &> /dev/null && ! command -v fly &> /dev/null; then
-    curl -L https://fly.io/install.sh | sh
-    
-    # Add Fly.io to PATH for current session
-    export FLYCTL_INSTALL="/home/$USER/.fly"
-    export PATH="$FLYCTL_INSTALL/bin:$PATH"
-else
-    echo "Fly.io CLI already installed"
-fi
-
 # Install zsh if not already installed
 echo "Installing and configuring Zsh..."
 if ! command -v zsh &> /dev/null; then
@@ -323,11 +311,6 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
         sudo apt-get install -y caffeine
     fi
 
-    read -p "Install CopyQ (clipboard manager, alternative to Flycut)? (y/n) " install_copyq
-    if [[ $install_copyq =~ ^[Yy]$ ]]; then
-        sudo apt-get install -y copyq
-    fi
-
     read -p "Install MEGAsync? (y/n) " install_megasync
     if [[ $install_megasync =~ ^[Yy]$ ]]; then
         # Add MEGA repository
@@ -347,11 +330,22 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
         sudo apt-get install -y onedrive
     fi
 
-    read -p "Install Gummy (window manager, alternative to Rectangle)? (y/n) " install_gummy
-    if [[ $install_gummy =~ ^[Yy]$ ]]; then
-        sudo add-apt-repository -y ppa:danielpinto8zz6/gummy
-        sudo apt-get update
-        sudo apt-get install -y gummy
+    read -p "Install Google Cloud CLI? (y/n) " install_gcloud
+    if [[ $install_gcloud =~ ^[Yy]$ ]]; then
+        if command -v snap &> /dev/null; then
+            sudo snap install google-cloud-cli --classic
+        else
+            echo "Snap not available. Install the Google Cloud CLI manually: https://cloud.google.com/sdk/docs/install"
+        fi
+    fi
+
+    read -p "Install ngrok? (y/n) " install_ngrok
+    if [[ $install_ngrok =~ ^[Yy]$ ]]; then
+        if command -v snap &> /dev/null; then
+            sudo snap install ngrok
+        else
+            echo "Snap not available. Install ngrok manually: https://ngrok.com/download"
+        fi
     fi
 
     read -p "Install Obsidian (knowledge management)? (y/n) " install_obsidian
