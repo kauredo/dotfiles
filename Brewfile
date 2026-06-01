@@ -8,7 +8,8 @@ brew "shared-mime-info"        # Database of common MIME types
 brew "pkgconf"                 # Package compiler and linker metadata toolkit
 
 # Development tools
-brew "flyctl"                  # Fly.io deployment CLI
+brew "railway"                 # Railway deployment CLI
+brew "rtk"                     # Token-optimizing CLI proxy (required by the Claude Code rtk hook)
 brew "gh"                      # GitHub CLI
 brew "git"                     # Version control system
 brew "tmux"                    # Terminal multiplexer

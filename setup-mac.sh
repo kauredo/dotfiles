@@ -153,9 +153,9 @@ read install_apps
 if [[ $install_apps =~ ^[Yy]$ ]]; then
     echo "Installing applications..."
 
-    read -p "Install Finicky (browser selector)? (y/n) " install_finicky
-    if [[ $install_finicky =~ ^[Yy]$ ]]; then
-        brew install --cask finicky
+    read -p "Install Ghostty (terminal)? (y/n) " install_ghostty
+    if [[ $install_ghostty =~ ^[Yy]$ ]]; then
+        brew install --cask ghostty
     fi
 
     read -p "Install Visual Studio Code? (y/n) " install_vscode
@@ -198,11 +198,6 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
         brew install --cask domzilla-caffeine
     fi
 
-    read -p "Install Flycut (clipboard manager)? (y/n) " install_flycut
-    if [[ $install_flycut =~ ^[Yy]$ ]]; then
-        brew install --cask flycut
-    fi
-
     read -p "Install MEGAsync? (y/n) " install_megasync
     if [[ $install_megasync =~ ^[Yy]$ ]]; then
         brew install --cask megasync
@@ -218,11 +213,6 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
         brew install --cask onedrive
     fi
 
-    read -p "Install Rectangle (window manager)? (y/n) " install_rectangle
-    if [[ $install_rectangle =~ ^[Yy]$ ]]; then
-        brew install --cask rectangle
-    fi
-
     read -p "Install Obsidian (knowledge management)? (y/n) " install_obsidian
     if [[ $install_obsidian =~ ^[Yy]$ ]]; then
         brew install --cask obsidian
@@ -231,6 +221,16 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
     read -p "Install Orbstack (Docker Desktop alternative)? (y/n) " install_orbstack
     if [[ $install_orbstack =~ ^[Yy]$ ]]; then
         brew install --cask orbstack
+    fi
+
+    read -p "Install Google Cloud CLI? (y/n) " install_gcloud
+    if [[ $install_gcloud =~ ^[Yy]$ ]]; then
+        brew install --cask gcloud-cli
+    fi
+
+    read -p "Install ngrok? (y/n) " install_ngrok
+    if [[ $install_ngrok =~ ^[Yy]$ ]]; then
+        brew install --cask ngrok
     fi
 fi
 

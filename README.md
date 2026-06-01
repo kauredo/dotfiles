@@ -60,6 +60,7 @@ The scripts will:
 - Install Claude Code (native, self-updating installer)
 - Symlink your dotfiles into place (via `link-dotfiles.sh`)
 - Prompt for installation of common applications:
+  - Ghostty (terminal)
   - Visual Studio Code
   - Sublime Text
   - iTerm2 (macOS only)
@@ -67,7 +68,6 @@ The scripts will:
   - Google Chrome
   - Slack
   - Spotify
-  - Finicky (macOS only)
 
 The script will ask for confirmation before installing each application.
 
