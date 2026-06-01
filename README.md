@@ -162,8 +162,8 @@ the versioned `claude/` config:
 
 ## Customizing the Setup
 
-- Edit `.zshrc` to customize your shell
-- Add new aliases to `.aliases`
+- Edit `zshrc` to customize your shell (it's symlinked to `~/.zshrc`, so changes are live)
+- Add new aliases to `aliases`; keep machine-specific ones in `~/.aliases.local`
 - Edit `Brewfile` to add/remove core macOS packages
 - Modify the setup scripts to:
   - Change the list of applications in the interactive installation
