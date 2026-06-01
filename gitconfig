@@ -36,3 +36,7 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+
+# Machine-specific git config (untracked, optional)
+[include]
+	path = ~/.gitconfig.local

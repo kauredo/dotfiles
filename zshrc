@@ -46,3 +46,7 @@ fi
 
 # Load aliases
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
+
+# Machine-specific config (untracked; tool installers append here)
+[[ -f "$HOME/.aliases.local" ]] && source "$HOME/.aliases.local"
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
