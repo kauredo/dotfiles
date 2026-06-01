@@ -3,6 +3,11 @@
 # Exit if any command fails
 set -e
 
+# Run from the repo directory so relative paths (lib, link script) work.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+source "$SCRIPT_DIR/lib/setup-common.sh"
+
 echo "=========================================="
 echo "Setting up your Linux development environment"
 echo "=========================================="
@@ -22,20 +27,15 @@ sudo apt-get install -y git git-core curl zlib1g-dev build-essential libssl-dev 
 echo "Installing zsh-syntax-highlighting..."
 sudo apt-get install -y zsh-syntax-highlighting || echo "Could not install zsh-syntax-highlighting, continuing..."
 
-# Set up Git configuration
-echo "Setting up Git..."
-git config --global color.ui true
-git config --global user.name "kauredo"
-git config --global user.email "vaskafig@gmail.com"
-
-# Set up global .gitignore
-echo "Setting up global .gitignore..."
-git config --global core.excludesfile ~/.gitignore_global
+# Git identity, colors, and global gitignore all come from the tracked
+# gitconfig that link-dotfiles.sh symlinks to ~/.gitconfig below. Setting them
+# again with `git config --global` here is redundant and, on a re-run where
+# ~/.gitconfig is already the symlink, would write into the tracked repo file.
 
 # Create SSH key if it doesn't exist
 if [ ! -f ~/.ssh/id_rsa ]; then
     echo "Generating SSH key..."
-    ssh-keygen -t rsa -b 4096 -C "vaskafig@gmail.com"
+    ssh-keygen -t rsa -b 4096 -C "$(whoami)@$(hostname)"
 
     echo "=========================================="
     echo "Your SSH public key is:"
@@ -61,7 +61,7 @@ fi
 # Install Node.js via nvm
 echo "Setting up Node Version Manager (nvm)..."
 if [ ! -d "$HOME/.nvm" ]; then
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 fi
 
 # Load nvm
@@ -69,177 +69,63 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Check if an LTS version is already installed
-if command -v nvm &> /dev/null; then
-    if nvm ls | grep -q "lts"; then
-        echo "Node.js LTS is already installed"
-        # Use the installed LTS version
-        nvm use --lts
-    else
-        # Install latest LTS version of Node.js
-        echo "Installing Node.js LTS..."
-        nvm install --lts
-        nvm use --lts
-        nvm alias default 'lts/*'
-    fi
-    
-    # Update npm to the latest version
-    echo "Updating npm to the latest version..."
-    npm install -g npm@latest
-    
-    # Verify the npm version
-    echo "npm version:"
-    npm --version
-    
-    # Install commonly used global npm packages
-    echo "Installing common global npm packages..."
-    npm install -g yarn
-    
-    echo "Node.js environment setup complete!"
-else
-    echo "NVM not properly loaded. Please check your installation."
-fi
+setup_node
 
 # Install rbenv and ruby-build
 echo "Setting up rbenv and Ruby..."
 if [ ! -d ~/.rbenv ]; then
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-    
-    # Add rbenv to PATH for current session
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    
-    # Add rbenv to PATH permanently (if not already there)
+
+    # Add rbenv to ~/.bashrc for bash sessions. The tracked zshrc already
+    # initializes rbenv, so don't append to ~/.zshrc (it's a symlink to the
+    # repo file and would pollute the tracked dotfile).
     if ! grep -q 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.bashrc; then
         echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
     fi
-    
     if ! grep -q 'eval "$(rbenv init -)"' ~/.bashrc; then
         echo 'eval "$(rbenv init -)"' >> ~/.bashrc
     fi
-    
-    # Also add to zshrc if it exists
-    if [ -f ~/.zshrc ]; then
-        if ! grep -q 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.zshrc; then
-            echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
-        fi
-        
-        if ! grep -q 'eval "$(rbenv init -)"' ~/.zshrc; then
-            echo 'eval "$(rbenv init -)"' >> ~/.zshrc
-        fi
-    fi
-    
-    # Initialize rbenv for current session
-    eval "$(rbenv init -)"
-    
-    # Install ruby-build if not already installed
+
+    # Install ruby-build plugin (auto-discovered by rbenv)
     if [ ! -d ~/.rbenv/plugins/ruby-build ]; then
         git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-        
-        if ! grep -q 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' ~/.bashrc; then
-            echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-        fi
-        
-        # Also add to zshrc if it exists
-        if [ -f ~/.zshrc ]; then
-            if ! grep -q 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' ~/.zshrc; then
-                echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.zshrc
-            fi
-        fi
-        
-        # Update path for current session
-        export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
     fi
 else
-    # Add rbenv to PATH for current session if not already initialized
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
     echo "rbenv already installed"
 fi
 
-# Verify rbenv is working
-if command -v rbenv &> /dev/null; then
-    # Install latest stable Ruby if not already installed
-    latest_stable=$(rbenv install -l 2>/dev/null | grep -v - | tail -1 | tr -d '[:space:]')
-    
-    # Check if this version is already installed
-    if rbenv versions | grep -q "$latest_stable"; then
-        echo "Ruby $latest_stable is already installed"
-    else
-        echo "Installing Ruby $latest_stable..."
-        rbenv install $latest_stable
-    fi
-    
-    # Set as global version
-    echo "Setting Ruby $latest_stable as global version..."
-    rbenv global $latest_stable
-    
-    # Ensure the correct Ruby is being used
-    eval "$(rbenv init -)"
-    rbenv rehash
-    
-    # Install bundler and Rails
-    echo "Installing bundler and Rails..."
-    gem install bundler
-    gem install rails
-    
-    # Rehash again to update paths
-    rbenv rehash
-else
-    echo "rbenv command not found. Please check your installation and PATH."
-fi
+# Make rbenv available for the rest of this script, then install Ruby.
+export PATH="$HOME/.rbenv/bin:$PATH"
+setup_ruby
 
 # Install pyenv
 echo "Installing pyenv..."
 if [ ! -d "$HOME/.pyenv" ]; then
-    curl https://pyenv.run | bash
+    curl -fsSL https://pyenv.run | bash
 fi
 
-# Set up pyenv environment
+# Make pyenv available for the rest of this script
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-# Initialize pyenv if available
+# Install the pyenv-virtualenv plugin before installing Python so setup_python
+# can pick up virtualenv-init if present.
 if command -v pyenv &> /dev/null; then
     eval "$(pyenv init -)"
-    
-    # Find latest stable Python version
-    latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | grep -v rc | tail -1 | tr -d '[:space:]')
-    
-    # Check if this version is already installed
-    if pyenv versions | grep -q "$latest_python"; then
-        echo "Python $latest_python is already installed"
-    else
-        echo "Installing Python $latest_python..."
-        pyenv install $latest_python
-    fi
-    
-    # Set as global version
-    echo "Setting Python $latest_python as global version..."
-    pyenv global $latest_python
-    
-    # Install pyenv-virtualenv
-    echo "Installing pyenv-virtualenv..."
     if [ ! -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
-        git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-        
-        # Add to shell configuration files if not already there
+        echo "Installing pyenv-virtualenv..."
+        git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv"
+        # Add to ~/.bashrc only. Don't append to ~/.zshrc; it's a symlink to the
+        # tracked repo file and the write would pollute the tracked dotfile.
         if ! grep -q 'eval "$(pyenv virtualenv-init -)"' ~/.bashrc; then
             echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
         fi
-        
-        if [ -f ~/.zshrc ]; then
-            if ! grep -q 'eval "$(pyenv virtualenv-init -)"' ~/.zshrc; then
-                echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
-            fi
-        fi
-        
-        eval "$(pyenv virtualenv-init -)"
     else
         echo "pyenv-virtualenv already installed"
     fi
-else
-    echo "pyenv command not found. Please check your installation and PATH."
 fi
+
+setup_python
 
 # Install PostgreSQL for Rails development
 echo "Installing PostgreSQL for Rails development..."
@@ -263,33 +149,11 @@ else
   # Ensure the PostgreSQL service is started
   sudo systemctl enable postgresql
   sudo systemctl start postgresql
-  
-  # Set up a PostgreSQL user with the same name as your system user (Rails convention)
-  echo "Setting up PostgreSQL user..."
-  # Use conditional logic to avoid errors if the user already exists
-  sudo -u postgres psql -c "DO \$\$
-  BEGIN
-    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$(whoami)') THEN
-      CREATE ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN PASSWORD '$(whoami)';
-    ELSE
-      ALTER ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN PASSWORD '$(whoami)';
-    END IF;
-  END
-  \$\$;"
-  
-  # Create a database with the same name as your user if it doesn't exist
-  echo "Creating a default database for Rails development..."
-  # Check if the database already exists
-  if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw "$(whoami)"; then
-    sudo -u postgres createdb "$(whoami)"
-    echo "Database '$(whoami)' created."
-  else
-    echo "Database '$(whoami)' already exists."
-  fi
-  
+
+  setup_postgres_role_and_db "sudo -u postgres psql" "sudo -u postgres createdb"
+
   echo "PostgreSQL setup complete!"
   echo "You can connect to the default database with: psql"
-  echo "Or if password required: psql -U $(whoami) -d $(whoami) -W"
 fi
 
 # Install pgAdmin (optional GUI tool)
@@ -347,7 +211,8 @@ fi
 
 # Install Oh My Zsh if not already installed
 if [ ! -d ~/.oh-my-zsh ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    # Pinned to a specific commit instead of the moving master branch.
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/70ad5e3df8f7bed68aa6672029496926e632aedd/tools/install.sh)" "" --unattended
 
     # Install zsh-syntax-highlighting plugin if not already installed
     if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
@@ -376,28 +241,13 @@ fi
 
 # Symlink dotfiles into $HOME (edits in this repo stay live)
 echo "Setting up dotfiles..."
-if [ -f link-dotfiles.sh ]; then
-    chmod +x link-dotfiles.sh
-    ./link-dotfiles.sh
+if [ -f "$SCRIPT_DIR/link-dotfiles.sh" ]; then
+    chmod +x "$SCRIPT_DIR/link-dotfiles.sh"
+    "$SCRIPT_DIR/link-dotfiles.sh"
 fi
 
 # Install Finicky alternative
 echo "Note: Finicky (browser selector) is macOS-only. Consider installing an alternative like 'browser-select' for Linux."
-
-# Install snap if not present
-if ! command -v snap &> /dev/null; then
-    echo "Installing snap..."
-    sudo apt-get update
-    sudo apt-get install -y snapd
-    # Ensure snap's core is installed and up to date
-    sudo snap install core
-    # Ensure snap paths are set up correctly
-    sudo ln -s /var/lib/snapd/snap /snap 2>/dev/null || true
-    
-    echo "Snap installed. You'll need to log out and back in for snap to function properly."
-else
-    echo "Snap already installed"
-fi
 
 # Interactive app installation
 echo "Would you like to install additional applications? (y/n)"
@@ -405,6 +255,19 @@ read install_apps
 
 if [[ $install_apps =~ ^[Yy]$ ]]; then
     echo "Installing applications..."
+
+    # Several apps below install via snap, so set it up first (only when the
+    # user actually opted into app installation).
+    if ! command -v snap &> /dev/null; then
+        echo "Installing snap..."
+        sudo apt-get update
+        sudo apt-get install -y snapd
+        sudo snap install core
+        sudo ln -s /var/lib/snapd/snap /snap 2>/dev/null || true
+        echo "Snap installed. You'll need to log out and back in for snap to function properly."
+    else
+        echo "Snap already installed"
+    fi
 
     read -p "Install Visual Studio Code? (y/n) " install_vscode
     if [[ $install_vscode =~ ^[Yy]$ ]]; then
@@ -493,10 +356,16 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
 
     read -p "Install Obsidian (knowledge management)? (y/n) " install_obsidian
     if [[ $install_obsidian =~ ^[Yy]$ ]]; then
-        # Download the latest .deb package
-        wget -O obsidian.deb "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.4.16/obsidian_1.4.16_amd64.deb"
-        sudo apt-get install -y ./obsidian.deb
-        rm obsidian.deb
+        # Resolve the latest amd64 .deb from the GitHub releases API.
+        obsidian_url=$(curl -fsSL https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest \
+            | jq -r '.assets[] | select(.name | test("amd64\\.deb$")) | .browser_download_url' | head -1)
+        if [ -n "$obsidian_url" ]; then
+            wget -O obsidian.deb "$obsidian_url"
+            sudo apt-get install -y ./obsidian.deb
+            rm obsidian.deb
+        else
+            echo "Could not resolve the latest Obsidian release; skipping."
+        fi
     fi
 
     read -p "Install Docker Engine (Orbstack alternative for Linux)? (y/n) " install_docker

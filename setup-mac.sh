@@ -3,6 +3,11 @@
 # Exit if any command fails
 set -e
 
+# Run from the repo directory so relative paths (Brewfile, lib, link script) work.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+source "$SCRIPT_DIR/lib/setup-common.sh"
+
 echo "=========================================="
 echo "Setting up your Mac development environment"
 echo "=========================================="
@@ -31,27 +36,22 @@ if ! xcode-select -p &> /dev/null; then
 fi
 
 # Install packages from Brewfile
-if [ -f Brewfile ]; then
+if [ -f "$SCRIPT_DIR/Brewfile" ]; then
     echo "Installing packages from Brewfile..."
-    brew bundle --file=Brewfile
+    brew bundle --file="$SCRIPT_DIR/Brewfile"
 else
     echo "Brewfile not found. Skipping package installation."
 fi
 
-# Set up Git configuration
-echo "Setting up Git..."
-git config --global color.ui true
-git config --global user.name "kauredo"
-git config --global user.email "vaskafig@gmail.com"
-
-# Set up global .gitignore
-echo "Setting up global .gitignore..."
-git config --global core.excludesfile ~/.gitignore_global
+# Git identity, colors, and global gitignore all come from the tracked
+# gitconfig that link-dotfiles.sh symlinks to ~/.gitconfig below. Setting them
+# again with `git config --global` here is redundant and, on a re-run where
+# ~/.gitconfig is already the symlink, would write into the tracked repo file.
 
 # Create SSH key if it doesn't exist
 if [ ! -f ~/.ssh/id_rsa ]; then
     echo "Generating SSH key..."
-    ssh-keygen -t rsa -b 4096 -C "vaskafig@gmail.com"
+    ssh-keygen -t rsa -b 4096 -C "$(whoami)@$(hostname)"
 
     echo "=========================================="
     echo "Your SSH public key is:"
@@ -66,7 +66,8 @@ fi
 # Install Oh My Zsh if it's not installed
 if [ ! -d ~/.oh-my-zsh ]; then
     echo "Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    # Pinned to a specific commit instead of the moving master branch.
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/70ad5e3df8f7bed68aa6672029496926e632aedd/tools/install.sh)" "" --unattended
 
     # Install zsh-syntax-highlighting plugin
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -77,149 +78,34 @@ else
     echo "Oh My Zsh already installed"
 fi
 
-# Set up Node.js with nvm
+# Set up Node.js with nvm (installed via Brewfile)
 if [ -f "$(brew --prefix)/opt/nvm/nvm.sh" ]; then
     echo "Setting up Node.js environment..."
     export NVM_DIR="$HOME/.nvm"
     mkdir -p "$NVM_DIR"
     source "$(brew --prefix)/opt/nvm/nvm.sh"
-    
-    # Check if an LTS version is already installed
-    if nvm ls | grep -q "lts"; then
-        echo "Node.js LTS is already installed"
-        # Use the installed LTS version
-        nvm use --lts
-    else
-        # Install latest LTS version of Node.js
-        echo "Installing Node.js LTS..."
-        nvm install --lts
-        nvm use --lts
-        nvm alias default 'lts/*'
-    fi
-    
-    # Update npm to the latest version
-    echo "Updating npm to the latest version..."
-    npm install -g npm@latest
-    
-    # Verify the npm version
-    echo "npm version:"
-    npm --version
-    
-    # Install commonly used global npm packages
-    echo "Installing common global npm packages..."
-    npm install -g yarn
-    
-    echo "Node.js environment setup complete!"
+    setup_node
 else
     echo "nvm not found. Make sure it was installed via Homebrew."
 fi
 
-# Set up Ruby environment with rbenv
-if command -v rbenv &> /dev/null; then
-    echo "Setting up Ruby environment..."
-    
-    # Ensure rbenv is initialized properly
-    eval "$(rbenv init -)"
-    
-    # Install latest stable Ruby if not already installed
-    latest_stable=$(rbenv install -l | grep -v - | tail -1 | tr -d '[:space:]')
-    
-    # Check if this version is already installed
-    if rbenv versions | grep -q "$latest_stable"; then
-        echo "Ruby $latest_stable is already installed"
-    else
-        echo "Installing Ruby $latest_stable..."
-        rbenv install $latest_stable
-    fi
-    
-    # Set as global version
-    echo "Setting Ruby $latest_stable as global version..."
-    rbenv global $latest_stable
-    
-    # Ensure the correct Ruby is being used
-    eval "$(rbenv init -)"
-    rbenv rehash
-    
-    # Install bundler and Rails
-    echo "Installing bundler and Rails..."
-    gem install bundler
-    gem install rails
-    
-    # Rehash again to update paths
-    rbenv rehash
-else
-    echo "rbenv not found. Make sure it was installed via Homebrew."
-fi
+# Set up Ruby environment with rbenv (installed via Brewfile)
+echo "Setting up Ruby environment..."
+setup_ruby
 
-# Set up Python environment with pyenv
-if command -v pyenv &> /dev/null; then
-    echo "Setting up Python environment..."
-    # Add pyenv init to shell
-    eval "$(pyenv init -)"
-    
-    # Initialize pyenv-virtualenv if installed
-    if command -v pyenv-virtualenv-init &> /dev/null; then
-        eval "$(pyenv virtualenv-init -)"
-    fi
+# Set up Python environment with pyenv (installed via Brewfile)
+echo "Setting up Python environment..."
+setup_python
 
-    # Find latest stable Python version
-    latest_python=$(pyenv install --list | grep -v - | grep -v a | grep -v b | grep -v rc | tail -1 | tr -d '[:space:]')
-    
-    # Check if this version is already installed
-    if pyenv versions | grep -q "$latest_python"; then
-        echo "Python $latest_python is already installed"
-    else
-        echo "Installing Python $latest_python..."
-        pyenv install $latest_python
-    fi
-    
-    # Set as global version
-    echo "Setting Python $latest_python as global version..."
-    pyenv global $latest_python
-else
-    echo "pyenv not found. Make sure it was installed via Homebrew."
-fi
-
-# Install PostgreSQL using Homebrew
-echo "Installing PostgreSQL..."
-if brew list postgresql@14 &>/dev/null; then
-  echo "PostgreSQL is already installed"
-else
-  brew install postgresql@14
-  
-  # Start PostgreSQL service
+# Set up PostgreSQL (installed via Brewfile)
+echo "Setting up PostgreSQL..."
+if brew list postgresql@14 &> /dev/null; then
   brew services start postgresql@14
-  
-  # Create a database with the same name as your user (Rails convention)
-  echo "Creating a default database for Rails development..."
-  createdb "$(whoami)"
-  
-  # Wait a moment for PostgreSQL to fully start
-  sleep 3
-  
-  # Check if PostgreSQL is running
-  if pg_isready &>/dev/null; then
-    echo "PostgreSQL is running successfully!"
-  else
-    echo "PostgreSQL may not be running. You might need to start it manually with:"
-    echo "brew services start postgresql@14"
-  fi
-  
-  # Optional: Set up a PostgreSQL superuser with the same name as your system user
-  echo "Setting up PostgreSQL user..."
-  # Use conditional logic to avoid errors if the user already exists
-  psql -d postgres -c "DO \$\$
-  BEGIN
-    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$(whoami)') THEN
-      CREATE ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN;
-    ELSE
-      ALTER ROLE $(whoami) WITH SUPERUSER CREATEDB LOGIN;
-    END IF;
-  END
-  \$\$;"
-  
+  setup_postgres_role_and_db "psql -d postgres" "createdb"
   echo "PostgreSQL setup complete!"
   echo "You can connect to the default database with: psql"
+else
+  echo "postgresql@14 not installed (check Brewfile). Skipping PostgreSQL setup."
 fi
 
 # Install pgAdmin (optional GUI tool)
@@ -255,9 +141,9 @@ fi
 
 # Symlink dotfiles into $HOME (edits in this repo stay live)
 echo "Setting up dotfiles..."
-if [ -f link-dotfiles.sh ]; then
-    chmod +x link-dotfiles.sh
-    ./link-dotfiles.sh
+if [ -f "$SCRIPT_DIR/link-dotfiles.sh" ]; then
+    chmod +x "$SCRIPT_DIR/link-dotfiles.sh"
+    "$SCRIPT_DIR/link-dotfiles.sh"
 fi
 
 # Interactive app installation
