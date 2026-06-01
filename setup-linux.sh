@@ -374,17 +374,11 @@ else
     echo "Claude Code already installed"
 fi
 
+# Symlink dotfiles into $HOME (edits in this repo stay live)
 echo "Setting up dotfiles..."
-[ -f gitconfig ] && cp gitconfig ~/.gitconfig
-[ -f zshrc ] && cp zshrc ~/.zshrc
-[ -f aliases ] && cp aliases ~/.aliases
-[ -f gitignore_global ] && cp gitignore_global ~/.gitignore_global
-
-# Symlink Claude Code config into ~/.claude (edits in this repo stay live)
-if [ -f link-claude.sh ]; then
-    echo "Linking Claude Code config..."
-    chmod +x link-claude.sh
-    ./link-claude.sh
+if [ -f link-dotfiles.sh ]; then
+    chmod +x link-dotfiles.sh
+    ./link-dotfiles.sh
 fi
 
 # Install Finicky alternative

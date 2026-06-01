@@ -4,22 +4,22 @@ This repository contains scripts and configuration files to quickly set up a con
 
 ## What's Included
 
-- **Dotfiles**:
+- **Dotfiles** (symlinked into `$HOME`, so edits in this repo are live):
 
-  - `.zshrc` - Zsh shell configuration
-  - `.gitconfig` - Git configuration
-  - `.aliases` - Custom command aliases
+  - `zshrc` -> `~/.zshrc` - Zsh shell configuration
+  - `gitconfig` -> `~/.gitconfig` - Git configuration
+  - `aliases` -> `~/.aliases` - Custom command aliases
+  - `gitignore_global` -> `~/.gitignore_global` - Global gitignore
 
-- **Claude Code config** (`claude/`):
+- **Claude Code config** (`claude/`, symlinked into `~/.claude`):
 
   - Global instructions (`CLAUDE.md`, `RTK.md`, `github-pending-review.md`)
   - `settings.json`, custom `commands/`, `agents/`, `hooks/`, `scripts/`, and hand-written `skills/`
-  - Symlinked into `~/.claude` so edits in this repo are live on the machine
 
 - **Setup Scripts**:
   - `setup-mac.sh` - Setup script for macOS
   - `setup-linux.sh` - Setup script for Linux (Ubuntu/Debian-based)
-  - `link-claude.sh` - Symlinks `claude/` into `~/.claude` (run by the setup scripts)
+  - `link-dotfiles.sh` - Symlinks all dotfiles + `claude/` into place (run by the setup scripts)
   - `Brewfile` - Package definitions for Homebrew (macOS)
 
 ## Getting Started on a New Machine
@@ -57,7 +57,7 @@ The scripts will:
 - Install programming language environments (Ruby, Node.js, Python)
 - Set up Zsh with Oh My Zsh
 - Install Claude Code (native, self-updating installer)
-- Copy your dotfiles to the appropriate locations
+- Symlink your dotfiles into place (via `link-dotfiles.sh`)
 - Prompt for installation of common applications:
   - Visual Studio Code
   - Sublime Text
@@ -118,27 +118,47 @@ The setup should be complete! Open a new terminal and check that:
 - Git is configured correctly
 - Language version managers (rbenv, nvm, pyenv) are working
 
-## Claude Code Config
+## How Dotfiles Are Linked
 
-Claude Code itself is installed by the setup scripts via the native installer
-(`curl -fsSL https://claude.ai/install.sh | bash`), which self-updates. The
-`claude/` directory holds versioned Claude Code config. The setup scripts then
-run `link-claude.sh`, which symlinks each item into `~/.claude`, so editing a
-file in this repo immediately affects the running config (and vice versa).
+`link-dotfiles.sh` symlinks every tracked dotfile (`zshrc`, `aliases`,
+`gitconfig`, `gitignore_global`) and the `claude/` config into place, so editing
+a file in this repo immediately affects the running config (and vice versa). The
+setup scripts run it for you; you can also run it manually anytime:
 
 ```bash
-./link-claude.sh   # (re)create the symlinks; run manually anytime
+./link-dotfiles.sh   # (re)create all symlinks
 ```
 
-Notes:
+If a destination already exists as a real file, it is moved aside to
+`<name>.bak.<timestamp>` before linking.
+
+### Machine-specific config (`.local` files)
+
+Anything that should not be tracked (per-machine PATHs, tool-installer lines,
+work-only aliases) goes in untracked escape-hatch files that the tracked
+dotfiles source if present:
+
+- `~/.zshrc.local` - shell/env/PATH lines
+- `~/.aliases.local` - machine-only aliases and functions
+- `~/.gitconfig.local` - included via `[include]` in the tracked gitconfig
+
+Heads-up: because `~/.zshrc` is a symlink, a tool installer that appends to it
+with `>> ~/.zshrc` writes into the **tracked** repo file. If that happens, move
+those lines into `~/.zshrc.local` and revert the repo file.
+
+### Claude Code config
+
+Claude Code itself is installed by the setup scripts via the native installer
+(`curl -fsSL https://claude.ai/install.sh | bash`), which self-updates. Notes on
+the versioned `claude/` config:
 
 - Plugins are **not** versioned. They are reinstalled from the `enabledPlugins`
   and `extraKnownMarketplaces` entries in `claude/settings.json`.
 - Runtime data (`projects/`, `sessions/`, `history.jsonl`, caches) is left out.
 - `settings.json` uses `$HOME` rather than absolute paths, so it works across
   machines regardless of username.
-- If `~/.claude` already has real files, `link-claude.sh` moves them aside to
-  `<name>.bak.<timestamp>` before linking.
+- Skills are linked individually, so plugin-managed skills in `~/.claude/skills`
+  are left untouched.
 
 ## Customizing the Setup
 
