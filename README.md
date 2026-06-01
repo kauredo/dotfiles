@@ -171,6 +171,20 @@ the versioned `claude/` config:
   - Add new development tools
   - Customize language versions and defaults
 
+## Development
+
+Shell scripts in this repo are linted by a [shellcheck](https://www.shellcheck.net)
+GitHub Actions workflow (`.github/workflows/shellcheck.yml`) on every push and
+pull request, at `--severity=warning`. Run the same check locally before pushing:
+
+```bash
+git ls-files '*.sh' | xargs shellcheck --severity=warning
+```
+
+Shared install logic (Node/Ruby/Python/PostgreSQL) lives in `lib/setup-common.sh`
+and is sourced by both setup scripts, so platform-specific tweaks only need to
+change the version-manager install, not the "install latest + configure" steps.
+
 ## Updating Your Environment
 
 To update all your packages later:
