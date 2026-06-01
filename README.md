@@ -27,6 +27,9 @@ This repository contains scripts and configuration files to quickly set up a con
 
 ### 1. Clone this repository:
 
+Clone over **HTTPS** — the repo is public, and a fresh machine has no SSH key yet
+(the setup script generates one later, see step 4):
+
 ```bash
 git clone https://github.com/kauredo/dotfiles.git
 cd dotfiles
@@ -53,13 +56,13 @@ chmod +x setup-linux.sh
 The scripts will:
 
 - Install necessary package managers and tools
-- Configure Git with your information
 - Generate SSH keys if needed (and show instructions for adding to GitHub)
 - Install programming language environments (Ruby, Node.js, Python)
+- Install and configure PostgreSQL (starts the service and creates a dev role plus a database named after your user)
 - Set up Zsh with Oh My Zsh
 - Install Claude Code (native, self-updating installer)
-- Symlink your dotfiles into place (via `link-dotfiles.sh`)
-- Prompt for installation of common applications:
+- Symlink your dotfiles into place (via `link-dotfiles.sh`); this is also what applies your Git config. Name, email, and aliases come from the tracked `gitconfig`, with machine-specific overrides in `~/.gitconfig.local`
+- Prompt (y/n) for pgAdmin, Redis, and a set of common applications, e.g.:
   - Ghostty (terminal)
   - Visual Studio Code
   - Sublime Text
@@ -69,7 +72,7 @@ The scripts will:
   - Slack
   - Spotify
 
-The script will ask for confirmation before installing each application.
+The script will ask for confirmation before installing each optional application.
 
 ### 4. Add SSH Key to GitHub
 
@@ -78,6 +81,10 @@ After running the setup script, make sure to:
 1. Copy the displayed SSH public key
 2. Add it to your GitHub account at https://github.com/settings/ssh
 3. Test your connection with: `ssh -T git@github.com`
+4. (Optional) switch this repo's remote from HTTPS to SSH so you can push without a token:
+   ```bash
+   git remote set-url origin git@github.com:kauredo/dotfiles.git
+   ```
 
 ### 5. Managing Language Versions
 
