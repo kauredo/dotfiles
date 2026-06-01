@@ -134,10 +134,12 @@ echo "Installing PostgreSQL for Rails development..."
 if command -v psql &> /dev/null; then
   echo "PostgreSQL is already installed"
 else
-  # Add PostgreSQL repository
+  # Add PostgreSQL repository (signed keyring instead of deprecated apt-key)
   echo "Adding PostgreSQL repository..."
-  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    | sudo gpg --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg
+  echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" \
+    | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
   
   # Update package lists
   sudo apt-get update
@@ -213,7 +215,7 @@ if [ ! -d ~/.oh-my-zsh ]; then
     fi
 
     # Make zsh the default shell
-    chsh -s $(which zsh)
+    chsh -s "$(which zsh)"
 else
     echo "Oh My Zsh already installed"
 fi
@@ -274,8 +276,10 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
 
     read -p "Install Sublime Text? (y/n) " install_sublime
     if [[ $install_sublime =~ ^[Yy]$ ]]; then
-        wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-        echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+        wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg \
+            | sudo gpg --dearmor -o /usr/share/keyrings/sublimehq-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/sublimehq-archive-keyring.gpg] https://download.sublimetext.com/ apt/stable/" \
+            | sudo tee /etc/apt/sources.list.d/sublime-text.list > /dev/null
         sudo apt-get update
         sudo apt-get install -y sublime-text
     fi
@@ -314,9 +318,10 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
     read -p "Install MEGAsync? (y/n) " install_megasync
     if [[ $install_megasync =~ ^[Yy]$ ]]; then
         # Add MEGA repository
-        wget https://mega.nz/linux/repo/xUbuntu_$(lsb_release -rs)/amd64/megasync-xUbuntu_$(lsb_release -rs)_amd64.deb
-        sudo apt-get install -y ./megasync-xUbuntu_$(lsb_release -rs)_amd64.deb
-        rm megasync-xUbuntu_$(lsb_release -rs)_amd64.deb
+        release="$(lsb_release -rs)"
+        wget "https://mega.nz/linux/repo/xUbuntu_${release}/amd64/megasync-xUbuntu_${release}_amd64.deb"
+        sudo apt-get install -y "./megasync-xUbuntu_${release}_amd64.deb"
+        rm "megasync-xUbuntu_${release}_amd64.deb"
     fi
 
     read -p "Install Albert (application launcher, alternative to Raycast)? (y/n) " install_albert
@@ -372,10 +377,10 @@ if [[ $install_apps =~ ^[Yy]$ ]]; then
         sudo chmod a+r /etc/apt/keyrings/docker.gpg
         
         # Add the repository to Apt sources
-        echo \
-        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-        "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        docker_arch="$(dpkg --print-architecture)"
+        docker_codename="$(. /etc/os-release && echo "$VERSION_CODENAME")"
+        echo "deb [arch=$docker_arch signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $docker_codename stable" \
+            | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         
         sudo apt-get update
         sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
