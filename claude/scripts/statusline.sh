@@ -51,9 +51,18 @@ case "$model_id" in
 esac
 
 # --- Latest message usage ---
+# Read the transcript newest-line-first so jq stops at the first usage entry
+# instead of parsing the whole (potentially large) file on every render.
 total=0
 if [ -n "$transcript" ] && [ -f "$transcript" ]; then
-  usage=$(jq -c 'select(.message.usage) | .message.usage' "$transcript" 2>/dev/null | tail -n 1)
+  if command -v tac >/dev/null 2>&1; then
+    reverse=(tac)
+  else
+    reverse=(tail -r)
+  fi
+  usage=$("${reverse[@]}" "$transcript" 2>/dev/null \
+    | jq -c -R 'fromjson? | select(.message.usage) | .message.usage' 2>/dev/null \
+    | head -n 1)
   if [ -n "$usage" ] && [ "$usage" != "null" ]; then
     total=$(printf '%s' "$usage" | jq -r '
       ((.input_tokens // 0)

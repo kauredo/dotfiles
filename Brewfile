@@ -24,5 +24,8 @@ brew "rbenv"                   # Ruby environment manager
 brew "pyenv"                   # Python environment manager
 brew "pyenv-virtualenv"        # Python virtual environment manager
 
+# Databases
+brew "postgresql@14"           # PostgreSQL (service started + dev role created by setup-mac.sh)
+
 # Applications (GUI)
 # (empty for now, apps are installed via interactive prompts)

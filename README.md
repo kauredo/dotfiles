@@ -20,6 +20,7 @@ This repository contains scripts and configuration files to quickly set up a con
   - `setup-mac.sh` - Setup script for macOS
   - `setup-linux.sh` - Setup script for Linux (Ubuntu/Debian-based)
   - `link-dotfiles.sh` - Symlinks all dotfiles + `claude/` into place (run by the setup scripts)
+  - `lib/setup-common.sh` - Shared Node/Ruby/Python/PostgreSQL helpers used by both setup scripts
   - `Brewfile` - Package definitions for Homebrew (macOS)
 
 ## Getting Started on a New Machine
