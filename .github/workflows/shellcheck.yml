@@ -1,0 +1,16 @@
+name: shellcheck
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint tracked shell scripts
+        # shellcheck is preinstalled on ubuntu-latest runners.
+        # --severity=warning catches real bugs (word splitting, bad quoting)
+        # while skipping info/style noise the existing scripts intentionally use.
+        run: git ls-files '*.sh' | xargs -r shellcheck --severity=warning
