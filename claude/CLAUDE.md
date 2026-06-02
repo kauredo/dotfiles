@@ -108,5 +108,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - Follow the repo's commit convention (`feat:`, `fix:`, `refactor:`, etc.).
 
 @RTK.md
-@github-pending-review.md
 @writing-style.md
+
+<!-- github-pending-review.md is not imported here — /code-review loads it on demand by path when posting a pending PR review. -->
+
