@@ -15,7 +15,7 @@ Note what you've learned and what remains unclear.
 
 ## Step 2: Ask UX-Focused Questions
 
-ask the user directly to clarify what you cannot infer. Focus only on what you couldn't infer from the codebase:
+Use the `AskUserQuestion` tool to clarify what you cannot infer. Focus only on what you couldn't infer from the codebase. When proposing aesthetic directions, palettes, or font pairings, pull concrete options from the `ui-ux-pro-max` skill's databases so the choices are real, not generic.
 
 ### Users & Purpose
 - Who uses this? What's their context when using it?
@@ -58,6 +58,8 @@ Synthesize your findings and the user's answers into a `## Design Context` secti
 [3-5 principles derived from the conversation that should guide all design decisions]
 ```
 
-Write this section to .cursorrules in the project root. If the file exists, append or update the Design Context section.
+Write this to **`docs/design-system.md`** in the project (create `docs/` if needed). If the file exists, update the Design Context section in place rather than duplicating it.
+
+Then make sure the project's `CLAUDE.md` points at it — if there's no link, add a one-line pointer under a Design section, e.g. `Design context lives in [docs/design-system.md](docs/design-system.md) — read it before any UI work.` This way Claude reads it first every session. (Do not write to `.cursorrules`.)
 
 Confirm completion and summarize the key design principles that will now guide all future work.

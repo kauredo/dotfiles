@@ -16,6 +16,16 @@ When I ask about personal projects, tasks, or life organization, check the vault
 
 - **Mailer (personal projects):** AhaSend — free tier, REST API at `api.ahasend.com/v2`. Use this by default when adding email to any personal project.
 
+### Design stack (when building UI / pages / sites)
+
+These tools overlap — compose them, don't pick one at random:
+
+1. **Decide the look** → `ui-ux-pro-max` skill. Pull a style, palette, font pairing, or chart type from its databases before writing component code.
+2. **Build it** → `frontend-design` skill / `/frontend-design`. Generates the distinctive, production-grade UI.
+3. **Check it** → `design-review` (a11y + visual issues), then `design-polish` (final pass before shipping). `interface-guidelines` for the rules on forms/buttons/nav/animation.
+
+Skip steps for small tweaks. Full chain for a new page or site from scratch.
+
 ---
 
 ## Coding Guidelines
