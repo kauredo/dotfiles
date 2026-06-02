@@ -146,6 +146,22 @@ if [ -f "$SCRIPT_DIR/link-dotfiles.sh" ]; then
     "$SCRIPT_DIR/link-dotfiles.sh"
 fi
 
+# Clone the Notes vault (personal knowledge base). The global CLAUDE.md and the
+# os-audit launchd job both reference ~/Notes, so the setup depends on it.
+# Cloned, not submoduled: it has its own sync cadence (.cli.sh). Non-fatal —
+# needs the SSH key (generated above) registered on GitHub first.
+if [ ! -d "$HOME/Notes/.git" ]; then
+    echo "Cloning Notes vault..."
+    if git clone git@github.com:kauredo/Notes.git "$HOME/Notes"; then
+        echo "Notes vault cloned"
+    else
+        echo "Could not clone Notes vault yet. Add your SSH key to GitHub, then run:"
+        echo "  git clone git@github.com:kauredo/Notes.git ~/Notes"
+    fi
+else
+    echo "Notes vault already present"
+fi
+
 # Interactive app installation
 echo "Would you like to install additional applications? (y/n)"
 read install_apps
