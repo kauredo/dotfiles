@@ -57,8 +57,10 @@ SRC="$SCRIPT_DIR/claude"
 DST="$HOME/.claude"
 mkdir -p "$DST/skills"
 
-for f in CLAUDE.md RTK.md github-pending-review.md settings.json; do
-  link "$SRC/$f" "$DST/$f"
+# Link every top-level claude/*.md (CLAUDE.md, RTK.md, writing-style.md, etc.)
+# plus settings.json — so new context files are symlinked by default.
+for f in "$SRC"/*.md "$SRC/settings.json"; do
+  [ -e "$f" ] && link "$f" "$DST/$(basename "$f")"
 done
 
 # Link the contents of each config dir individually (not the dir itself) so any
