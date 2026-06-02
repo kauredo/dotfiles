@@ -91,4 +91,13 @@ for d in "$SRC/skills"/*/; do
   link "$SRC/skills/$name" "$DST/skills/$name"
 done
 
+# macOS LaunchAgents (scheduled jobs, e.g. the weekly OS audit). Linked only;
+# load once with: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/<name>.plist
+if [ "$(uname)" = "Darwin" ] && [ -d "$SCRIPT_DIR/launchd" ]; then
+  mkdir -p "$HOME/Library/LaunchAgents"
+  for f in "$SCRIPT_DIR/launchd"/*.plist; do
+    [ -e "$f" ] && link "$f" "$HOME/Library/LaunchAgents/$(basename "$f")"
+  done
+fi
+
 echo "Dotfiles linked."
