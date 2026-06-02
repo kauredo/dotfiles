@@ -1,9 +1,9 @@
 ---
-name: ui-finesse-workflow
-description: Master workflow for building exceptional UIs. Use when starting UI work, building components, or when the user asks about the development process for interfaces.
+name: build-ui
+description: My end-to-end flow for building UIs, pages, and sites. Use when starting UI work, building components/pages, or asked how to build an interface. Runs design context > style (ui-ux-pro-max) > build (frontend-design) > review/polish > code-review + polish-loop.
 ---
 
-# UI Finesse Workflow
+# build-ui
 
 You are following the UI Finesse Playbook workflow for building exceptional user interfaces.
 
@@ -24,13 +24,15 @@ Detected when NONE of the above are present.
 
 **ALWAYS start here before building UI.**
 
-If no design context exists, gather:
-- Target audience and use cases
-- Brand personality (3 words)
-- Aesthetic direction and references
-- Anti-references (what to avoid)
+Check for `docs/design-system.md` (the persisted Design Context).
+- **If it exists**, read it and use it — do not re-interview.
+- **If it doesn't**, run `/teach-impeccable` to interview the user (via `AskUserQuestion`) and persist the result to `docs/design-system.md`, linked from the project `CLAUDE.md`. Then continue.
+
+The context you need either way: target audience and use cases, brand personality (3 words), aesthetic direction and references, anti-references (what to avoid).
 
 ## Phase 2: Foundation
+
+**First, decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below — don't invent palettes/type from scratch when the database has vetted options.
 
 ### Standalone Mode
 1. Use design tokens from `/tokens/` if present
@@ -63,14 +65,21 @@ Before shipping, verify:
 - No critical accessibility issues
 - Passes the "AI slop test" (doesn't look generic)
 
+Then close out the feature:
+1. Run `/code-review` and apply all fixes.
+2. Run `/polish-loop` until it comes back clean.
+
 ## Quick Reference
 
 | Need | Resource |
 |------|----------|
+| Persisted design context | `docs/design-system.md` (via `/teach-impeccable`) |
+| Style / palette / type / charts | `ui-ux-pro-max` skill |
 | Aesthetic direction | `frontend-design` skill |
 | Interaction patterns | `interface-guidelines` skill |
 | Final polish | `design-polish` skill |
 | Accessibility review | `design-review` skill |
+| Close-out review | `/code-review` (apply fixes) then `/polish-loop` |
 | Visual techniques | `/docs/` best practices |
 | Extension patterns | `/patterns/extension.md` |
 | DRY principles | `/patterns/composition.md` |
