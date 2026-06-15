@@ -67,7 +67,20 @@ Invoke each selected reviewer via the Agent tool **in a single message with mult
 
 Use `subagent_type` matching the reviewer name (e.g. `security-reviewer`, `correctness-reviewer`, etc.).
 
-## Step 5 — Aggregate
+## Step 5 — Vet the findings (reviewers over-report)
+
+Reviewers are tuned to surface everything, so some of what they return is wrong, mis-located, or already settled. Before aggregating, open the cited code yourself and confirm each finding that will reach the report — at minimum every CRIT/HIGH and every finding whose argument rests on a factual claim (call frequency, "X already does this", reachability, call order, an existing index/helper). A clear style nit on a line you can already see in the diff doesn't need a fresh read; the load-bearing ones do. Excerpts and line numbers in the final report come from *your* reads, not the reviewer's report.
+
+Expect four failure classes and act on each:
+
+- **By-design / already-settled.** A behavior the author explained in the PR conversation, defended in the PR description, or that an `AGENTS.md` / ADR records as a deliberate tradeoff is not a finding. Drop it, or if it genuinely warrants a second look, present it as a question rather than a defect.
+- **Mis-attributed evidence.** Right concern, wrong file or line, or a number that drifted from HEAD. Correct it, and confirm the cited line still says what the finding claims (this also pre-checks the inside-the-diff requirement for any later inline comment).
+- **Unverified factual premise.** The finding asserts "this runs on every request", "the existing counter already tracks this", "nothing validates this" — and it doesn't hold when you trace it. Grep the call sites or read the definition. If the premise is false, drop the finding; if a suggested substitute isn't equivalent to what it replaces, drop the suggestion (recommending a non-equivalent fix introduces a bug, which is worse than the nit). If you can't confirm it quickly, keep it but soften the wording to "likely / if…".
+- **Duplicates.** The same issue from two reviewers — collapse the obvious ones now (aggregation handles the rest).
+
+This is the highest-leverage step: a wrong finding in a posted review burns the author's trust in the whole review. Vetting means down-grading, correcting, or dropping reviewer findings — it is **not** the same as adding new ones of your own (see Important). Record what you dropped or downgraded in one line under the `Reviewers run` footer so the user can see what was filtered and overrule if they disagree.
+
+## Step 6 — Aggregate
 
 When all reviewers return:
 
@@ -164,6 +177,11 @@ Every `t()` call omits the locale argument, so everything resolves to `en` — t
 - architecture-reviewer ✓
 - style-reviewer ✓
 - <skipped: reason>
+
+## Filtered in vetting (omit this section if nothing was filtered)
+- <finding> — dropped: premise didn't hold (<what you traced>)
+- <finding> — dropped: by-design (author explained in PR thread)
+- <finding> — downgraded HIGH→LOW: <reason>
 ```
 
 Formatting rules:
@@ -184,7 +202,7 @@ If a reviewer returned no findings, omit them from the per-file sections; the `R
 
 If **no reviewer** found anything, say so plainly: "No issues found across N reviewers." — skip the table and per-file sections entirely.
 
-## Step 6 — Offer the next action
+## Step 7 — Offer the next action
 
 After delivering the report, ask the user what to do next via `AskUserQuestion`. The follow-up depends on the diff source:
 
@@ -200,7 +218,7 @@ Don't act without explicit approval. The user may want the report on its own to 
 
 ## Important
 
-- Don't editorialize or add findings of your own — your job is to orchestrate, not review.
+- Don't add findings of your own — your job is to orchestrate, not review. Vetting the reviewers' findings (Step 5: dropping, correcting, or downgrading what doesn't hold up against the actual code) is required and is not the same as adding new ones.
 - Don't fix anything. Reviewers suggest; the user decides.
 - If a reviewer fails or returns garbage, note it in the "Reviewers run" section but proceed with the rest.
 - Keep the report tight — no preamble, no "I'll now…" narration in the final output.
