@@ -73,17 +73,17 @@ Re-read the file at HEAD before drafting. Reviewers cite lines from what they re
 
 Apply the rules in "Tone for GitHub review content" below. The shape of each comment should match what the finding actually is, not a one-size template. Three broad shapes work:
 
-**Direct request** — when the diff has a concrete defect and the fix is mechanical (missing test assertion, wrong branch, off-by-one, dropped error handling). No safety valve, no preamble. There's no honest trade-off to acknowledge, so don't fake one.
+**Direct request** — when the diff has a concrete defect and the fix is mechanical (missing test assertion, wrong branch, off-by-one, dropped error handling). No safety valve, no preamble. There's no honest trade-off to acknowledge, so don't fake one. The ask doesn't have to be a question — a bare imperative often reads cleaner for a clear defect ("write the value back before returning on this path").
 
 > [observation in one or two sentences].
 >
-> could you [concrete change]?
+> [concrete change — bare imperative ("add the missing assertion") or a question ("could you add …?"), your choice per comment]
 
 **Suggestion with a safety valve** — when the change depends on context the author may have and you don't (architectural moves, design trade-offs, taste calls). The closing line should name the *specific* alternative interpretation, not be a generic "happy to leave it."
 
 > i think / i believe / i'd suggest [observation in one or two sentences].
 >
-> could you [concrete change]? [optional: why this matters]
+> [concrete change — often a phrased-as-statement suggestion reads better here than a question: "reading `agents_count` instead would avoid the extra query"]. [optional: why this matters]
 >
 > [closing that names a real alternative — e.g. "happy to leave it if X is intentional", "if this is meant as a follow-up, ignore"]
 
@@ -94,6 +94,8 @@ Apply the rules in "Tone for GitHub review content" below. The shape of each com
 Pick the shape that fits the finding. **Never apply the same closing pattern to every comment.** If you find yourself reaching for "happy to leave it if..." because the previous three comments had one, drop it — every safety-valve line that carries no information dilutes the ones that do. A review where every comment closes with the same hedge reads as a template, not a conversation.
 
 Within a single posted review, vary the shapes. A typical mix: one or two direct requests for the clear defects, one suggestion-with-safety-valve for the genuine judgment call, one short observation for the obvious thing. Reviewing your draft top-to-bottom, if more than ~half the comments share the same closing phrase, rework them.
+
+**Vary the opener too, not just the closer.** "could you …?" is one way to phrase a request, not the default. If most comments open the ask with "could you", it reads as templated even when the findings are good. Rotate: a bare imperative for clear defects ("write the value back before returning"), a phrased-as-statement suggestion for judgment calls ("reading `agents_count` instead would avoid the join"), an outright statement of the fix for the obvious ones ("`status` and `invalid_statuses` need `validate_lang` too"), and the occasional genuine question. Same test as the closer: scan the drafts top-to-bottom, and if more than ~half start the ask the same way, rework them.
 
 ### 4. Show drafts before posting
 
@@ -107,7 +109,7 @@ Use the `gh api` form at the top of this file. Omit `event` to keep it PENDING. 
 
 Applies to any text that will be posted to GitHub: inline review comments, top-level review summaries, replies to other reviewers.
 
-- **Match register to the finding.** Direct requests are fine when the diff is clearly wrong and the fix is mechanical ("could you add the missing `record_fallback` assertion?"). Soften when the change depends on context the author may have ("happy to leave it if X is intentional"). Avoid commanding language ("this is wrong", "we should X") and avoid pattern-applying the same closing line to every comment — when the safety valve carries no information, it reads as a template. The goal is collaborative, not commanding, and not formulaic.
+- **Match register to the finding.** Direct requests are fine when the diff is clearly wrong and the fix is mechanical ("add the missing `record_fallback` assertion"). Soften when the change depends on context the author may have ("happy to leave it if X is intentional"). Avoid commanding language ("this is wrong", "we should X") and avoid pattern-applying the same line to every comment — both the closing hedge ("happy to leave it if…") and the opening verb ("could you…"). When a phrase repeats across most comments it reads as a template even if each finding is sound. The goal is collaborative, not commanding, and not formulaic.
 - **Don't flag comment length or verbosity in posted reviews.** Do not include suggestions like "trim this comment", "DROP the docblock", "TRIM the verbose explanation", or "this comment is too long" in inline review comments or replies. Other developers read those as noise. This applies to the PR author's own comments AND to other reviewers' comments. Critique substance, not someone's writing style. Comment-length feedback can still appear in the local report shown to me in chat (where I can decide privately whether to act on it), but it must not be baked into copy-pasteable PR review comments.
 - **No em dashes**, no AI stock phrasing ("I want to make sure we're on the same page", "Please find below", "Per our discussion"). Match the codebase's existing review-comment voice — short, direct sentences, occasional lowercase starts, conversational connectors are fine.
 - **Plain over clever.** "Turning off a spinner we never turned on" beats "emits a spurious off to the global manager". "Tests pass by accident, not because the guard works" beats "tests pass vacuously". Don't reach for abstract verbs (`emit`, `extinguish`, `consume`, `propagate`) or Latinate adverbs (`vacuously`, `spuriously`, `silently`) when a concrete description of the same thing fits. If a sentence sounds like a textbook or a paper abstract, rewrite it the way you'd say it out loud to a teammate.
