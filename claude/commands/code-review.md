@@ -5,6 +5,8 @@ argument-hint: "[pr-number | --staged | --branch | --commit <sha>]"
 
 You are orchestrating a multi-agent code review. Your job is to assemble the diff + project context, fan out specialized reviewers in parallel, then aggregate their findings into one report.
 
+> **Voice — read this first, applies to everything you write.** Both the in-chat report and any text posted to GitHub must read like a developer talking to a teammate: casual, plain, short sentences, lowercase starts are fine. Not a bot performing competence. Concretely: no em-dash dramatic asides, no "I want to make sure we're on the same page", no "it's worth noting that", no significance-inflation words ("crucial", "pivotal", "robust", "comprehensive"), no rule-of-three padding, no tidy summary closers. Don't open every comment with "could you" or close every one with "happy to leave it if…", vary it, and say the thing the way you'd say it out loud. The full spec lives in `~/.claude/github-pending-review.md` ("Tone for GitHub review content") and `~/.claude/writing-style.md`; follow it for the report too, not just posted comments. If a draft sounds like AI, rewrite it before showing it.
+
 ## Step 1 — Resolve the diff source
 
 Argument: `$ARGUMENTS`
@@ -29,6 +31,31 @@ Capture:
 Capture these alongside the diff. They are the conversation the new review needs to fit into — findings already raised, explanations the author already gave, requests already addressed.
 
 If the diff is empty, stop and tell the user there's nothing to review.
+
+### PR sources: review in an isolated worktree
+
+Never check the PR branch out in the user's working repo — they often have local work in progress on another branch, and switching branches under them is disruptive. Use a dedicated git worktree so their checkout stays exactly where it is:
+
+```bash
+# from the target repo
+git fetch origin pull/<N>/head:pr-<N>
+git worktree add /tmp/<repo>-pr-<N> pr-<N>
+```
+
+Use the worktree path (`/tmp/<repo>-pr-<N>`) as the repo root you hand to reviewers in Step 4, and read files there during vetting in Step 5. Note the local `origin/<base>` may be stale, so `gh pr diff <N>` is the authoritative file list — if a `git diff <base>...HEAD` in the worktree shows files that aren't in `gh pr diff`, they leaked in from a stale base and are not part of the PR.
+
+When the review is fully done (after Step 7, including any posted review), tear it down:
+
+```bash
+git worktree remove /tmp/<repo>-pr-<N> --force
+git branch -D pr-<N>
+```
+
+For **local sources** (`--staged`, `--commit`, `--branch`, no argument) there's nothing to isolate — review in place in the current working directory, don't create a worktree.
+
+### PR sources: rename the conversation to the JIRA ticket
+
+Pull the JIRA ticket from the PR branch name or title (e.g. branch `bugfix/adx-5799` or title `ADX-5799: …` → `adx-5799`, lowercased). Rename this conversation to that ticket using the `/rename` command (`/rename adx-5799`). If you can't trigger the command yourself, tell the user the exact one-liner to run. Skip this entirely for local sources.
 
 ## Step 2 — Read project context
 
@@ -61,7 +88,7 @@ Invoke each selected reviewer via the Agent tool **in a single message with mult
 
 1. The full diff (paste it verbatim).
 2. The diff source description (e.g. "PR #1234: Fix tenant scoping in agent finder" or "Local branch `efx-1318` vs `origin/develop`").
-3. The repo root path so the reviewer can read `CLAUDE.md`, `AGENTS.md`, and surrounding code.
+3. The repo root path so the reviewer can read `CLAUDE.md`, `AGENTS.md`, and surrounding code. For PR sources this is the worktree path from Step 1 (`/tmp/<repo>-pr-<N>`), not the user's working checkout.
 4. **(PR sources only)** A condensed summary of the existing PR conversation from Step 1 — what's been raised, what the author has explained, what's been resolved. Tell the reviewer to skip findings that have already been raised, addressed, or explicitly rejected. Re-raising a settled point wastes the author's time and signals the review wasn't read carefully.
 5. A reminder to follow the output format defined in the reviewer's own instructions.
 
@@ -215,6 +242,8 @@ Frame the `AskUserQuestion` for the active source:
 - For non-PR: "Fix the substantive findings locally" / "Skip — leave the report"
 
 Don't act without explicit approval. The user may want the report on its own to decide for themselves.
+
+Once the review is finished (report delivered, and any review posted), tear down the PR worktree created in Step 1 (`git worktree remove … --force` + `git branch -D pr-<N>`). Leave local-source checkouts alone.
 
 ## Important
 
