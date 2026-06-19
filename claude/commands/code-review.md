@@ -127,6 +127,7 @@ Output shape:
 
 <one-sentence summary: N findings · K paste locations · X critical · Y high · Z medium · W low>
 (omit the "K paste locations" clause when K equals N)
+<if any findings are removal-class — dead code, speculative/premature abstraction, "didn't need to exist", over-complexity that collapses to fewer lines — add a second line: "Simplification: ~N fewer lines across M findings; biggest win: <one phrase>." Omit this line entirely when there are no removal-class findings. Estimate conservatively from the findings you already have; don't pad.>
 
 | Sev  | File:Line                         | Title                                      |
 |------|-----------------------------------|--------------------------------------------|
