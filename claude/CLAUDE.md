@@ -101,7 +101,13 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - Use subagents to keep the main context clean: offload research, exploration, and parallel analysis.
 - One focused task per subagent. Don't duplicate work between main context and subagents.
 
-### 6. Git Commits
+### 6. Read the Real Docs
+
+**Don't reason about third-party behavior from memory. Look it up.**
+
+Before integrating, upgrading, debugging, or answering anything about a third-party API, library, framework, CLI, cloud service, or model/provider SDK, invoke the `builder-skills:read-the-damn-docs` skill — it forces a web search for the current official docs and reads the primary source before you assume. This matters most for auth, billing, data, migration, deployment, and anything where API drift would burn time. (The `claude-api` skill already does this for Anthropic SDK work; this is the general-purpose version for everything else.)
+
+### 7. Git Commits
 
 - When I say `/commit`: stage relevant files, write a concise commit message, and commit. No push unless asked.
 - **Never mention Anthropic or Claude** in commit messages or co-author lines.
