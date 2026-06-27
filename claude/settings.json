@@ -55,7 +55,8 @@
     "ruby-lsp@claude-plugins-official": true,
     "ralph-wiggum@claude-code-plugins": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
-    "context-mode@context-mode": true
+    "context-mode@context-mode": true,
+    "builder-skills@builder-skills": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -68,6 +69,12 @@
       "source": {
         "source": "github",
         "repo": "mksglu/context-mode"
+      }
+    },
+    "builder-skills": {
+      "source": {
+        "source": "github",
+        "repo": "BuilderIO/skills"
       }
     }
   },

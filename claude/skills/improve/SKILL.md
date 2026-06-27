@@ -102,6 +102,8 @@ Write each plan **for the weakest plausible executor**. That means:
 
 Finish by writing `plans/README.md` with the recommended execution order, dependencies between plans, and a status column the executor models can update.
 
+**Optional visual render (only with `--visual`).** When invoked with `--visual`, after the plan files are written, invoke the `visual-plan` skill on them to produce an interactive visual plan (diagrams, file map, annotated code, open questions). It defaults to **local-files mode** — never a hosted shareable link, since plans can reference patient-data code. Skip silently if the skill isn't installed. Without `--visual`, don't run it; the markdown plans are the default deliverable.
+
 ## Invocation variants
 
 - Bare invocation → full workflow above.
@@ -114,6 +116,7 @@ Finish by writing `plans/README.md` with the recommended execution order, depend
 - `execute <plan>` → dispatch a cheaper executor subagent on one plan (isolated worktree), then review its diff like a tech lead — re-run done criteria, check scope, read the code — and render a verdict. Requires a host agent that can spawn subagents in an isolated worktree; if yours can't, say so and hand the plan over for manual execution instead. **Read [references/closing-the-loop.md](references/closing-the-loop.md) before the first dispatch.**
 - `reconcile` → process what happened since last session: verify DONE plans, investigate BLOCKED ones, refresh drifted TODOs, retire dead findings. See [references/closing-the-loop.md](references/closing-the-loop.md).
 - `--issues` (modifier on any planning invocation) → also publish each written plan as a GitHub issue via `gh`, URL recorded in the plan and index. Only with the explicit flag. See [references/closing-the-loop.md](references/closing-the-loop.md).
+- `--visual` (modifier on any planning invocation) → after writing the plan files, render them as an interactive visual plan via the `visual-plan` skill (local-files mode). Only with the explicit flag; see Phase 4.
 
 ## Tone of the output
 

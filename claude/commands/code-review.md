@@ -239,8 +239,10 @@ After delivering the report, ask the user what to do next via `AskUserQuestion`.
 
 Frame the `AskUserQuestion` for the active source:
 
-- For PRs: "Draft and post as a pending review on the PR" / "Skip — leave the report"
-- For non-PR: "Fix the substantive findings locally" / "Skip — leave the report"
+- For PRs: "Draft and post as a pending review on the PR" / "Visual recap of the diff" / "Skip — leave the report"
+- For non-PR: "Fix the substantive findings locally" / "Visual recap of the diff" / "Skip — leave the report"
+
+The **"Visual recap"** option invokes the `visual-recap` skill on the reviewed diff (PR, branch, or commit) to render an interactive recap with diagrams, file map, and annotated diff. It defaults to **local-files mode** — never a hosted shareable link, since these diffs can touch patient-data code. Offer it only when the skill is installed; omit the option otherwise.
 
 Don't act without explicit approval. The user may want the report on its own to decide for themselves.
 

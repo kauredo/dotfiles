@@ -16,6 +16,7 @@ Flags (default behavior is **gated**):
 - `--fix-all` — skip only the review-fix selection gate; apply every vetted substantive finding. Other gates remain.
 - `--no-pr` — stop after polish; commit but don't open a PR.
 - `--ui` / `--no-ui` — force or skip the screenshot phase, overriding auto-detection.
+- `--recap` — after the PR is opened, generate an interactive visual recap of it via the `visual-recap` skill (local-files mode). Off by default.
 - `--local` — implement in the current working directory instead of an isolated worktree. **Worktree is the default** — `/ship` does the work in a fresh git worktree so your current checkout stays untouched. Pass `--local` only when you want to work in place.
 - `--base <branch>` — base branch for the PR (default: the repo's default branch).
 
@@ -82,6 +83,7 @@ Unless `--no-pr`:
    - **Screenshots** — the embedded `pr-assets` images (omit the section for backend-only work).
 5. **Gate (unless `--full-approve`):** show the drafted title + body and confirm before creating via `AskUserQuestion`.
 6. Create the PR: `gh pr create` against `--base` (or the default branch) with that body. **Never mention Claude or Anthropic** in the PR text. Then open it (`gh pr view --web`) and show the screenshots inline in the chat summary.
+7. **Visual recap (only with `--recap`).** Invoke the `visual-recap` skill on the just-opened PR to produce an interactive recap (diagrams, file map, annotated diff). It defaults to **local-files mode** — never publish to a hosted shareable link, since these diffs can touch patient-data code. Skip silently if the skill isn't installed. Without `--recap`, don't run it.
 
 ## Step 7 — Summary
 
