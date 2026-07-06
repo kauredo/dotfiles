@@ -47,7 +47,7 @@ Drop findings in these categories unless they're tied to a concrete defect:
 - **Out-of-diff findings** — files the PR doesn't touch. GitHub rejects inline comments on lines outside the diff hunks anyway.
 - **Convention drift** — missing `// TODO: remove after GA`, describe titles using flag keys, missing JSDoc, etc.
 - **Brittleness already explained in code** — e.g. an inline comment that already notes the trade-off and a conservative buffer.
-- **Already in the conversation** — anything raised, addressed, or explicitly rejected in existing PR comments, review comments, or review summaries. Don't re-litigate a settled point; it wastes the author's time and signals the conversation wasn't read.
+- **Already in the conversation** — anything raised, addressed, or explicitly rejected in existing PR comments, review comments, or review summaries. Don't re-litigate a settled point; it wastes the author's time and signals the conversation wasn't read. **Carve-out: this only applies when the resolution actually holds. If a finding was dismissed by an author reply that rests on an unverified fact about code outside the diff ("handled by X", "the worker sweeps it on a 30s cron", "defaults to true"), it is NOT settled until you read that code and confirm the fact. A wrong-but-plausible explanation is the most dangerous thing in a PR thread — verify it, and if it doesn't hold, the finding is a keep, not a drop.**
 - **Comment length / verbosity** — never flag this in posted reviews (per the tone rules below).
 
 Keep findings that are:
@@ -57,6 +57,7 @@ Keep findings that are:
 - **Real coverage gaps** — production code paths that no test exercises (the error handler that has no test). Not the property that has a default value set in the constructor.
 - **Test correctness** — tests that pass vacuously (synchronous assertion on an async outcome), tests that exercise the wrong branch, tests that don't isolate the new behavior, shim tests that verify the mock returned what the mock was told to return.
 - **Maintenance smells with history** — duplicated structures that have already drifted at least once (e.g. a DI list that has moved before).
+- **Dismissals that don't hold up** — a finding the author waved off with a factual claim about out-of-diff code that you traced and found false. The dismissal being on record doesn't make it settled; re-surface it with what you found when you read the referenced code.
 
 When in doubt, drop it. Five substantive findings beat nineteen mixed ones.
 

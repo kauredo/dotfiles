@@ -44,6 +44,8 @@ A finding is only as good as the facts under it. Before you write one down, conf
 - **Coverage claims.** Before asserting a path is untested or a test is vacuous, open the referenced spec plus its `let`/factory/shared-example setup and any sibling spec files. The case you think is missing may live in a shared example or a factory trait; the assertion you think is vacuous may depend on setup you haven't read.
 - **"This test would still pass if the code were wrong" claims.** When you argue a test is weak, mentally (or actually) break the code path and confirm the test would fail. If it wouldn't, you have a real finding; if it would, you don't.
 
+- **Claims in code comments or PR replies about other code.** An inline comment or author reply that justifies skipping coverage by asserting how something else behaves ("this branch is covered by the worker's own spec", "the sweep is exercised elsewhere") is a claim to check, not proof. Open the referenced spec and confirm it before you rely on it — or before you drop a finding because of it. Assertions about out-of-diff behavior are where a wrong assumption survives longest, because nobody reading only the diff sees them.
+
 If you can't confirm a claim with a quick read or grep, hedge it in the text ("likely", "if…") instead of stating it as fact.
 
 ## Severity rubric

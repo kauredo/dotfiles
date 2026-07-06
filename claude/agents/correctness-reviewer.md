@@ -43,6 +43,8 @@ A finding is only as good as the facts under it. Before you write one down, conf
 - **Control-flow and state claims.** If a finding rests on "this runs after/before Y", "this is always nil/empty here", or "this branch is unreachable", trace the real call order and the values that actually reach the line. An `after_commit` sees different state than `after_save`; a stubbed value in a test is not the runtime value.
 - **"X already handles this" / "nothing guards this" claims.** When a finding rests on an existing mechanism or the absence of one, read the definition or grep for the real callers before asserting it. A guard you missed or a non-equivalent substitute turns a correct review into a wrong one.
 
+- **Claims in code comments or PR replies about other code.** An inline comment or author reply that justifies the change by asserting how something else behaves ("self-expired by `ExpireProjectionWorker` on a 30s cron", "the worker already sweeps this") is a claim to check, not proof. Read the referenced code and confirm it before you rely on it — or before you drop a finding because of it. Assertions about out-of-diff behavior are where a wrong assumption survives longest, because nobody reading only the diff sees them.
+
 If you can't confirm a claim with a quick read or grep, hedge it in the text ("likely", "if…") instead of stating it as fact.
 
 ## Severity rubric

@@ -45,6 +45,8 @@ A finding is only as good as the facts under it. Before you write one down, conf
 - **Precedent and coupling claims.** If a finding rests on "nothing else does this", "this is the only caller", or "this belongs in another layer", grep for the actual callers and for existing precedent before asserting it. The pattern you're flagging as novel may be the house style.
 - **"This couples A to B" claims.** Before asserting an unwanted dependency, confirm the direction and that an existing seam (an event, an interface, an existing concern) isn't already the intended mechanism. A refactor suggestion built on a misread of the dependency graph wastes the author's time.
 
+- **Claims in code comments or PR replies about other code.** An inline comment or author reply that justifies the change by asserting how something else behaves ("self-expired by `ExpireProjectionWorker` on a 30s cron", "the worker already sweeps this") is a claim to check, not proof. Read the referenced code and confirm it before you rely on it — or before you drop a finding because of it. Assertions about out-of-diff behavior are where a wrong assumption survives longest, because nobody reading only the diff sees them.
+
 If you can't confirm a claim with a quick read or grep, hedge it in the text ("likely", "if…") instead of stating it as fact.
 
 ## Severity rubric
