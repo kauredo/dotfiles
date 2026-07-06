@@ -69,7 +69,7 @@ You don't need to relay this context to reviewers — they'll read the same file
 
 ## Step 3 — Triage which reviewers to run
 
-Inspect the changed file paths and decide which of these subagents to invoke. Default to running all six unless a reviewer is clearly irrelevant.
+Inspect the changed file paths and decide which of these subagents to invoke. Default to running all seven unless a reviewer is clearly irrelevant.
 
 | Reviewer | Skip when |
 |---|---|
@@ -79,6 +79,7 @@ Inspect the changed file paths and decide which of these subagents to invoke. De
 | `performance-reviewer` | Pure docs, config, or trivial constant changes |
 | `architecture-reviewer` | Single-file localized change with no new module/abstraction |
 | `style-reviewer` | Never skip — always relevant |
+| `premise-verifier` | No claims to check: pure formatting/whitespace diff, or a local source whose diff has no behavior-asserting comments and no PR conversation. Run it whenever there's a PR conversation, a PR description that argues for safety/equivalence, or inline comments asserting how other code behaves — this is the reviewer that catches a wrong dismissal being treated as settled. |
 
 Briefly tell the user which reviewers you're running and why you skipped any.
 
@@ -89,10 +90,12 @@ Invoke each selected reviewer via the Agent tool **in a single message with mult
 1. The full diff (paste it verbatim).
 2. The diff source description (e.g. "PR #1234: Fix tenant scoping in agent finder" or "Local branch `efx-1318` vs `origin/develop`").
 3. The repo root path so the reviewer can read `CLAUDE.md`, `AGENTS.md`, and surrounding code. For PR sources this is the worktree path from Step 1 (`/tmp/<repo>-pr-<N>`), not the user's working checkout.
-4. **(PR sources only)** A condensed summary of the existing PR conversation from Step 1 — what's been raised, what the author has explained, what's been resolved. Tell the reviewer to skip findings that have already been raised, addressed, or explicitly rejected. Re-raising a settled point wastes the author's time and signals the review wasn't read carefully.
+4. **(PR sources only)** A condensed summary of the existing PR conversation from Step 1 — what's been raised, what the author has explained, what's been resolved. Tell the reviewer to skip findings that have already been raised, addressed, or explicitly rejected. Re-raising a settled point wastes the author's time and signals the review wasn't read carefully. **One exception you must honor: if the author dismissed a finding by asserting a fact about code _outside the diff_ ("handled by X", "X runs every 30s", "defaults to true", "the other path already does this"), do NOT list it as settled. A dismissal is a claim, not a resolution. Route it to `premise-verifier` (see below) as an explicit "verify this claim" task, and to the domain reviewer too if it's their area — never as "settled, skip."**
 5. A reminder to follow the output format defined in the reviewer's own instructions.
 
-Use `subagent_type` matching the reviewer name (e.g. `security-reviewer`, `correctness-reviewer`, etc.).
+**`premise-verifier` gets a different, larger briefing than the others.** It doesn't skip the settled items — checking them is its whole job. Hand it: (a) the full PR description, (b) every author reply that dismissed or justified a finding, verbatim, with who raised the original concern, and (c) a pointer to the inline code comments in the diff that assert how other code behaves. Tell it to verify each load-bearing claim against the real code and report the ones that don't hold. This is the reviewer that would have caught a plausible-but-false "it's handled elsewhere" dismissal — do not starve it of the conversation to "avoid re-litigating," that defeats the point.
+
+Use `subagent_type` matching the reviewer name (e.g. `security-reviewer`, `correctness-reviewer`, `premise-verifier`, etc.).
 
 ## Step 5 — Vet the findings (reviewers over-report)
 
@@ -100,10 +103,12 @@ Reviewers are tuned to surface everything, so some of what they return is wrong,
 
 Expect four failure classes and act on each:
 
-- **By-design / already-settled.** A behavior the author explained in the PR conversation, defended in the PR description, or that an `AGENTS.md` / ADR records as a deliberate tradeoff is not a finding. Drop it, or if it genuinely warrants a second look, present it as a question rather than a defect.
+- **By-design / already-settled.** A behavior the author explained in the PR conversation, defended in the PR description, or that an `AGENTS.md` / ADR records as a deliberate tradeoff is not a finding. Drop it, or if it genuinely warrants a second look, present it as a question rather than a defect. **But an author's explanation is only "settled" if it holds up — a dismissal is a claim, not a resolution. When the explanation rests on a fact about code _outside the diff_ ("that's handled by X", "the worker sweeps it", "X runs every 30s", "defaults to true", "the other path already does this"), open that referenced code and confirm the fact before you accept the dismissal. If the premise is false, the finding is live again — surface it (this is exactly the kind of miss that a plausible-sounding reply lets slip through). Deference to the author is not verification.**
 - **Mis-attributed evidence.** Right concern, wrong file or line, or a number that drifted from HEAD. Correct it, and confirm the cited line still says what the finding claims (this also pre-checks the inside-the-diff requirement for any later inline comment).
-- **Unverified factual premise.** The finding asserts "this runs on every request", "the existing counter already tracks this", "nothing validates this" — and it doesn't hold when you trace it. Grep the call sites or read the definition. If the premise is false, drop the finding; if a suggested substitute isn't equivalent to what it replaces, drop the suggestion (recommending a non-equivalent fix introduces a bug, which is worse than the nit). If you can't confirm it quickly, keep it but soften the wording to "likely / if…".
+- **Unverified factual premise.** A load-bearing factual claim — whether it comes from a reviewer's finding OR from the author's dismissal of one — that doesn't hold when you trace it. Examples: "this runs on every request", "the existing counter already tracks this", "nothing validates this", "the expiry worker clears it on a cron". Grep the call sites or read the definition. If a reviewer's premise is false, drop the finding; if a suggested substitute isn't equivalent to what it replaces, drop the suggestion (recommending a non-equivalent fix introduces a bug, which is worse than the nit). If an author's premise is false, the dismissed finding is back in play. If you can't confirm it quickly, keep it but soften the wording to "likely / if…". Claims about behavior outside the diff are the highest-risk ones — nobody reviewing only the diff sees them, so they're where a false premise survives longest.
 - **Duplicates.** The same issue from two reviewers — collapse the obvious ones now (aggregation handles the rest).
+
+**Use `premise-verifier`'s ledger.** If it ran, its "Claims checked" ledger tells you which load-bearing claims it traced and confirmed (✓ holds — you can treat those dismissals as genuinely settled without re-tracing) and which it refuted (✗ false — those are live findings again; fold them into the report). A `?` can't-confirm is yours to finish or to surface softened. Its false-premise findings go through the report like any other reviewer's.
 
 This is the highest-leverage step: a wrong finding in a posted review burns the author's trust in the whole review. Vetting means down-grading, correcting, or dropping reviewer findings — it is **not** the same as adding new ones of your own (see Important). Record what you dropped or downgraded in one line under the `Reviewers run` footer so the user can see what was filtered and overrule if they disagree.
 
@@ -204,6 +209,7 @@ Every `t()` call omits the locale argument, so everything resolves to `en` — t
 - performance-reviewer ✓
 - architecture-reviewer ✓
 - style-reviewer ✓
+- premise-verifier ✓
 - <skipped: reason>
 
 ## Filtered in vetting (omit this section if nothing was filtered)
@@ -221,7 +227,7 @@ Formatting rules:
   - 1–3 sentence explanation as a single paragraph (no bullets, no nested headers — it must read as a self-contained comment when copy-pasted into GitHub).
   - `**Suggested fix:** <concrete change>` on its own line.
   - `---` separator between findings within a file.
-- **Reviewers inline** use the short name (`security`, `correctness`, `test`, `performance`, `architecture`, `style`) — drop the `-reviewer` suffix. Sort alphabetically; comma-separated inside the brackets.
+- **Reviewers inline** use the short name (`security`, `correctness`, `test`, `performance`, `architecture`, `style`, `premise`) — drop the `-reviewer`/`-verifier` suffix. Sort alphabetically; comma-separated inside the brackets.
 - **Copy-paste contract:** a reader should be able to select from the bold title line through the `**Suggested fix:**` line and paste it directly as a GitHub PR review comment with no editing needed. Do not reference reviewers, severity, or line numbers in the body prose — they belong in the H3 header.
 - **Spacing — strictly enforced:** exactly one blank line between every block in the output. That means: between the summary line and the table; between the table and the first `---`; between `---` and the next H2; between H2 and the first H3; between H3 and the bold title; between the bold title and the paragraph; between the paragraph and the `**Suggested fix:**` line; between the fix line and the trailing `---`; between findings; between the last finding of a file and the next H2. No double blank lines anywhere. No missing blank lines anywhere.
 - Use backticks around code identifiers and file paths.

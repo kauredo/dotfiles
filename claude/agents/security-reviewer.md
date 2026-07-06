@@ -42,6 +42,8 @@ A finding is only as good as the facts under it. Before you write one down, conf
 - **Reachability and trust claims.** If a finding rests on "this is user-controlled", "reachable without auth", or "this value is unsanitized", trace where the data actually comes from and what guards (`before_action`, validation, allowlist, parameterized query) already sit in front of it. A param that looks raw may already be validated upstream; a sink may already be parameterized.
 - **"Nothing checks this" / "X already protects this" claims.** When a finding rests on a missing or existing control, grep for the real call chain and the guards before asserting it. Claiming something is unguarded when it isn't burns the author's trust in the whole review.
 
+- **Claims in code comments or PR replies about other code.** An inline comment or author reply that justifies the change by asserting how something else behaves ("auth is enforced upstream", "the worker already sanitizes this") is a claim to check, not proof. Read the referenced code and confirm it before you rely on it — or before you drop a finding because of it. Assertions about out-of-diff behavior are where a wrong assumption survives longest, because nobody reading only the diff sees them.
+
 If you can't confirm a claim with a quick read or grep, hedge it in the text ("likely", "if…") instead of stating it as fact.
 
 ## Severity rubric

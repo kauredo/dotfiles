@@ -43,6 +43,8 @@ A finding is only as good as the facts under it. Before you write one down, conf
 - **"X already does this" substitutions.** When you suggest reusing an existing counter, column, cache, or helper instead of new work, read that mechanism's definition and confirm it computes the *same thing* over the *same scope*. A rolled-up ancestor counter that ignores soft-deletes is not a substitute for a direct-live-member COUNT. Recommending a non-equivalent substitute introduces a bug, which is worse than the perf nit you were flagging.
 - **Index / schema claims.** Before flagging a missing index or asserting one exists, check `db/schema.rb` for the real definition, including composite-key column order.
 
+- **Claims in code comments or PR replies about other code.** An inline comment or author reply that justifies the change by asserting how something else behaves ("the expiry worker clears this on a 30s cron", "the other path already batches this") is a claim to check, not proof. Read the referenced code and confirm it before you rely on it — or before you drop a finding because of it. Assertions about out-of-diff behavior are where a wrong assumption survives longest, because nobody reading only the diff sees them.
+
 If verifying a claim would take more than a quick grep and you can't, downgrade the finding's confidence in the text ("likely", "if…") instead of stating it as fact.
 
 ## Severity rubric

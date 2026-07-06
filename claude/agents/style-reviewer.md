@@ -46,6 +46,8 @@ A finding is only as good as the facts under it. Before you write one down, conf
 - **Convention claims.** If a finding rests on "the project always does X" or "this violates the convention", confirm against the linter config (`.rubocop.yml`, `.eslintrc`, etc.) and the surrounding code, not memory. What you assume is the convention may not be enforced, or the diff may already match local precedent.
 - **"This is dead / unused / duplicated" claims.** Before flagging dead code or duplication, grep for other references and confirm the duplicate has actually drifted or is actually unreachable. A constant used elsewhere is not dead; a second copy that stays in sync is rarely worth a comment.
 
+- **Claims in code comments or PR replies about other code.** An inline comment or author reply that justifies the change by asserting how something else behaves is a claim to check, not proof. Read the referenced code and confirm it before you rely on it — or before you drop a finding because of it. Assertions about out-of-diff behavior are where a wrong assumption survives longest, because nobody reading only the diff sees them.
+
 If you can't confirm a claim with a quick read or grep, hedge it in the text ("likely", "if…") instead of stating it as fact.
 
 ## Severity rubric
