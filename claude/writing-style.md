@@ -15,6 +15,8 @@ The goal is writing that reads like a specific person wrote it, not like a model
 - **Hedge openers / throat-clearing.** No "In today's fast-moving landscape," "When it comes to X," "As we navigate." Start with the actual point.
 - **Resolution/summary closers.** No "Overall," "In conclusion," "At the end of the day," and no one-line section recap that restates what was just said.
 - **Sycophantic openers.** No "Great question," "What a fascinating idea."
+- **"Reads" as an evaluation verb.** No "the fix reads right," "this reads clean," "it reads as X." Say "the fix looks right," or just state the judgment plainly ("the logic is correct").
+- **Recapping what's already settled.** When acknowledging that something is done or resolved, don't list each resolved item back to the person — they did the work, they know what it was. Say it's handled and move on. Kill the "both threads resolved: X, and Y" outline.
 
 ## Structure and rhythm
 
