@@ -40,6 +40,8 @@ Argument: `$ARGUMENTS`
 
 **Prior-round notes** (`--prior`, optional). Earlier write-ups on the same candidate. Worth having: a gap that shows up in two independent rounds is a conclusion, and one round contradicting another is worth saying out loud.
 
+**A prior write-up's claims about an earlier round are claims, not findings.** When a filed evaluation says "round 1 concluded the same" or "this was already flagged", that is an assertion about a document or a session you have not read. Ask for the earlier transcript or the earlier write-up and check it. A previous round's transcript often shows the interviewer's spoken verdict was warmer or vaguer than the later summary of it, and a level call may not appear anywhere in the recording at all. If you cannot verify it, report it as unverified rather than as corroboration. **Two rounds agreeing is the strongest signal an evaluation can carry, which is exactly why it must not be asserted on trust.**
+
 **Interview script** (`--script`, optional). If the interviewer worked from a plan, it tells you what was meant to be covered, which is how you spot what got skipped.
 
 **Audience** (`--audience`, optional, defaults to `internal`). `internal` is the filed evaluation: blunt, names gaps as gaps, records that you had to hand over an answer. `candidate` is feedback the person will read: same ratings, same named gaps, no commentary on how the interview felt to run and no hire language. Never guess this one. If the user's request suggests they want something to send the candidate and no flag was passed, ask which before writing.
@@ -112,6 +114,13 @@ Scorers are generous. They pattern-match a plausible-sounding answer to the leve
 - **Would this rating survive the candidate reading it?** Every rating must be defensible from a line you can quote. If you cannot point at the transcript, drop it to what you can point at.
 - **Does the prose match the number, and if not, which one is wrong?** Usually the number. "His best answer of the session" is a relative judgment and does not lift an absolute rating, so expect to write admiring bullets under a 3. When they conflict, fix the prose by naming what capped the rating, not the rating by inflating it to match the praise.
 
+Then one check on what kind of evidence each rating rests on. Not all evidence is the same weight, and the differences matter more than any single rubric reading:
+
+- **Observed behaviour beats self-report.** Watching a candidate catch a problem in generated code is worth more than hearing them describe how carefully they review it. When both exist for one competency and they agree, say so. When the observed behaviour exceeds the description, that is a finding and it belongs in the write-up.
+- **A failed direct probe beats an untested absence.** "Asked how it works and could not say" is evidence. "Never asked" is not. A stage that looks strong may only look that way because nobody tested the thing that would have broken it.
+- **A first instinct beats a corrected answer**, which is already in the check above.
+- **An interviewer's spoken verdict is not a level call.** Warm closing remarks are how people end a conversation. They are not a rating and must not be read as one.
+
 Then two checks on the rows rather than the ratings:
 
 - **Did each stage's defining activity actually happen?** Read the row's level definitions and ask what behaviour they describe. A row written around hands-on work (locating code, adding tests, verifying results, debugging) is not scoreable from conversation alone, and the practical exercise being skipped is the usual cause. Mark it `not assessed`, name the exercise that did not run, and put it at the top of `Not probed`. A skipped exercise on a Senior req is a larger hole than any single rating, because nobody watched the candidate write code.
@@ -135,9 +144,19 @@ Two triggers that force this section to say something:
 - **The ratings average at or below 3.** That is a Mid, stated as a Mid.
 - **The ratings cluster on one side of the stack.** Strong back-end and weak front-end on a full-stack req is a track finding, not a spread of scores. Say which track.
 
-Where prior-round notes exist, check them here. Two rounds landing on the same level independently is the strongest signal available and belongs in the final summary.
-
 Then say where the boundary of the candidate's experience falls, and whether it falls in the right place for this specific role. A candidate can be a genuinely good hire whose gaps sit exactly where the project needs strength, and that is a different recommendation from the same ratings with the gaps somewhere harmless.
+
+### When you have more than one round
+
+Verify any claim the later write-up makes about the earlier one first (Step 1). Then:
+
+**Rounds usually complement rather than repeat.** Different interviewers ask different things, so the same competency row often has a rating in one round and no evidence in the other. Combine the coverage instead of averaging the rows. A row scored in only one round is still that row's best evidence, and a row no round exercised stays `not assessed` no matter how many sessions there were.
+
+**When two rounds score the same competency differently, do not average and do not take the later one on seniority.** Work out what evidence each round had that the other lacked, then apply the hierarchy from Step 6. The usual shape: one round watched the candidate do the thing, the other asked a question that exposed a gap. Both ratings are locally correct. Name the process-level rating, say which round's evidence decided it, and keep the other round's finding in the write-up rather than discarding it, because a real positive that a later session had no way to observe is still real.
+
+**The same weakness named independently by two interviewers who have not seen each other's feedback is the strongest finding an evaluation can produce.** Neither round shows it alone. Read both interviewers' closing remarks against each other, in their own words, and resist smoothing two different critiques into one: "go deeper when asked" and "volunteer breadth beyond your own lane" are different asks that can share a root. Say what the shared root is and quote both.
+
+**Check whether feedback given in an earlier round was acted on.** If an interviewer named something to fix and the next round shows the same behaviour, that is a finding about coachability that outweighs any single answer. If it was acted on, say that too, because it is the best evidence of growth a process can generate.
 
 ## Step 8 — Write the report
 
@@ -191,6 +210,8 @@ than as apologies.>
 - Speakers: <label → name, role> (note any segment you could not attribute)
 - Borrowed rubrics: <question> from <other key> (omit when none)
 - Downgraded in calibration: <rating> → <rating> on <question>, <why> (omit when none)
+- Cross-round: <competency> scored <n> in <round> and <n> in <round>; process rating <n>, decided by <which evidence> (omit when single-round)
+- Unverified: <claim a prior write-up makes that you could not check, and what would settle it> (omit when none)
 ```
 
 Rules for the body:
