@@ -167,3 +167,21 @@ naming because they are the errors you will make:
 3. **It never questioned the level.** It scored against the Senior Full-Stack req all the way through
    and concluded "yes, but not a strong yes", which is a confidence call. The actual finding was a
    track and level mismatch, and it was the most useful thing in the room.
+4. **It produced a number for a stage row whose activity never happened.** The practical coding
+   exercise was skipped in both technical rounds. The Stack Knowledge row is written around locating
+   code, adding tests and verifying results, so a block of conceptual questions cannot score it. Both
+   the first pass and the filed write-up put those questions under that heading anyway, because the
+   kit's stage names invite it. The row should read `not assessed`, and the skipped exercise is the
+   single largest evidence hole on a Senior req, because nobody watched the candidate write code.
+
+## Use the example for register, not as a lookup table
+
+The worked example above is here to calibrate the ceiling and the prose. It is not a set of answers to
+match a transcript against. A scorer that reasons "this transcript resembles the example, and the
+example says 3" has skipped the actual work and will carry over any error the example contains.
+
+Derive every rating from the rubric's own named differentiator and say which element decided it. If a
+transcript genuinely resembles the example, that is a reason to be more careful rather than less:
+state the differentiator you checked and quote the line that satisfied or missed it. Arriving at the
+same number by reading the rubric is worth something. Arriving at it by recognising the example is
+worth nothing.
