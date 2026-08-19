@@ -24,6 +24,23 @@ link() {
   echo "linked $dest -> $target"
 }
 
+# Like link(), but never clobbers something that is already there pointing
+# elsewhere. Used for the secondary agent tools, where a skill of the same name
+# may already be sourced from ~/.agents/skills and repointing it silently would
+# change which copy that tool loads.
+link_soft() {
+  local target="$1" dest="$2"
+  if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$target" ]; then
+    return 0
+  fi
+  if [ -e "$dest" ] || [ -L "$dest" ]; then
+    echo "skipped $dest (already present, not ours)"
+    return 0
+  fi
+  ln -s "$target" "$dest"
+  echo "linked $dest -> $target"
+}
+
 # Verify the rtk hook matches its recorded checksum before linking it. The hook
 # rewrites every bash command Claude Code runs, so a tampered copy must not be
 # linked silently.
@@ -91,6 +108,17 @@ fi
 for d in "$SRC/skills"/*/; do
   name="$(basename "$d")"
   link "$SRC/skills/$name" "$DST/skills/$name"
+done
+
+# Same skills for the other agent tools that read a ~/.<tool>/skills directory.
+# Only tools already set up on this machine are touched, and link_soft leaves
+# any same-named skill sourced from ~/.agents/skills alone.
+for tool_dir in "$HOME/.cursor" "$HOME/.gemini"; do
+  [ -d "$tool_dir/skills" ] || continue
+  for d in "$SRC/skills"/*/; do
+    name="$(basename "$d")"
+    link_soft "$SRC/skills/$name" "$tool_dir/skills/$name"
+  done
 done
 
 # macOS LaunchAgents (scheduled jobs, e.g. the weekly OS audit). Linked only;
