@@ -97,6 +97,8 @@ Each scorer gets:
 6. This instruction: **for each question, return the rating, the level-definition language that justifies it, the specific transcript evidence, and the single element that would have moved it one point up.** That last item is what makes the report useful to the candidate.
 7. This instruction: **rate what the candidate produced unaided.** If the interviewer supplied the answer, the rating reflects where the candidate was before that, and the return must say so explicitly.
 8. This instruction: **if a question in the kit was never asked, return it as unasked rather than inferring a rating from adjacent answers.**
+9. This instruction: **check whether the stage's defining activity actually happened before returning a rating for the stage row.** Read the row's own level definitions and ask what behaviour they describe. If the row is written around observable hands-on work (locating code, writing or updating tests, verifying results, debugging live) and the interview only contained conversation, the row was not exercised. Return `not assessed` with the reason, alongside the individual question ratings. Do not convert conceptual answers into a number for a row that scores implementation.
+10. This instruction: **if the questions asked do not belong to the stage they were nominally grouped under, say which competency row they actually exercise.** Interviewers ask in the order that suits the conversation, not the order the kit prints, and a well-run session often lands a whole block of questions somewhere other than where its heading suggests.
 
 Tell the user which scorers you are running in one line.
 
@@ -110,7 +112,14 @@ Scorers are generous. They pattern-match a plausible-sounding answer to the leve
 - **Would this rating survive the candidate reading it?** Every rating must be defensible from a line you can quote. If you cannot point at the transcript, drop it to what you can point at.
 - **Does the prose match the number, and if not, which one is wrong?** Usually the number. "His best answer of the session" is a relative judgment and does not lift an absolute rating, so expect to write admiring bullets under a 3. When they conflict, fix the prose by naming what capped the rating, not the rating by inflating it to match the praise.
 
-Record what you downgraded, in one line each, in the report footer. The user needs to be able to overrule you.
+Then two checks on the rows rather than the ratings:
+
+- **Did each stage's defining activity actually happen?** Read the row's level definitions and ask what behaviour they describe. A row written around hands-on work (locating code, adding tests, verifying results, debugging) is not scoreable from conversation alone, and the practical exercise being skipped is the usual cause. Mark it `not assessed`, name the exercise that did not run, and put it at the top of `Not probed`. A skipped exercise on a Senior req is a larger hole than any single rating, because nobody watched the candidate write code.
+- **Are the questions filed under the row they actually exercise?** The kit's stage headings describe an intended session, not the one that happened. When a block of questions sits under a heading whose row scores something else, move them to the competency row they genuinely evidence and record the move in the footer. Following the heading instead of the content produces a coherent-looking table measuring the wrong thing.
+
+**Do not let one low rating drag a row its other questions earned.** Two clean 3s and a 2 is a 3 row with the 2 visible on its own line, not a 2 row. Averaging downward hides which specific thing was weak, which is the only part the reader can act on.
+
+Record what you downgraded, reclassified, or overruled, one line each, in the report footer. The user needs to be able to overrule you back.
 
 ## Step 7 — Separate the level call from the recommendation
 
@@ -191,6 +200,8 @@ Rules for the body:
 - **Give credit where the answer was genuinely good**, in the same plain register as the criticism. Do not soften a weakness by pairing it with a compliment in the same sentence.
 - **Say what was unprobed, twice.** Once in the stage bullet where it matters, in the interviewer's own voice ("I did not push him back to it, so treat this half as partly unprobed"), and once in the `Not probed` section as a flat list. An area the interview never reached is a hole in the evidence, not a candidate weakness, and a write-up that scores one as the other loses the reader's trust in all the other ratings.
 - **The competency table is a roll-up, not new scoring.** Each competency row in the grid cuts across several stages. Derive its rating from the stage ratings that evidenced it and say which ones in the Basis column. When a competency was never meaningfully exercised, write `not assessed` rather than averaging your way to a number.
+- **`not assessed` applies to stage rows too, and it is not a failure of the report.** A row whose defining activity never happened gets `not assessed` plus the reason, in the table and again in `Not probed`. Writing a number there because the table looks incomplete without one is the worse outcome: it reads as measured and it is not.
+- **When a question block was refiled under a different competency, say so where the ratings appear**, in one italic line under the heading. The reader needs to know why those questions are not where the kit would have put them.
 - **Report in English** even when the interview was in another language. Translate quoted specifics rather than dropping them, and where a quote is load-bearing for a rating, keep the original in parentheses so the user can check the reading.
 - **Keep the whole report to roughly two pages.** Ratings plus bullets, no restating the transcript.
 
