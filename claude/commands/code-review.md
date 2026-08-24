@@ -24,6 +24,10 @@ You are orchestrating a multi-agent code review. Your job is to assemble the dif
 > - A prior review's dismissal turned out not to hold: "reopening the `selecting` question from the earlier thread. `dcr_origin_visibility_only?` also checks `on_dcr_origin_queue?`, so the invariant this rests on is narrower than the comment says. inline."
 >
 > Those are three different openings for three different situations, not three slots to choose from. If your body could be pasted onto a different PR with the specifics swapped, it is a template and you should rewrite it.
+>
+> **Mandatory final pass, before any draft is shown or posted.** Everything above describes what to avoid. The pass that actually runs is the 10-check list in `~/.claude/writing-style.md` under "Mandatory final pass" (canonical, do not duplicate it here). Read that file if it is not already in context, then run all 10 in order: structural checks first, phrase grep last. Running the grep first passes clean and creates a false sense of completion, which is exactly how AI-sounding drafts have shipped before.
+>
+> It applies to the in-chat report, the review body, every inline comment, and every reply to an existing thread, on every round. Check 7 (cross-round) is the one that matters most on a follow-up review, and check 9 (audit-trail sentences) is what stops "re-ran your mutation counts, they all match" from reaching the author.
 
 ## Code comment standards
 
@@ -288,6 +292,8 @@ If **no reviewer** found anything, say so plainly: "No issues found across N rev
 ## Step 7 — Draft the messages, then explain in plain language
 
 **Don't ask what to do next. Don't call `AskUserQuestion` here.** After the report, always draft the comments inline in the chat so the user can read and refine them, then close with a plain-language explanation. The user posts/fixes on their own say-so later.
+
+**Run the mandatory final pass from the Voice block on every draft before you show it** (the 10 checks in `~/.claude/writing-style.md`, structural ones first, phrase grep last). This applies to the report, the review body, each inline comment, and any reply to an existing thread. It also applies to a follow-up round on a PR you already reviewed, which is where check 7 matters most.
 
 **For PR sources** — go straight to drafting a pending review, following the triage + tone rules in `~/.claude/github-pending-review.md` (triage → verify line numbers → draft each finding in a real voice). Show the drafts inline as a clearly-labeled list:
 
