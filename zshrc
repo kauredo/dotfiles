@@ -39,10 +39,12 @@ command -v pyenv >/dev/null && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(py
 if [[ $(uname) == "Darwin" ]]; then
   # macOS specific settings
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-elif [[ $(uname) == "Linux" ]]; then
-  # Linux specific settings
-  export PATH="$HOME/.local/bin:$PATH"
 fi
+
+# Single-user installers (Claude Code, uv, rustup) drop binaries here on every
+# platform. Was Linux-only, which left `claude` off PATH on a fresh Mac until
+# its installer happened to append to the untracked ~/.zshrc.local.
+export PATH="$HOME/.local/bin:$PATH"
 
 # Load aliases
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
