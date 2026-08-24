@@ -121,12 +121,19 @@ for tool_dir in "$HOME/.cursor" "$HOME/.gemini"; do
   done
 done
 
-# macOS LaunchAgents (scheduled jobs, e.g. the weekly OS audit). Linked only;
-# load once with: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/<name>.plist
+# macOS LaunchAgents (scheduled jobs, e.g. the weekly OS audit). launchd expands
+# nothing, so absolute paths have to be literal. This repo serves machines with
+# different usernames, so these are rendered from *.plist.template with __HOME__
+# substituted, rather than symlinked. Re-run this script after editing one.
+# Load once with: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/<name>.plist
 if [ "$(uname)" = "Darwin" ] && [ -d "$SCRIPT_DIR/launchd" ]; then
   mkdir -p "$HOME/Library/LaunchAgents"
-  for f in "$SCRIPT_DIR/launchd"/*.plist; do
-    [ -e "$f" ] && link "$f" "$HOME/Library/LaunchAgents/$(basename "$f")"
+  for f in "$SCRIPT_DIR/launchd"/*.plist.template; do
+    [ -e "$f" ] || continue
+    dest="$HOME/Library/LaunchAgents/$(basename "$f" .template)"
+    rm -f "$dest"                       # never sed through a stale symlink
+    sed "s|__HOME__|$HOME|g" "$f" > "$dest"
+    echo "rendered $dest"
   done
 fi
 

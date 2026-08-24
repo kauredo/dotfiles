@@ -8,7 +8,7 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/kauredo/Notes/.scripts/os-audit.sh</string>
+        <string>__HOME__/Notes/.scripts/os-audit.sh</string>
     </array>
 
     <!-- Monday 08:00. If the Mac is asleep/off, launchd runs it at the next wake/boot. -->
@@ -26,14 +26,14 @@
     <false/>
 
     <key>StandardOutPath</key>
-    <string>/Users/kauredo/Notes/.scripts/os-audit.launchd.log</string>
+    <string>__HOME__/Notes/.scripts/os-audit.launchd.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/kauredo/Notes/.scripts/os-audit.launchd.log</string>
+    <string>__HOME__/Notes/.scripts/os-audit.launchd.log</string>
 
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/Users/kauredo/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>__HOME__/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     </dict>
 </dict>
 </plist>

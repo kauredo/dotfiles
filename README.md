@@ -16,6 +16,10 @@ This repository contains scripts and configuration files to quickly set up a con
   - Global instructions (`CLAUDE.md`, `RTK.md`, `github-pending-review.md`)
   - `settings.json`, custom `commands/`, `agents/`, `hooks/`, `scripts/`, and hand-written `skills/`
 
+- **Scheduled jobs** (`launchd/`, rendered into `~/Library/LaunchAgents` on macOS):
+
+  - `com.vasco.os-audit.plist.template` - weekly OS audit, Mondays at 08:00
+
 - **Setup Scripts**:
   - `setup-mac.sh` - Setup script for macOS
   - `setup-linux.sh` - Setup script for Linux (Ubuntu/Debian-based)
@@ -139,6 +143,34 @@ setup scripts run it for you; you can also run it manually anytime:
 
 If a destination already exists as a real file, it is moved aside to
 `<name>.bak.<timestamp>` before linking.
+
+### Scheduled jobs (macOS LaunchAgents)
+
+`launchd/` holds macOS scheduled jobs, and they are the one exception to the
+symlink rule above. launchd expands nothing, so every path inside a plist has to
+be literal, which means a tracked plist containing `/Users/<name>` breaks on any
+machine with a different username.
+
+They are therefore templates. `link-dotfiles.sh` renders each
+`launchd/*.plist.template` into `~/Library/LaunchAgents/`, substituting
+`__HOME__` for the current `$HOME`:
+
+```bash
+./link-dotfiles.sh   # also re-renders every LaunchAgent
+```
+
+Two things follow from that:
+
+- Write `__HOME__` in a template, never a literal home path.
+- The installed plist is a real file rather than a symlink, so editing a
+  template does not take effect until you re-run `link-dotfiles.sh`.
+
+Rendering only installs the job. Load it once per machine:
+
+```bash
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.vasco.os-audit.plist
+launchctl list | grep os-audit   # confirm it registered
+```
 
 ### Machine-specific config (`.local` files)
 
