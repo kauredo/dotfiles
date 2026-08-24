@@ -77,6 +77,12 @@
         "source": "github",
         "repo": "BuilderIO/skills"
       }
+    },
+    "claude-code-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-code"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
