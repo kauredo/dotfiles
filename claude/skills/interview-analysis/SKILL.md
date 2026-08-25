@@ -1,6 +1,6 @@
 ---
 name: interview-analysis
-description: Score a technical interview transcript against the Pixelmatters interview kits and produce a written evaluation (per-stage BARS ratings, TLDR, level call, hire recommendation). Use when given an interview transcript or recording notes and asked for feedback, a scorecard, an evaluation, or a write-up on a candidate.
+description: Score a technical interview transcript against the interview kits and produce a written evaluation (per-stage BARS ratings, TLDR, level call, hire recommendation). Use when given an interview transcript or recording notes and asked for feedback, a scorecard, an evaluation, or a write-up on a candidate.
 argument-hint: "<transcript path> [--role full-stack|back-end|front-end|design|devops] [--prior <path>] [--script <path>] [--audience internal|candidate]"
 ---
 
@@ -20,7 +20,7 @@ The rubrics are not yours to invent. They live in `~/Notes/03_Resources/intervie
 >
 > **Sentence length must vary.** Some bullets are four words. Some run two clauses. Uniform 15-word bullets are the single loudest tell.
 >
-> **Mandatory final pass before you show anything:** the 10-check list in `~/.claude/writing-style.md` under "Mandatory final pass". Structural checks first, phrase grep last. Read that file if it is not in context. Running the grep first passes clean and feels finished, which is exactly how AI-sounding drafts have shipped before.
+> **Mandatory final pass before you show anything:** the 14-check list in `~/.claude/writing-style.md` under "Mandatory final pass". Structural checks first, phrase grep last. Read that file if it is not in context. Running the grep first passes clean and feels finished, which is exactly how AI-sounding drafts have shipped before.
 
 ## Step 1 — Resolve inputs
 
