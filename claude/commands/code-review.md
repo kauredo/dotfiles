@@ -25,7 +25,7 @@ You are orchestrating a multi-agent code review. Your job is to assemble the dif
 >
 > Those are three different openings for three different situations, not three slots to choose from. If your body could be pasted onto a different PR with the specifics swapped, it is a template and you should rewrite it.
 >
-> **Mandatory final pass, before any draft is shown or posted.** Everything above describes what to avoid. The pass that actually runs is the 10-check list in `~/.claude/writing-style.md` under "Mandatory final pass" (canonical, do not duplicate it here). Read that file if it is not already in context, then run all 10 in order: structural checks first, phrase grep last. Running the grep first passes clean and creates a false sense of completion, which is exactly how AI-sounding drafts have shipped before.
+> **Mandatory final pass, before any draft is shown or posted.** Everything above describes what to avoid. The pass that actually runs is the 14-check list in `~/.claude/writing-style.md` under "Mandatory final pass" (canonical, do not duplicate it here). Read that file if it is not already in context, then run all 14 in order: structural checks first, phrase grep last. Running the grep first passes clean and creates a false sense of completion, which is exactly how AI-sounding drafts have shipped before.
 >
 > It applies to the in-chat report, the review body, every inline comment, and every reply to an existing thread, on every round. Check 7 (cross-round) is the one that matters most on a follow-up review, and check 9 (audit-trail sentences) is what stops "re-ran your mutation counts, they all match" from reaching the author.
 
@@ -163,15 +163,25 @@ Expect five failure classes and act on each:
 
 **Use `premise-verifier`'s ledger.** If it ran, its "Claims checked" ledger tells you which load-bearing claims it traced and confirmed (✓ holds — you can treat those dismissals as genuinely settled without re-tracing) and which it refuted (✗ false — those are live findings again; fold them into the report). A `?` can't-confirm is yours to finish or to surface softened. Its false-premise findings go through the report like any other reviewer's.
 
+**Tag every surviving finding with how you established it.** Four rungs, weakest to strongest:
+
+1. `asserted` — a reviewer said so and you did not check.
+2. `traced` — you read the cited definition or call sites and the claim matches.
+3. `ran` — you executed something (a test, a query, a script) that exercises the path.
+4. `reproduced` — you produced the failure the finding predicts.
+
+The rung goes in the H3 header after the dimension tag. Anything still on rung 1 when the report is drafted either gets promoted or gets its wording softened to "likely / if…", and CRIT or HIGH findings may not ship on rung 1 at all: trace them or drop them to MED. The point is that a reader can see which findings are proven and which are arguments, without having to ask.
+
 This is the highest-leverage step: a wrong finding in a posted review burns the author's trust in the whole review. Vetting means down-grading, correcting, or dropping reviewer findings — it is **not** the same as adding new ones of your own (see Important). Record what you dropped or downgraded in one line under the `Reviewers run` footer so the user can see what was filtered and overrule if they disagree.
 
 ## Step 6 — Aggregate
 
 When all reviewers return:
 
-1. **Dedupe** — if two reviewers flagged the same `file:line` with overlapping reasoning, merge into one finding and note which reviewers raised it.
-2. **Sort** findings by file path (alphabetical). Within each file, order by severity: CRITICAL → HIGH → MEDIUM → LOW.
-3. **Render** the report in three parts: (a) header + triage table listing every finding on one row, (b) per-file sections where each finding is a paste-ready PR comment, (c) a `Reviewers run` footer.
+1. **Split by axis first, and never rerank across the two.** Every finding is either **Spec** (the diff does not do what the ticket, acceptance criteria, or PR description says it does) or **Standards** (the code does what it claims, but has a defect in correctness, security, performance, architecture, tests, or style). Sort and severity-rank inside each axis independently. A Spec gap and a style nit are not on one scale, and merging them into a single ranked list is exactly what the split exists to prevent. If there are no Spec findings, say so in one line rather than omitting the axis, because "the diff matches the ticket" is a review result worth stating.
+2. **Dedupe** — if two reviewers flagged the same `file:line` with overlapping reasoning, merge into one finding and note which reviewers raised it.
+3. **Sort** findings by file path (alphabetical). Within each file, order by severity: CRITICAL → HIGH → MEDIUM → LOW.
+4. **Render** the report in three parts: (a) header + triage table listing every finding on one row, (b) per-file sections where each finding is a paste-ready PR comment, (c) a `Reviewers run` footer.
 
 **Cross-file findings.** When a reviewer flags one logical issue spanning multiple files (e.g. the same anti-pattern at `a.js:9` and `b.js:8`), do this:
 - **Triage table:** one row for the finding. Its `File:Line` cell lists every location, separated by ` + ` (e.g. `` `a.js:9` + `b.js:8` ``). Counted as one finding in the summary line.
@@ -200,7 +210,7 @@ Output shape:
 
 ## `path/to/i18n.js`
 
-### HIGH · L63-66 · [architecture]
+### HIGH · L63-66 · [architecture] · traced
 **ERROR_KEYS shadowed by duplicate locale keys**
 
 These constants are compared via `error.message ===`, so they must remain stable English. The locale files define the same English values under `errors.crm_adaptor.command.too_early` — a future dev will reach for `t()` and silently break the retry contract in non-English locales.
@@ -209,7 +219,7 @@ These constants are compared via `error.message ===`, so they must remain stable
 
 ---
 
-### MED · L13-20 · [correctness, security]
+### MED · L13-20 · [correctness, security] · reproduced
 **Silent locale-load failure masks startup integrity check**
 
 `loadLocale` catches every error and returns `{}`. If `en.json` is missing, `t()` returns raw key strings across all callers. The `console.warn` also includes `e.message`, which leaks the absolute filesystem path on ENOENT.
@@ -220,7 +230,7 @@ These constants are compared via `error.message ===`, so they must remain stable
 
 ## `path/to/app.js`
 
-### MED · L48 · [architecture]
+### MED · L48 · [architecture] · traced
 **Translating log/throw paths with no locale plumbing**
 
 Every `t()` call omits the locale argument, so everything resolves to `en` — the fr-CA file is unreachable. Translating `logger.error(...)` lines also breaks Grafana/Loki search and locale-dependent alerting.
@@ -231,7 +241,7 @@ Every `t()` call omits the locale argument, so everything resolves to `en` — t
 
 ## `path/to/a.js`
 
-### LOW · L9 · [style]
+### LOW · L9 · [style] · asserted
 **Two-step import instead of destructuring**
 
 *Same pattern at `b.js:8`.*
@@ -244,7 +254,7 @@ Every `t()` call omits the locale argument, so everything resolves to `en` — t
 
 ## `path/to/b.js`
 
-### LOW · L8 · [style]
+### LOW · L8 · [style] · asserted
 **Two-step import instead of destructuring**
 
 *Same pattern at `a.js:9`.*
@@ -275,7 +285,7 @@ Formatting rules:
 - **Triage table** is a flat list — one row per finding, sorted by severity (CRIT → HIGH → MED → LOW) then file path. Title is one short phrase, no markdown inside cells. Use the severity short names `CRIT`, `HIGH`, `MED`, `LOW`.
 - **Per-file H2** uses the full file path in backticks. Sort H2 sections alphabetically by path.
 - **Each finding inside a file** is structured as:
-  - H3 line: `### <SEV> · <line-spec> · [reviewers]` where `<line-spec>` is `L42`, `L42-58`, or `file` for whole-file findings.
+  - H3 line: `### <SEV> · <line-spec> · [reviewers] · <rung>` where `<line-spec>` is `L42`, `L42-58`, or `file` for whole-file findings, and `<rung>` is the evidence rung from Step 5 (`asserted` / `traced` / `ran` / `reproduced`).
   - Bold title on its own line.
   - 1–3 sentence explanation as a single paragraph (no bullets, no nested headers — it must read as a self-contained comment when copy-pasted into GitHub).
   - `**Suggested fix:** <concrete change>` on its own line.
@@ -293,7 +303,7 @@ If **no reviewer** found anything, say so plainly: "No issues found across N rev
 
 **Don't ask what to do next. Don't call `AskUserQuestion` here.** After the report, always draft the comments inline in the chat so the user can read and refine them, then close with a plain-language explanation. The user posts/fixes on their own say-so later.
 
-**Run the mandatory final pass from the Voice block on every draft before you show it** (the 10 checks in `~/.claude/writing-style.md`, structural ones first, phrase grep last). This applies to the report, the review body, each inline comment, and any reply to an existing thread. It also applies to a follow-up round on a PR you already reviewed, which is where check 7 matters most.
+**Run the mandatory final pass from the Voice block on every draft before you show it** (the 14 checks in `~/.claude/writing-style.md`, structural ones first, phrase grep last). This applies to the report, the review body, each inline comment, and any reply to an existing thread. It also applies to a follow-up round on a PR you already reviewed, which is where check 7 matters most.
 
 **For PR sources** — go straight to drafting a pending review, following the triage + tone rules in `~/.claude/github-pending-review.md` (triage → verify line numbers → draft each finding in a real voice). Show the drafts inline as a clearly-labeled list:
 

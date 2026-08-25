@@ -22,7 +22,9 @@ If no changed files are found at all, tell the user and stop.
 5. Run linters/type-check to verify fixes don't break anything
 6. Report briefly: what you fixed, what you skipped and why
 
-Then proceed directly to Phase 2 — do NOT wait for user input.
+**Gate.** Lint and type-check must be green before Phase 2 starts. If they are red, fix them and re-run. If you cannot get them green, stop and say what is failing. Do not open Phase 2 on a red tree, and do not report the pipeline finished while any check is red: a clean-sounding summary over a failing build is worse than no summary. No green tree, no Phase 2.
+
+Once green, proceed directly to Phase 2 — do NOT wait for user input.
 
 ## Phase 2: Critique Loop (UI files only)
 
