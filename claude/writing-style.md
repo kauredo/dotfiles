@@ -1,12 +1,22 @@
 # Writing style: don't sound like AI
 
-Applies whenever you write prose a human will read: **PR and issue comments, code-review comments, replies to other reviewers**, Slack and JIRA messages, marketing copy, landing/content pages, blog posts, READMEs, PR descriptions, release notes, email. Not code comments or commit messages (those have their own conventions).
+The goal is writing that reads like a specific person wrote it, not like a model performing competence. Match the voice of the surrounding material (the existing site copy, the repo's README, my own words). When in doubt, plainer.
 
-The goal is writing that reads like a specific person wrote it, not like a model performing competence. Match the voice of the surrounding material (the existing site copy, the repo's README, the user's own words). When in doubt, plainer.
+## Scope: two tiers
 
-## Write toward these
+**Tier 1 applies to everything you write for me.** Chat replies, terminal output, summaries, plan documents, commit message bodies. Not just artifacts headed for other people. It is the targets below, plus six checks cheap enough to run every time without ceremony:
 
-The pass below, and the catalogue behind it, are lists of what to avoid. Prohibitions steer weakly on their own, since naming a pattern puts it in mind, so start from these targets and let the pass catch what slips through.
+no em dashes · no antithesis reflex ("not X, it's Y") · no aphoristic closers · no significance-inflation verbs · the plain word over the fancy one · varied sentence length
+
+If you only ever run tier 1, most of the value of this file is already banked.
+
+**Tier 2 is the full 14-check pass, and it is mandatory for anything a human other than me will read.** PR and issue comments, code-review comments, replies to other reviewers, Slack and JIRA messages, marketing copy, landing and content pages, blog posts, READMEs, PR descriptions, release notes, email, and any draft shown to me for approval before it goes out.
+
+Commit messages take tier 1 on the body. The conventional-commit format itself is exempt, and so are code comments, which have their own standards in `~/.claude/commands/code-review.md`.
+
+## Tier 1: write toward these
+
+Tier 2 and the catalogue behind it are lists of what to avoid. Prohibitions steer weakly on their own, since naming a pattern puts it in mind, so start from these targets and let the pass catch what slips through.
 
 - **A specific person wrote this.** Have opinions. React to the facts instead of surveying them.
 - **Name the mechanism, the number, or the observable thing.** "You can pick a speed and watch it revert" does the work that "it silently reverts" only gestures at.
@@ -17,13 +27,11 @@ The pass below, and the catalogue behind it, are lists of what to avoid. Prohibi
 - **Name the actor.** "The compiler validates queries", not "queries are validated."
 - **Write what only this project could have made you write.** Checks 11 and 13 are the enforcement; this is the aim.
 
-For a heavier edit than the pass below (inherited copy, a doc you are rewriting, a draft that needs stripping rather than checking), invoke the `unslop` skill. It is explicit-invocation only. This file wins on any conflict.
+For a heavier edit than tier 2 (inherited copy, a doc you are rewriting, a draft that needs stripping rather than checking), invoke the `unslop` skill. It is explicit-invocation only. This file wins on any conflict.
 
-## Mandatory final pass (run before anything is sent, posted, or shown)
+## Tier 2: mandatory final pass (run before anything is sent, posted, or shown)
 
-**This is the gate, and the only thing here that actually runs.** The catalogue it greps against lives in `~/.claude/writing-style-reference.md`, loaded by check 14. It is not optional and not only for long pieces. One PR reply gets the same pass as a blog post.
-
-Run it on every draft before it leaves: PR and issue comments, review bodies, replies to a thread, Slack and JIRA messages, PR descriptions, and any draft shown to the user for approval. If it is going to be read by a human who is not me, it goes through this.
+**This is the outbound gate.** Tier 1 runs on everything; this runs on anything leaving for another human, per the scope above. The catalogue it greps against lives in `~/.claude/writing-style-reference.md`, loaded by check 14. It is not optional and not only for long pieces. One PR reply gets the same pass as a blog post.
 
 Do the structural checks FIRST, in this order. Running the phrase grep first passes clean and creates a false sense of completion, which is how AI-sounding drafts have shipped repeatedly.
 
