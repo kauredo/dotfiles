@@ -111,7 +111,10 @@ Before integrating, upgrading, debugging, or answering anything about a third-pa
 
 - When I say `/commit`: stage relevant files, write a concise commit message, and commit. No push unless asked.
 - **Never mention Anthropic or Claude** in commit messages or co-author lines.
-- Follow the repo's commit convention (`feat:`, `fix:`, `refactor:`, etc.).
+- Follow the repo's commit convention (`feat:`, `fix:`, `refactor:`, etc.). Read `git log --oneline -5` first if the convention isn't obvious.
+- Stage files **by name**. Never `git add -A` or `git add .`, and never stage anything that could hold secrets (`.env`, credentials, keys).
+- If a pre-commit hook fails, fix it and make a NEW commit. Never amend.
+- The message body is prose I will read, so `writing-style.md` applies to it. The conventional-commit format is the only part that is exempt.
 
 ### 8. Neutral phrasing for security findings (Fable/Mythos-tier only)
 
