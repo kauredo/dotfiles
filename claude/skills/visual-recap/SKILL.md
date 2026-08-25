@@ -3,7 +3,8 @@ name: visual-recap
 description: >-
   Turn a PR, branch, commit, or git diff into an interactive visual recap with
   diagrams, file maps, API/schema summaries, annotated diffs, and focused review
-  notes.
+  notes. INSTALLED local-file build: use this, never builder-skills:visual-recap,
+  which is the pre-install bootstrap copy of the same skill.
 metadata:
   visibility: exported
 ---
