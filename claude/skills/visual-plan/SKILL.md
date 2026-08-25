@@ -3,7 +3,8 @@ name: visual-plan
 description: >-
   Turn ordinary text plans into rich interactive visual plans with diagrams,
   file maps, annotated code, open questions, and UI/prototype review when
-  useful.
+  useful. INSTALLED local-file build: use this, never builder-skills:visual-plan,
+  which is the pre-install bootstrap copy of the same skill.
 metadata:
   visibility: exported
 ---
