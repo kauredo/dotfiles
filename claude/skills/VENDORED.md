@@ -10,14 +10,23 @@ https://github.com/mattpocock/skills
 |---|---|
 | codebase-design | two TypeScript samples swapped for Ruby |
 | diagnosing-bugs | none |
+| domain-modeling | none (vendored as a wayfinder dependency) |
 | grilling | none |
+| research | none (vendored as a wayfinder dependency) |
 | prototype | UI branch removed, delegates to `build-ui` |
 | resolving-merge-conflicts | none |
 | tdd | none |
 | to-questionnaire | none |
 | wait-what | none |
+| wayfinder | defaults to the bundled `issue-tracker-local.md` instead of telling the user to run `/setup-matt-pocock-skills`; hand-off clause added naming `improve` as the edge of the map |
 | wizard | none |
 | writing-for-agents | none |
+
+`issue-tracker-local.md` inside `wayfinder/` is lifted from that repo's
+`setup-matt-pocock-skills` skill, unchanged.
+
+`improve` is not vendored from here, but Phase 1 gained a bullet that reads a
+wayfinder map when one exists, so the two compose. See its own file.
 
 `agents/openai.yaml` (Codex) dropped from each.
 
