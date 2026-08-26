@@ -21,8 +21,28 @@ Flags (default behavior is **unattended**: every gate open, every vetted substan
 - `--base <branch>` — base branch for the PR (default: the repo's default branch).
 - `--plan <path>` — pin the plan file this run executes, when auto-detection would guess wrong. See Step 6b.
 - `--no-plan` — this run answers to no plan file, so skip the Step 6b bookkeeping entirely.
+- `--grill` — force the Step 0.5 question round even when the task looks clear.
+- `--no-grill` — skip it even when the task looks underspecified, and plan on stated assumptions instead.
 
 State the resolved mode in one line (e.g. "Unattended · worktree · UI auto-detect · base `develop`") and proceed. If the task description is empty, ask for it.
+
+## Step 0.5 — Size the task, then pick the entry point
+
+`/ship` is meant to be the one command for a piece of work, including a brand new idea. It gets there by starting the chain at the right link rather than by treating every task as ready to build. Do this before Step 1, in your head, in a few seconds.
+
+Three shapes:
+
+**1. Buildable now.** The task names what should change and what "done" looks like is checkable. Most tasks. Go straight to Step 1.
+
+**2. Underspecified, but it still fits one session.** You would have to invent requirements to proceed, and different reasonable guesses produce different work. Call the Skill tool for `grilling` and put the open questions to the user in one round, then go to Step 1 with the answers. This is the default for a genuinely new idea, and it is what makes `/ship <new idea>` work end to end. `--no-grill` trades this for plan-on-stated-assumptions; `--grill` forces it.
+
+**3. Foggy, and bigger than one session.** Several decisions are unmade *and* depend on each other, or the work obviously spans many PRs before anything is shippable. **Stop and hand back**, with the exact line to run: `/wayfinder <the idea>`.
+
+Shape 3 is a real stop, for two reasons that both hold. `wayfinder` sets `disable-model-invocation: true`, so `/ship` cannot call it even if it wanted to, and that setting is deliberate. And wayfinder exists for work too big for one agent session, which is precisely the work one `/ship` run cannot hold. Cutting a shape-3 task down to something ship can finish silently discards the decisions nobody made yet.
+
+Signals for shape 3, in rough order of reliability: the user's own framing (*rework*, *rethink*, *from scratch*, *how should we*), more than one unmade architectural decision in the same task, or a change that has to land across several repos before any of it is usable. One unmade decision on its own is shape 2: ask it and move on.
+
+Say which shape you picked in the mode line. If it is shape 3, that sentence and the `/wayfinder` line are the whole output.
 
 ## Step 1 — Plan (via the `improve` skill)
 
@@ -121,6 +141,8 @@ Not part of the unattended run: `/ship` opens PRs and never merges them, so this
 
 **wayfinder decides what to do** (a map of decision tickets under `.scratch/<effort>/`), **`improve` specifies how to do it here** (a self-contained plan in `plans/`), **`/ship` builds and opens the PR.** Step 1 already calls `improve`, and `improve` already globs `.scratch/*/map.md`, so a run inherits the map without being told about it. The rules below are the parts that need saying out loud.
 
+- **`/ship` cannot invoke wayfinder, by design.** It is the one skill in this chain that sets `disable-model-invocation: true`, so it is user-invoked only. Everything else here (`grilling`, `prototype`, `research`, `domain-modeling`, `improve`) is model-invocable, which is why Step 0.5 can escalate a vague task to `grilling` on its own but has to hand a foggy one back to you.
+- **Most new work never needs a map.** Wayfinder's own charting step says so: if breadth-first questioning surfaces no fog, and the journey fits one session, there is no map to draw. That is Step 0.5 shape 2, and `/ship` handles it start to finish.
 - **Never resolve a wayfinder ticket with `/ship`.** Wayfinder is plan-don't-do, one ticket per session, and most of its ticket types are HITL: the human answers for themselves. An unattended executor resolving a grilling ticket has answered its own question, which is the exact failure that skill warns about. If the task names a ticket rather than a plan, stop and point at `/wayfinder`.
 - **Pass the map through.** When the task names an effort or a map, hand `improve` the map path along with the task, so **Decisions so far** binds the plan instead of being rediscovered.
 - **Fog is a STOP condition.** If building needs an answer sitting in the map's **Not yet specified**, do not pick one. Stop, name the open ticket, and hand back. Guessing there silently overwrites a decision the human has not made.
