@@ -14,6 +14,7 @@ https://github.com/mattpocock/skills
 | prototype | UI branch removed, delegates to `build-ui` |
 | resolving-merge-conflicts | none |
 | tdd | none |
+| to-questionnaire | none |
 | wait-what | none |
 | wizard | none |
 | writing-for-agents | none |
@@ -28,6 +29,8 @@ https://github.com/backnotprop/pstack
 | blast-radius | none |
 | create-verification-skill | writes `.claude/skills/` instead of `.cursor/skills/` |
 | maintain-verification-skill | same path fix |
+| recall | Cursor transcript path → `~/.claude/projects/<slug>/<uuid>.jsonl` plus the `memory/` index; `session-pickup` → `claude --resume`; dropped the `automate-me` route (skill not vendored); `unslop` → `writing-style.md` tier 1 |
+| technical-writing | scope note added (this owns document shape, `writing-style.md` owns voice and wins on conflict); the two `unslop` references repointed at `writing-style.md` |
 | unslop | `disable-model-invocation: true` added; description rewritten to defer to `writing-style.md` |
 | why | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
 
