@@ -43,6 +43,23 @@ https://github.com/backnotprop/pstack
 | unslop | `disable-model-invocation: true` added; description rewritten to defer to `writing-style.md` |
 | why | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
 
+## genmedia.sh registry — installed by the `genmedia` CLI
+https://github.com/fal-ai-community/genmedia-cli
+
+| Skill | Local changes |
+|---|---|
+| genmedia | none |
+
+Installed with `genmedia init --no-cursor --no-agents-md`, then moved here and
+symlinked so it is versioned like the rest. That move leaves the CLI's
+`.claude/skills/.installed.json` behind, so `genmedia skills update` will not
+see it. To update, re-run the install in a scratch directory and copy the folder
+over.
+
+The registry holds 17 skills; only the default one is installed. `marketing` and
+`commercial` were deliberately skipped: they give generic campaign advice that
+competes with the Upspeech brand system in `upspeech-website`.
+
 ## Updating
 
 These are copies, not submodules. To refresh one, re-download from source and
