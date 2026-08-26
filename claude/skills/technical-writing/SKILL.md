@@ -11,7 +11,9 @@ The goal is writing a tired engineer understands on the first read.
 > **Where this sits.** `~/.claude/writing-style.md` owns voice: which words to avoid,
 > which rhythms read as machine-written, and the tier 2 outbound pass. This skill owns
 > the layer above it: what kind of document you are writing, and how much each sentence
-> carries. Run both on a doc. Where they disagree, `writing-style.md` wins. Four layers get you there, one question each: what kind of document is this, how do sentences address the reader, how much does each sentence carry, and can any sentence be read two ways. Apply all four.
+> carries. Run both on a doc. Where they disagree, `writing-style.md` wins.
+
+Four layers get you there, one question each: what kind of document is this, how do sentences address the reader, how much does each sentence carry, and can any sentence be read two ways. Apply all four.
 
 Three rules sit above the layers:
 
