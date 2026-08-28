@@ -110,9 +110,19 @@ for d in "$SRC/skills"/*/; do
   link "$SRC/skills/$name" "$DST/skills/$name"
 done
 
-# Same skills for the other agent tools that read a ~/.<tool>/skills directory.
-# Only tools already set up on this machine are touched, and link_soft leaves
-# any same-named skill sourced from ~/.agents/skills alone.
+# ~/.agents/skills is the cross-tool user-scope skills path. Codex reads it on
+# every session, from the working directory up to the repo root and then here.
+# Created rather than probed for, because it is the one location we actively
+# want populated, not merely kept in step if it happens to exist.
+mkdir -p "$HOME/.agents/skills"
+for d in "$SRC/skills"/*/; do
+  name="$(basename "$d")"
+  link_soft "$SRC/skills/$name" "$HOME/.agents/skills/$name"
+done
+
+# Same skills for tools that read their own ~/.<tool>/skills directory. Only
+# tools already set up on this machine are touched, and link_soft leaves any
+# same-named skill sourced from ~/.agents/skills alone.
 for tool_dir in "$HOME/.cursor" "$HOME/.gemini"; do
   [ -d "$tool_dir/skills" ] || continue
   for d in "$SRC/skills"/*/; do
@@ -120,6 +130,16 @@ for tool_dir in "$HOME/.cursor" "$HOME/.gemini"; do
     link_soft "$SRC/skills/$name" "$tool_dir/skills/$name"
   done
 done
+
+# Codex reads none of the above formats for its instructions or its subagents,
+# and it has no commands directory at all. Render those three from the same
+# sources, the way the launchd plists below are rendered rather than linked.
+# Everything it writes is generated; edit the originals under claude/.
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$SCRIPT_DIR/lib/render-agent-configs.py"
+else
+  echo "skipped Codex config rendering (no python3 on PATH)" >&2
+fi
 
 # macOS LaunchAgents (scheduled jobs, e.g. the weekly OS audit). launchd expands
 # nothing, so absolute paths have to be literal. This repo serves machines with

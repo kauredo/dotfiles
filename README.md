@@ -11,10 +11,13 @@ This repository contains scripts and configuration files to quickly set up a con
   - `aliases` -> `~/.aliases` - Custom command aliases
   - `gitignore_global` -> `~/.gitignore_global` - Global gitignore
 
-- **Claude Code config** (`claude/`, symlinked into `~/.claude`):
+- **Agent config** (`claude/`, symlinked into `~/.claude` and shared with other tools):
 
   - Global instructions (`CLAUDE.md`, `RTK.md`, `github-pending-review.md`)
   - `settings.json`, custom `commands/`, `agents/`, `hooks/`, `scripts/`, and hand-written `skills/`
+  - The same skills reach Codex and anything else reading `~/.agents/skills`.
+    `lib/render-agent-configs.py` renders the rest into the shapes those tools
+    need. See "Other agent tools" below
 
 - **Scheduled jobs** (`launchd/`, rendered into `~/Library/LaunchAgents` on macOS):
 
@@ -199,6 +202,41 @@ the versioned `claude/` config:
   machines regardless of username.
 - Skills are linked individually, so plugin-managed skills in `~/.claude/skills`
   are left untouched.
+
+### Other agent tools
+
+`claude/` is the single source. Anything a second tool needs in a different
+shape is generated from it by `lib/render-agent-configs.py`, which
+`link-dotfiles.sh` runs. Nothing generated is committed, so there is one copy to
+edit and nothing to keep in sync by hand.
+
+| Goes to                | From                | How        |
+| ---------------------- | ------------------- | ---------- |
+| `~/.agents/skills/`    | `claude/skills/`    | symlinked  |
+| `~/.agents/skills/`    | `claude/commands/`  | rendered   |
+| `~/.codex/AGENTS.md`   | `claude/CLAUDE.md`  | rendered   |
+| `~/.codex/agents/`     | `claude/agents/`    | rendered   |
+
+Three things are rendered rather than linked because the destination format
+differs:
+
+- **`~/.codex/AGENTS.md`** is `CLAUDE.md` with the `@writing-style.md` import
+  inlined, since Codex does not resolve those, and the Claude-only parts
+  removed. `RTK.md` is deliberately dropped: it documents a bash hook that
+  rewrites commands, and a tool without the hook would call a proxy that never
+  fires. The Fable-tier phrasing rule goes for the same reason.
+- **`~/.codex/agents/*.toml`** are the review agents. Codex wants TOML with
+  `developer_instructions` where Claude wants markdown with frontmatter. No
+  model is pinned, so they inherit the session default.
+- **Commands become skills**, because Codex has no commands directory and
+  enabled skills appear in its slash-command list. The description comes from
+  frontmatter where there is any and from the file's opening line otherwise.
+
+To add something for every tool at once, put it in `claude/` and re-run
+`link-dotfiles.sh`. Editing anything under `~/.codex/` or `~/.agents/skills/`
+directly is overwritten on the next run.
+
+Codex needs `codex login` before any of this does anything. That is yours to run.
 
 ## Customizing the Setup
 
