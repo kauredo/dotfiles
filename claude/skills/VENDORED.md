@@ -60,6 +60,28 @@ The registry holds 17 skills; only the default one is installed. `marketing` and
 `commercial` were deliberately skipped: they give generic campaign advice that
 competes with the Upspeech brand system in `upspeech-website`.
 
+## Anthropic frontend-design: Apache 2.0
+https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
+
+| Skill | Local changes |
+|---|---|
+| frontend-design | em dashes replaced |
+
+Copied from the Claude plugin installation. The licence is stored beside the
+skill.
+
+## nextlevelbuilder/ui-ux-pro-max-skill: MIT
+https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+
+| Skill | Local changes |
+|---|---|
+| ui-ux-pro-max | plugin-root paths replaced with the cross-tool `~/.agents/skills` path; em dashes replaced |
+
+Only the `ui-ux-pro-max` runtime skill is vendored, including its search scripts,
+data, and references. The plugin's other specialist skills and development files
+are not required by the design stack in `CLAUDE.md`. The licence is stored beside
+the skill.
+
 ## The em dash rule applies to these too
 
 August 2026: every em dash in this directory was replaced, vendored copies
