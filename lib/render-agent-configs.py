@@ -147,12 +147,17 @@ def render_commands_as_skills():
         name = f.stem
         desc = describe(fm, body, f"The {name} command.").replace('"', "'")
         hint = field(fm, "argument-hint")
-        args = (
-            f"\nArguments, if any, come from the message that invoked this. "
-            f"Expected shape: `{hint}`.\n"
-            if hint
-            else ""
-        )
+        # Claude substitutes $ARGUMENTS before the command body is read. Nothing
+        # else does, so the token survives into the skill and has to be
+        # explained rather than left looking like a variable that got missed.
+        args = ""
+        if hint or "$ARGUMENTS" in body:
+            shape = f" Expected shape: `{hint}`." if hint else ""
+            args = (
+                f"\nRead `$ARGUMENTS` below as whatever the user said when they "
+                f"invoked this, and treat it as empty if they said nothing "
+                f"beyond the name.{shape}\n"
+            )
         skill = d / name
         skill.mkdir(parents=True, exist_ok=True)
         (skill / "SKILL.md").write_text(
