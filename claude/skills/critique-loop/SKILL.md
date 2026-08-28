@@ -1,6 +1,6 @@
 ---
 name: critique-loop
-description: Run /critique iteratively — critique, fix, re-critique — until no meaningful issues remain
+description: Run /critique iteratively (critique, fix, re-critique) until no meaningful issues remain
 disable-model-invocation: true
 ---
 

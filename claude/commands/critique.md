@@ -1,4 +1,4 @@
-Conduct a holistic design critique, evaluating whether the interface actually works—not just technically, but as a designed experience. Think like a design director giving feedback.
+Conduct a holistic design critique, evaluating whether the interface actually works, not just technically but as a designed experience. Think like a design director giving feedback.
 
 **First**: Use the frontend-design skill for design principles and anti-patterns.
 

@@ -1,5 +1,5 @@
 ---
-description: Full QA pipeline — audit, fix, then critique-loop until clean. Use when finishing work before commit.
+description: Full QA pipeline: audit, fix, then critique-loop until clean. Use when finishing work before commit.
 ---
 
 Run the full quality pipeline on changed files. This is an autonomous pipeline — execute every phase yourself without pausing for user input between steps.

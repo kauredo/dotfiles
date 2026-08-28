@@ -1,5 +1,5 @@
 ---
-description: End-to-end feature pipeline — plan (improve) → implement → code-review → apply → polish → PR with screenshots. Runs unattended by default; `--gated` puts the approval gates back.
+description: End-to-end feature pipeline: plan (improve) → implement → code-review → apply → polish → PR with screenshots. Runs unattended by default; `--gated` puts the approval gates back.
 argument-hint: "<task description> [--gated] [--no-pr] [--ui|--no-ui] [--local] [--base <branch>]"
 ---
 
