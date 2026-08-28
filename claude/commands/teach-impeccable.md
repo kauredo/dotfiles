@@ -60,6 +60,6 @@ Synthesize your findings and the user's answers into a `## Design Context` secti
 
 Write this to **`docs/design-system.md`** in the project (create `docs/` if needed). If the file exists, update the Design Context section in place rather than duplicating it.
 
-Then make sure the project's `CLAUDE.md` points at it — if there's no link, add a one-line pointer under a Design section, e.g. `Design context lives in [docs/design-system.md](docs/design-system.md) — read it before any UI work.` This way Claude reads it first every session. (Do not write to `.cursorrules`.)
+Then make sure the project's `CLAUDE.md` points at it, if there's no link, add a one-line pointer under a Design section, e.g. `Design context lives in [docs/design-system.md](docs/design-system.md), read it before any UI work.` This way Claude reads it first every session. (Do not write to `.cursorrules`.)
 
 Confirm completion and summarize the key design principles that will now guide all future work.
