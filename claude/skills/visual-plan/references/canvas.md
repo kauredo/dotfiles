@@ -1,4 +1,4 @@
-# Canvas & artboard placement — single source of truth
+# Canvas & artboard placement: single source of truth
 
 This file is the canonical guide for how the visual-plan canvas works: artboard
 placement, lane layout, annotations, patching, and the legacy kit tree. Read it
@@ -8,7 +8,7 @@ canvas layouts from memory or paraphrase these rules per mode.
 <!-- SHARED-CORE:canvas-surface START -->
 
 **The coordinate rule.** The `surface` locks each artboard's footprint and
-aspect — never set artboard width/height and never use coordinates inside the
+aspect, never set artboard width/height and never use coordinates inside the
 wireframe HTML; board-level artboard `x`/`y` IS allowed when it creates clear
 lanes. Let canvas auto-placement handle simple one-row boards.
 
@@ -26,21 +26,21 @@ or cross either artboard, remove the label and explain the transition with a
 nearby annotation instead. Before handoff, inspect the top canvas at default zoom
 and move any frame whose label, connector, or annotation crosses another frame.
 
-**Board-unit spacing defaults.** The canvas coordinate system uses approximately 2 board units per screen pixel. `browser` frames occupy roughly 700 × 600 board units; `desktop` frames roughly 900 × 700 board units. Apply these minimum x/y gaps when placing frames explicitly — any less and frames will touch or overlap:
+**Board-unit spacing defaults.** The canvas coordinate system uses approximately 2 board units per screen pixel. `browser` frames occupy roughly 700 × 600 board units; `desktop` frames roughly 900 × 700 board units. Apply these minimum x/y gaps when placing frames explicitly, any less and frames will touch or overlap:
 
 - x-gap between `browser` frames: **≥ 1100** (700-unit frame + 400-unit gutter)
 - x-gap between `desktop` frames: **≥ 1300** (900-unit frame + 400-unit gutter)
 - y-gap between rows of any surface: **≥ 1400** (includes frame height + section header + buffer)
 
-When in doubt, use larger values — the canvas auto-zooms to fit everything.
+When in doubt, use larger values, the canvas auto-zooms to fit everything.
 
 **Canvas annotations are designer notes on the artboard.** When a top canvas is
 present, sprinkle Figma-style notes near the frames they explain: a short
-heading, supporting text, and bullets — plain text layers, never bordered or
+heading, supporting text, and bullets, plain text layers, never bordered or
 shadowed cards, and never a box around a frame. The renderer spaces notes away
 from frames, so place each note by the frame it describes. Use an arrow only to
 point at one specific control or transition; for a broad frame-level note, write
-text beside the frame with no connector. Connectors are for real sequences only —
+text beside the frame with no connector. Connectors are for real sequences only,
 never fake "Step 1 → Step 2" lines between independent states.
 
 **Do not create overlapping annotations.** Anchor each ordinary note to the
@@ -96,7 +96,7 @@ primary UI mockup or prototype just because `custom-html`, screenshots, or prose
 are easier to produce. If the canvas/prototype surface cannot represent the
 requested UI fidelity, still keep the closest top-surface representation and
 call out or extend the needed renderer capability. A skeleton/loading mockup
-also lives in a canvas artboard — never move a mockup out of the canvas.
+also lives in a canvas artboard, never move a mockup out of the canvas.
 
 **Storyboards are canvas artifacts, not document diagrams.** When the requested
 output is a product flow, onboarding journey, "light storyboard", or canvas

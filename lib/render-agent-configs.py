@@ -51,7 +51,7 @@ REPHRASE = [
     ),
     ("If uncertain, ask via `AskUserQuestion`.", "If uncertain, ask."),
     (
-        "If multiple interpretations exist, ask which one — don't pick silently.",
+        "If multiple interpretations exist, ask which one, don't pick silently.",
         "If multiple interpretations exist, ask which one, and do not pick silently.",
     ),
     ("Name what's confusing. Ask via `AskUserQuestion`.", "Name what's confusing and ask."),

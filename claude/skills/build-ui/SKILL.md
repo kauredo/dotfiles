@@ -25,14 +25,14 @@ Detected when NONE of the above are present.
 **ALWAYS start here before building UI.**
 
 Check for `docs/design-system.md` (the persisted Design Context).
-- **If it exists**, read it and use it — do not re-interview.
+- **If it exists**, read it and use it, do not re-interview.
 - **If it doesn't**, run `/teach-impeccable` to interview the user (via `AskUserQuestion`) and persist the result to `docs/design-system.md`, linked from the project `CLAUDE.md`. Then continue.
 
 The context you need either way: target audience and use cases, brand personality (3 words), aesthetic direction and references, anti-references (what to avoid).
 
 ## Phase 2: Foundation
 
-**First, decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below — don't invent palettes/type from scratch when the database has vetted options.
+**First, decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options.
 
 ### Standalone Mode
 1. Use design tokens from `/tokens/` if present

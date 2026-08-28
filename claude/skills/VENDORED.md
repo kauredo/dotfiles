@@ -3,7 +3,7 @@
 Skills copied from third-party repos, kept here so they stay symlinked and editable
 like everything else. Both sources are MIT; copyright notices below satisfy that.
 
-## mattpocock/skills — MIT, Copyright (c) 2026 Matt Pocock
+## mattpocock/skills: MIT, Copyright (c) 2026 Matt Pocock
 https://github.com/mattpocock/skills
 
 | Skill | Local changes |
@@ -30,25 +30,25 @@ wayfinder map when one exists, so the two compose. See its own file.
 
 `agents/openai.yaml` (Codex) dropped from each.
 
-## backnotprop/pstack — MIT, mirror of cursor/plugins/pstack
+## backnotprop/pstack: MIT, mirror of cursor/plugins/pstack
 https://github.com/backnotprop/pstack
 
 | Skill | Local changes |
 |---|---|
 | blast-radius | none |
-| create-verification-skill | writes `.claude/skills/` instead of `.cursor/skills/` |
-| maintain-verification-skill | same path fix |
+| create-verification-skill | writes `.claude/skills/` instead of `.cursor/skills/`; em dashes replaced |
+| maintain-verification-skill | same path fix; em dashes replaced |
 | recall | Cursor transcript path → `~/.claude/projects/<slug>/<uuid>.jsonl` plus the `memory/` index; `session-pickup` → `claude --resume`; dropped the `automate-me` route (skill not vendored); `unslop` → `writing-style.md` tier 1 |
 | technical-writing | scope note added (this owns document shape, `writing-style.md` owns voice and wins on conflict); the two `unslop` references repointed at `writing-style.md` |
 | unslop | `disable-model-invocation: true` added; description rewritten to defer to `writing-style.md` |
 | why | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
 
-## genmedia.sh registry — installed by the `genmedia` CLI
+## genmedia.sh registry: installed by the `genmedia` CLI
 https://github.com/fal-ai-community/genmedia-cli
 
 | Skill | Local changes |
 |---|---|
-| genmedia | none |
+| genmedia | em dashes replaced |
 
 Installed with `genmedia init --no-cursor --no-agents-md`, then moved here and
 symlinked so it is versioned like the rest. That move leaves the CLI's
@@ -59,6 +59,14 @@ over.
 The registry holds 17 skills; only the default one is installed. `marketing` and
 `commercial` were deliberately skipped: they give generic campaign advice that
 competes with the Upspeech brand system in `upspeech-website`.
+
+## The em dash rule applies to these too
+
+August 2026: every em dash in this directory was replaced, vendored copies
+included, which is why three rows above say so. These are instruction files an
+agent reads on every run, and one that uses a punctuation mark the house rule
+bans teaches the habit to the session reading it. The cost is that re-vendoring
+now has one more change to re-apply.
 
 ## Updating
 

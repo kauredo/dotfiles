@@ -46,7 +46,7 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - MUST: Honor `prefers-reduced-motion`
 - MUST: Animate compositor-friendly props (`transform`, `opacity`) only
 - NEVER: Animate layout props (`top`, `left`, `width`, `height`)
-- NEVER: `transition: all`—list properties explicitly
+- NEVER: `transition: all`, list properties explicitly
 - SHOULD: Use ease-out-quart/quint/expo for natural deceleration
 - MUST: Animations interruptible and input-driven
 
@@ -88,5 +88,5 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - SHOULD: Crisp edges via semi-transparent borders + shadows
 - SHOULD: Nested radii: child ≤ parent; concentric
 - SHOULD: Tint borders/shadows/text toward bg hue
-- MUST: Meet contrast—prefer APCA over WCAG 2
+- MUST: Meet contrast, prefer APCA over WCAG 2
 - MUST: Increase contrast on hover/active/focus

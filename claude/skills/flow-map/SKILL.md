@@ -21,7 +21,7 @@ This is the analysis `visual-plan` can't do on its own: `visual-plan` renders a 
 
 ## Workflow
 
-### Phase 1 — Scope the flow
+### Phase 1: Scope the flow
 
 From the user's description, pin down what flow to trace and where it starts:
 
@@ -30,21 +30,21 @@ From the user's description, pin down what flow to trace and where it starts:
 - Note the repos in scope. This is a multi-repo workspace (`app-backend` Rails API, `app-frontend` React, `upspeech-ai` FastAPI). Flows often cross repos (FE action, backend controller, AI service call); decide which repos the trace will touch.
 - If the description is too vague to locate an entry point, resolve it from the codebase where you can; ask the user only about what's genuinely ambiguous, one question at a time, each with a recommended answer.
 
-### Phase 2 — Trace end to end
+### Phase 2: Trace end to end
 
 Follow the flow hop by hop across layers. For any flow of real size, fan out read-only `Explore` subagents, one per layer or repo, rather than reading everything in the main context. Capture for each hop: the `file:line`, what it does, and what it calls next.
 
 Typical layer chain to walk (skip layers the flow doesn't use):
 
-1. **Frontend** — route, page, component, the `lib/api.ts` call, any client-side guard.
-2. **API** — controller action under `api/v1/`, authn/authz, params, tenant scoping.
-3. **Service / job** — `app/services/`, `app/jobs/` (Solid Queue), models touched.
-4. **AI service** — any call into `upspeech-ai` (`app.py`, report writer), shared-secret/webhook hops.
-5. **Persistence / external** — DB writes, GCS, third-party APIs.
+1. **Frontend**: route, page, component, the `lib/api.ts` call, any client-side guard.
+2. **API**: controller action under `api/v1/`, authn/authz, params, tenant scoping.
+3. **Service / job**: `app/services/`, `app/jobs/` (Solid Queue), models touched.
+4. **AI service**: any call into `upspeech-ai` (`app.py`, report writer), shared-secret/webhook hops.
+5. **Persistence / external**: DB writes, GCS, third-party APIs.
 
 Subagent prompts must be self-contained: give each the absolute repo path, the flow name, the entry point you found, and the instruction to return `file:line` hops and any branch conditions only, no fixes and no file dumps.
 
-### Phase 3 — Map the branch points (the core of this skill)
+### Phase 3: Map the branch points (the core of this skill)
 
 Walk the traced path and find every place the flow forks. Prioritize **feature flags**, then other gates:
 
@@ -54,7 +54,7 @@ Walk the traced path and find every place the flow forks. Prioritize **feature f
 
 For each branch, note the **failure/empty path** too: what the user sees when the gate denies (redirect, 403, empty state, silent no-op).
 
-### Phase 4 — Assemble the picture
+### Phase 4: Assemble the picture
 
 Produce a structured, grounded analysis:
 
@@ -63,7 +63,7 @@ Produce a structured, grounded analysis:
 - The **branch matrix** from Phase 3.
 - **Open questions & risks**: surprising flag interactions, gates that disagree, dead branches, stale-cache hazards, anything a reader should verify before changing the flow.
 
-### Phase 5 — Render
+### Phase 5: Render
 
 By default, hand the Phase 4 analysis to the **`visual-plan`** skill (Skill tool) to render it as an interactive visual document. `visual-plan` defaults to local-files mode; keep it there, since flows here touch patient data. Treat the assembled analysis as the plan content: the mermaid diagram, file map, branch matrix, and open questions each map to a `visual-plan` block.
 

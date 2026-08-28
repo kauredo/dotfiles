@@ -14,11 +14,11 @@ When I ask about personal projects, tasks, or life organization, check the vault
 
 ## Stack Preferences
 
-- **Mailer (personal projects):** AhaSend — free tier, REST API at `api.ahasend.com/v2`. Use this by default when adding email to any personal project.
+- **Mailer (personal projects):** AhaSend, free tier, REST API at `api.ahasend.com/v2`. Use this by default when adding email to any personal project.
 
 ### Design stack (when building UI / pages / sites)
 
-These tools overlap — compose them, don't pick one at random:
+These tools overlap. Compose them, don't pick one at random:
 
 1. **Decide the look** → `ui-ux-pro-max` skill. Pull a style, palette, font pairing, or chart type from its databases before writing component code.
 2. **Build it** → `frontend-design` skill / `/frontend-design`. Generates the distinctive, production-grade UI.
@@ -30,13 +30,13 @@ Skip steps for small tweaks. Full chain for a new page or site from scratch.
 
 ## Coding Guidelines
 
-Behavioral guidelines to reduce common LLM coding mistakes. Bias toward caution over speed — for trivial tasks, use judgment.
+Behavioral guidelines to reduce common LLM coding mistakes. Bias toward caution over speed. For trivial tasks, use judgment.
 
 ### 1. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs. Ask first.**
 
-Always use the `AskUserQuestion` tool to get clarity before acting. Default to asking — not guessing. This applies to:
+Always use the `AskUserQuestion` tool to get clarity before acting. Default to asking, not guessing. This applies to:
 - Ambiguous requirements or unclear scope
 - Multiple valid interpretations of a request
 - Architecture or design decisions with tradeoffs
@@ -44,7 +44,7 @@ Always use the `AskUserQuestion` tool to get clarity before acting. Default to a
 
 Before implementing:
 - State your assumptions explicitly. If uncertain, ask via `AskUserQuestion`.
-- If multiple interpretations exist, ask which one — don't pick silently.
+- If multiple interpretations exist, ask which one, don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask via `AskUserQuestion`.
 
@@ -68,11 +68,11 @@ When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it — don't delete it.
+- If you notice unrelated dead code, mention it, don't delete it.
 
 When your changes create orphans:
 - Remove imports/variables/functions that YOUR changes made unused.
-- Dead code should be cleaned up — unless it's commented out intentionally or has a comment explaining why it exists.
+- Dead code should be cleaned up, unless it's commented out intentionally or has a comment explaining why it exists.
 
 The test: Every changed line should trace directly to the user's request.
 
@@ -97,7 +97,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 **Use plan mode for any non-trivial task (3+ steps or architectural decisions).**
 
 - Enter plan mode to think through approach before writing code.
-- If something goes sideways mid-task, STOP and re-plan — don't keep pushing down a broken path.
+- If something goes sideways mid-task, STOP and re-plan, don't keep pushing down a broken path.
 - Use subagents to keep the main context clean: offload research, exploration, and parallel analysis.
 - One focused task per subagent. Don't duplicate work between main context and subagents.
 
@@ -105,7 +105,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 **Don't reason about third-party behavior from memory. Look it up.**
 
-Before integrating, upgrading, debugging, or answering anything about a third-party API, library, framework, CLI, cloud service, or model/provider SDK, invoke the `builder-skills:read-the-damn-docs` skill — it forces a web search for the current official docs and reads the primary source before you assume. This matters most for auth, billing, data, migration, deployment, and anything where API drift would burn time. (The `claude-api` skill already does this for Anthropic SDK work; this is the general-purpose version for everything else.)
+Before integrating, upgrading, debugging, or answering anything about a third-party API, library, framework, CLI, cloud service, or model/provider SDK, invoke the `builder-skills:read-the-damn-docs` skill, it forces a web search for the current official docs and reads the primary source before you assume. This matters most for auth, billing, data, migration, deployment, and anything where API drift would burn time. (The `claude-api` skill already does this for Anthropic SDK work; this is the general-purpose version for everything else.)
 
 ### 7. Git Commits
 
@@ -130,5 +130,5 @@ The Fable safeguards pattern-match on offensive-security vocabulary even in clea
 @RTK.md
 @writing-style.md
 
-<!-- github-pending-review.md is not imported here — /code-review loads it on demand by path when posting a pending PR review. -->
+<!-- github-pending-review.md is not imported here, /code-review loads it on demand by path when posting a pending PR review. -->
 

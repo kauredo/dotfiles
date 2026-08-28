@@ -37,7 +37,7 @@ officecli auto-updates daily in the background.
 
 **When unsure about property names, value formats, or command syntax, ALWAYS run help instead of guessing.** One help query is faster than guess-fail-retry loops.
 
-**Three-layer navigation** — start from the deepest level you know:
+**Three-layer navigation**: start from the deepest level you know:
 ```bash
 officecli pptx set              # All settable elements and their properties
 officecli pptx set shape        # Shape properties in detail
@@ -52,7 +52,7 @@ Replace `pptx` with `docx` or `xlsx`. Commands: `view`, `get`, `query`, `set`, `
 
 For multi-step workflows (3+ commands on the same file), use `open`/`close`:
 ```bash
-officecli open report.docx       # keep in memory — fast subsequent commands
+officecli open report.docx       # keep in memory, fast subsequent commands
 officecli set report.docx ...    # no file I/O overhead
 officecli close report.docx      # save and release
 ```
@@ -141,13 +141,13 @@ officecli validate slides.pptx    # Must pass before delivery
 
 ## L2: DOM Operations
 
-### set — modify properties
+### set: modify properties
 
 ```bash
 officecli set <file> <path> --prop key=value [--prop ...]
 ```
 
-**Any XML attribute is settable** via element path (found via `get --depth N`) — even attributes not currently present.
+**Any XML attribute is settable** via element path (found via `get --depth N`), even attributes not currently present.
 
 Run `officecli <format> set` for all settable elements. Run `officecli <format> set <element>` for detail.
 
@@ -159,7 +159,7 @@ Run `officecli <format> set` for all settable elements. Run `officecli <format> 
 | Spacing | Unit-qualified | `12pt`, `0.5cm`, `1.5x`, `150%` |
 | Dimensions | EMU or suffixed | `914400`, `2.54cm`, `1in`, `72pt`, `96px` |
 
-### add — add elements or clone
+### add: add elements or clone
 
 ```bash
 officecli add <file> <parent> --type <type> [--index N] [--prop ...]
@@ -174,7 +174,7 @@ officecli add <file> <parent> --from <path> [--index N]    # clone existing elem
 | **docx** | paragraph (para), run, table, row (tr), cell (td), image (picture/img), header, footer, section, bookmark, comment, footnote, endnote, formfield, sdt (contentcontrol), chart, equation (formula/math), field, hyperlink, style, toc, watermark, break (pagebreak/columnbreak) |
 | **xlsx** | sheet, row, cell, chart, image (picture), comment, table (listobject), namedrange (definedname), pivottable (pivot), sparkline, validation (datavalidation), autofilter, shape, textbox, databar/colorscale/iconset/formulacf (conditional formatting), csv (tsv) |
 
-**Clone:** `officecli add <file> / --from /slide[1]` — copies with all cross-part relationships.
+**Clone:** `officecli add <file> / --from /slide[1]`, copies with all cross-part relationships.
 
 Run `officecli <format> add` for all addable types and their properties.
 
@@ -186,7 +186,7 @@ officecli swap <file> <path1> <path2>
 officecli remove <file> '/body/p[4]'
 ```
 
-### batch — multiple operations in one save cycle
+### batch: multiple operations in one save cycle
 
 ```bash
 echo '[
@@ -203,7 +203,7 @@ Batch fields: `command`, `path`, `parent`, `type`, `from`, `to`, `index`, `props
 
 ## L3: Raw XML
 
-Use when L2 cannot express what you need. No xmlns declarations needed — prefixes auto-registered.
+Use when L2 cannot express what you need. No xmlns declarations needed, prefixes auto-registered.
 
 ```bash
 officecli raw <file> <part>                          # view raw XML
@@ -221,7 +221,7 @@ Run `officecli <format> raw` for available parts per format.
 
 | Pitfall | Correct Approach |
 |---------|-----------------|
-| `--name "foo"` | ❌ Use `--prop name="foo"` — all attributes go through `--prop` |
+| `--name "foo"` | ❌ Use `--prop name="foo"`, all attributes go through `--prop` |
 | `x=-3cm` | ❌ Negative coordinates not supported. Use `x=0cm` or `x=36cm` |
 | `/shape[myname]` | ❌ Name indexing not supported. Use numeric index: `/shape[3]` |
 | Guessing property names | ❌ Run `officecli <format> set <element>` to see exact names |
@@ -236,12 +236,12 @@ This skill covers the officecli CLI basics. For complex scenarios, load the dedi
 
 | Scenario | Skill | Min Version | When to Use |
 |----------|-------|:-----------:|-------------|
-| **Word documents** | `officecli-docx` | v1.0.23 | Create, read, edit .docx — reports, letters, memos, proposals |
+| **Word documents** | `officecli-docx` | v1.0.23 | Create, read, edit .docx, reports, letters, memos, proposals |
 | **Academic papers** | `officecli-academic-paper` | v1.0.24 | Research papers, white papers with TOC, equations, footnotes, bibliography |
-| **Presentations** | `officecli-pptx` | v1.0.23 | Create, read, edit .pptx — general slide decks |
+| **Presentations** | `officecli-pptx` | v1.0.23 | Create, read, edit .pptx, general slide decks |
 | **Pitch decks** | `officecli-pitch-deck` | v1.0.24 | Investor decks, product launches, sales decks with charts and stat callouts |
 | **Morph PPT** | `morph-ppt` | v1.0.24 | Morph-animated cinematic presentations |
-| **Excel** | `officecli-xlsx` | v1.0.23 | Create, read, edit .xlsx — financial models, trackers, formulas |
+| **Excel** | `officecli-xlsx` | v1.0.23 | Create, read, edit .xlsx, financial models, trackers, formulas |
 | **Data dashboards** | `officecli-data-dashboard` | v1.0.24 | CSV/tabular data → Excel dashboards with KPI cards, charts, sparklines |
 
 > **How to load:** Ask your AI tool to enable the skill by name, or load the skill file from `skills/<skill-name>/SKILL.md`.

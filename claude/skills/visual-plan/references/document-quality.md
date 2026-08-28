@@ -1,4 +1,4 @@
-# Plan document quality — single source of truth
+# Plan document quality: single source of truth
 
 This file is the canonical quality bar for the plan document below the canvas:
 how it reads, which blocks to use, how open questions are surfaced, and the
@@ -47,7 +47,7 @@ which are app-specific adapters, and which are future examples.
 **When top visuals exist, they and the document never duplicate each other.**
 For UI work, the UI story lives in the top visual surface: canvas artboards for
 static inspection, plus prototype tabs when the flow should be functional. The
-document carries the technical depth the visuals cannot show — concrete
+document carries the technical depth the visuals cannot show, concrete
 file/symbol maps, API and data contracts, code snippets, migration or
 implementation phases, risks, and validation. For architecture/code reviews,
 invert that: the document is the visual surface, and each recommendation
@@ -61,12 +61,12 @@ wireframes or prose. Put the actual choice in the bottom "Open Questions" form.
 
 **Use the right block, and make it carry substance.** For the authoritative,
 machine-checked list of block types and their data schemas, call `get-plan-blocks`
-— it returns the live registry vocabulary (type, MDX tag, placement, key fields)
+it returns the live registry vocabulary (type, MDX tag, placement, key fields)
 so you never emit a block the editor cannot render or round-trip:
 
 - `rich-text` for plan prose with real bold/italic/code/links and nested lists.
 - `annotated-code` for the file map: when a load-bearing file is worth
-  highlighting, prefer the annotated walkthrough over a bare `code` block — carry
+  highlighting, prefer the annotated walkthrough over a bare `code` block, carry
   the real, syntax-highlighted code AND anchor short margin notes to the lines
   that actually change (the new action, the changed schema, the wiring point), so
   the reader sees what matters and why instead of code for code's sake. Each
@@ -81,18 +81,18 @@ so you never emit a block the editor cannot render or round-trip:
   are legacy: their renderers stay for old plans, but do not author new ones.)
 - For a decision: if the reviewer must still pick between a genuinely-open
   either/or, put it in the bottom Open Questions `question-form` as a `single`
-  question — one option per real alternative, each with a short detail and
+  question, one option per real alternative, each with a short detail and
   `recommended: true` on the one you would choose; do not also restate the same
   choice elsewhere. If you have already committed to an approach, state it as
   settled prose or a `callout` with `tone="decision"`, optionally with a
-  `columns` block for a side-by-side comparison of the options you weighed — not
+  `columns` block for a side-by-side comparison of the options you weighed, not
   as a confusing mid-document form for a question you have already answered.
 - `columns` for side-by-side before/after or current/target comparisons where
   each side needs real nested blocks; label the columns clearly and avoid
   stacking comparison blocks vertically when parallel reading is the point.
 - `diagram` for two-dimensional architecture, dependency, data-flow, or state
   relationships, only when it clarifies something real. Prefer standard
-  two-dimensional layouts — paired before/after panels, layered diagrams,
+  two-dimensional layouts, paired before/after panels, layered diagrams,
   swimlanes, dependency maps, matrices, or grouped regions; do not default to
   left-to-right chains, and use a line only when the relationship is truly a
   sequence. Do not use a body `diagram` as the primary artifact for a requested
@@ -120,7 +120,7 @@ so you never emit a block the editor cannot render or round-trip:
   local before/after or current/target spatial diagram, then concise
   Problem/Solution/Why text.
 - `tabs` for multiple states, directions, or comparisons. A tab that reveals
-  only prose usually means the plan is under-specified — include a relevant
+  only prose usually means the plan is under-specified, include a relevant
   visual unless the tab is intentionally document-only.
 - `table`, `checklist`, `callout` for scannable structure.
 
@@ -130,13 +130,13 @@ block titled "Open Questions" so the renderer presents it as a distinct section.
 That bottom form is the ONLY place that enumerates the open questions: never add
 a second "Open Questions" heading, list, or recap of the same questions earlier
 in the document. A one-line pointer in the overview prose ("a few decisions are
-still open — see Open Questions below") is fine, but do not reproduce the
+still open, see Open Questions below") is fine, but do not reproduce the
 question list or a parallel questions/decisions section above it.
 Use `single` or `multi` for clear choices, `freeform` for constraints,
 `recommended: true` for the default you would pick, and option `wireframe` /
 `diagram` previews only when the options are not already visible in the top
 canvas. `single` and `multi` questions always render a write-in field so a
-reviewer can answer with a custom option — never add an explicit "Other" option
+reviewer can answer with a custom option, never add an explicit "Other" option
 yourself; set `allowOther: false` only when a free-text answer makes no sense.
 Keep non-answerable assumptions or risks as concise `callout` blocks in
 the relevant section. Never bury a questions/decisions wall inside the plan
@@ -156,7 +156,7 @@ real manifest or data fixture, browser interaction, save/sync action, and an
 on-disk or database assertion. Name the command or manual browser path when it
 is known.
 
-**`custom-html` is a bounded escape hatch only** — a single complete fragment
+**`custom-html` is a bounded escape hatch only**: a single complete fragment
 inside a block, never `html`/`head`/`body`/`script` tags, never a generic
 placeholder, density demo, or proof that custom HTML works. Prefer the native
 blocks for normal plans. For architecture/code reviews, use `diagram`

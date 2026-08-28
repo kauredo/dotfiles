@@ -1,4 +1,4 @@
-# HTML wireframe quality — single source of truth
+# HTML wireframe quality: single source of truth
 
 This file is the canonical quality bar for HTML wireframes / `<Screen>` /
 `WireframeBlock` content, shared word for word by `/visual-plan` and
@@ -10,7 +10,7 @@ author wireframes from memory or paraphrase these rules per command.
 **A wireframe is an HTML mockup. The renderer owns the look; you write the
 content.** Set `data.html` to a self-contained, semantic HTML fragment of the
 screen and set `data.surface`. The renderer owns the surface footprint/aspect,
-the dark/light theme, the hand-drawn font, and the rough.js sketch overlay — you
+the dark/light theme, the hand-drawn font, and the rough.js sketch overlay, you
 never write `<html>`/`<body>`/`<script>`/`<style>` tags or any
 width/height/coordinates. You write real HTML layout and real product
 content; the renderer styles and roughens it.
@@ -26,13 +26,13 @@ content; the renderer styles and roughens it.
 
 **Write PLAIN semantic HTML and let the renderer style it.** Bare elements
 (`h1`/`h2`/`h3`, `p`, `button`, `input`, `<input type="checkbox">`, `a`, `hr`)
-are auto-themed — no classes needed. Helper classes carry the rest:
+are auto-themed, no classes needed. Helper classes carry the rest:
 
-- `.wf-card` / `.wf-box` — a bordered, padded container (a panel, a list item).
-- `.wf-pill` / `.wf-chip` — a rounded tag or filter; add `.accent`
+- `.wf-card` / `.wf-box`, a bordered, padded container (a panel, a list item).
+- `.wf-pill` / `.wf-chip`, a rounded tag or filter; add `.accent`
   (`<span class="wf-pill accent">`) for the accent-filled variant.
-- `.wf-muted` — secondary/muted text (or use `<small>`).
-- `button.primary` or any element with `[data-primary]` — the accent-filled
+- `.wf-muted`: secondary/muted text (or use `<small>`).
+- `button.primary` or any element with `[data-primary]`, the accent-filled
   primary button.
 
 **No decorative shadows around mockups.** Do not put `box-shadow`, `filter:
@@ -61,7 +61,7 @@ themes. For any inline border, background, or text color, reference a token:
 `--wf-muted` (secondary text), `--wf-line` (borders/dividers), `--wf-paper`
 (page background), `--wf-card` (container surface), `--wf-accent` /
 `--wf-accent-fg` / `--wf-accent-soft` (brand action), `--wf-warn`, `--wf-ok`,
-and `--wf-radius`. Never hard-code a hex color and never set `font-family` — the
+and `--wf-radius`. Never hard-code a hex color and never set `font-family`, the
 renderer owns the sketch/clean font.
 
 **Use literal CSS lengths for spacing.** The `--wf-*` tokens are for colors and
@@ -71,13 +71,13 @@ variables inside wireframe HTML; if a token is unavailable in the Plan renderer,
 padding collapses and content hugs the border. Use explicit CSS lengths for
 layout: `padding:16px`, `gap:12px`, `margin-top:18px`, `minmax(0,1fr)`.
 
-**Lay out with inline `style` flex/grid.** You write the real layout —
-`display:flex; flex-direction:column; gap:10px; padding:16px` and so on — and the
+**Lay out with inline `style` flex/grid.** You write the real layout,
+`display:flex; flex-direction:column; gap:10px; padding:16px` and so on, and the
 renderer never repositions anything. Compose the actual product: reproduce the
 current screen, then show the modification. Real labels, real counts, real dates,
 real button text grounded in the screen you read; not lorem or gray bars.
 
-**Surface presets — match the real footprint, never default to desktop+mobile.**
+**Surface presets, match the real footprint, never default to desktop+mobile.**
 Pick the `surface` that matches what the user will actually see:
 
 - `browser`: a web page that needs a browser chrome frame around it.
@@ -130,20 +130,20 @@ approximate it from the wireframe.
 
 **Zoom in on sub-surfaces, don't redraw the page.** For a small sub-surface (a
 popover, menu, dialog, toast), show the full screen once, then add a small
-separate artboard whose `html` contains ONLY that sub-surface — do not re-draw
+separate artboard whose `html` contains ONLY that sub-surface, do not re-draw
 the whole page around it, and do not scale a duplicate up. Pick the matching
 `surface` (e.g. `popover`) so the footprint is right; never widen a popover to
 page width.
 
 **Loading / skeleton states.** Set `data.skeleton: true` on the wireframe and
-fill the `html` with neutral, textless placeholder geometry — boxes and bars
+fill the `html` with neutral, textless placeholder geometry, boxes and bars
 built as `<div>`s with `background:var(--wf-line)` and explicit heights/widths,
 no labels or copy. The renderer drops borders, sketch, and color into the
 skeleton register automatically. Never escape to a `custom-html` document block
 to fake a loader.
 
 **Editing an existing mockup.** In hosted mode, to change one element, text, or
-color in an existing html mockup, do not regenerate the frame — call
+color in an existing html mockup, do not regenerate the frame, call
 `update-visual-plan` with
 `contentPatches: [{ op: "patch-wireframe-html", blockId, edits: [{ find,
 replace }] }]`. Each `find` is a unique snippet of the current html (read it
@@ -178,20 +178,20 @@ between light/dark, sketch/clean, or different zoom levels.
 
 **Do not wrap intentionally single-line labels.** For toolbars, tab rails,
 breadcrumbs, chip/filter rows, branch and file names, file chips, and code
-filenames — any deliberately single-line row — do not let long text wrap. Put
+filenames, any deliberately single-line row, do not let long text wrap. Put
 `white-space: nowrap` on the row (and `overflow: hidden; text-overflow: ellipsis`
 on the individual labels that can grow), so the wireframe demonstrates the actual
 layout behavior instead of producing ugly stacked or vertical text. Use
 horizontally scrollable or clipped rails for overflow.
 
-**Fill the frame; keep labels short.** Each artboard is a fixed-size surface — compose enough realistic HTML to fill it top to bottom with even vertical rhythm; never leave a large empty band. On desktop/app-shell sidebars, let the nav stack flex to fill (`flex:1`) and add any persistent bottom action/status after it so the rail reads complete in taller frames. On mobile especially, flow real rows down the whole screen (status bar, header, then list/detail content) rather than a header floating above a gap. Keep every label short enough to sit on one line within its column — shorten the copy rather than relying on the frame to absorb it (long labels wrap or clip).
+**Fill the frame; keep labels short.** Each artboard is a fixed-size surface, compose enough realistic HTML to fill it top to bottom with even vertical rhythm; never leave a large empty band. On desktop/app-shell sidebars, let the nav stack flex to fill (`flex:1`) and add any persistent bottom action/status after it so the rail reads complete in taller frames. On mobile especially, flow real rows down the whole screen (status bar, header, then list/detail content) rather than a header floating above a gap. Keep every label short enough to sit on one line within its column, shorten the copy rather than relying on the frame to absorb it (long labels wrap or clip).
 
 **Persistent chrome bars span the full frame width.** Top bars, app headers,
 toolbars, and bottom tab/nav bars are full-width chrome, not centered content.
 Lay each one out as a single flex row that fills the frame
 (`style="display:flex;align-items:center;width:100%"`) and push trailing actions
 to the right edge with a flex spacer (`<div style="flex:1"></div>`) between the
-leading group and the trailing group — never center a bar inside a narrow,
+leading group and the trailing group, never center a bar inside a narrow,
 centered block, and never let it collapse to the width of its contents. In a
 Before/After pair the bar stays full-width in BOTH states even when one state has
 fewer controls; the spacer absorbs the difference so the remaining controls hold
@@ -208,7 +208,7 @@ empty band beneath it.
 **Before / after must be comparable.** When showing a state change, preserve the
 unchanged controls in both states so the reviewer can see exactly what moved or
 appeared; do not show an added control as a generic box floating elsewhere in
-the surface. Place the new/changed affordance where the implementation puts it —
+the surface. Place the new/changed affordance where the implementation puts it,
 for example, a new `Edit with AI` action in a popover header belongs in the
 top-right header slot, aligned with the title, not in the body or footer. Use
 the same frame size, scale, outer padding, border radius, and visual density on
@@ -218,12 +218,12 @@ height fit the content rather than leaving a tall empty lower half.
 **Name the states with the column header, never inside the frame.** For
 document-body wireframes (recaps), put the two
 states in a `columns` block and set each column's `label` to `Before` and
-`After` — the renderer draws that label as an `h4` heading above each frame. Do
+`After`: the renderer draws that label as an `h4` heading above each frame. Do
 NOT bake a `Before`/`After` pill, title, or heading into the wireframe `html`: a
 label placed inside reads as part of the product UI, lands in a random corner,
 and clutters the comparison. The column header is the one and only place the
 state name belongs. On a canvas, place the two state artboards as neighbors with
-frame labels — never encode Before/After inside the html.
+frame labels, never encode Before/After inside the html.
 
 **Let the surface choose side-by-side vs. stacked.** For document-body
 wireframes (recaps), the `columns` renderer lays
@@ -234,7 +234,7 @@ cropped. Author both wireframes with the real `surface` and the matching
 `Before`/`After` column labels; do not hand-stack the pair into separate
 top-level wireframes or duplicate the state name as body content.
 
-**Good example — a contacts list, surface `browser`.** A small, real screen
+**Good example, a contacts list, surface `browser`.** A small, real screen
 composed from the helper classes and tokens, layout in inline flex, no fonts or
 hex colors:
 

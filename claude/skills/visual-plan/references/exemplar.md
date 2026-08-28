@@ -1,4 +1,4 @@
-# Good vs. bad exemplar — single source of truth
+# Good vs. bad exemplar: single source of truth
 
 This file is the canonical worked example of a great plan (and the anti-patterns
 to avoid). Read it alongside the document-quality and canvas references before
@@ -7,10 +7,10 @@ authoring a plan; it is the bar these plans must clear.
 <!-- SHARED-CORE:exemplar START -->
 
 **GOOD.** A UI-first plan for a todo app: a canvas with a `desktop` artboard whose
-`data.html` is a real flex layout — a sidebar of links (`Inbox 12`, `Today 4`,
+`data.html` is a real flex layout, a sidebar of links (`Inbox 12`, `Today 4`,
 `Done`), a main column with an `<h1>Today</h1>`, accent `.wf-pill`s for the
 filters, a muted section label `OVERDUE`, and `.wf-card` task rows carrying real
-titles, due dates, and a primary `button.primary` — styled only through bare
+titles, due dates, and a primary `button.primary`, styled only through bare
 elements, helper classes, and `--wf-*` tokens, so the renderer applies the
 correct desktop footprint, theme, and one subtle whole-frame wobble. Plain-text
 designer notes sit spaced off the frame, pointing only at the controls that need
@@ -19,7 +19,7 @@ done-criteria, a few `code` blocks (grouped in a vertical `tabs` block when
 more than one) showing the real shape of the load-bearing files, a `callout`
 with `tone="decision"` stating the chosen approach with a `columns` block
 weighing the two real options behind it,
-and a validation step — none of it repeating the canvas. If the task also
+and a validation step, none of it repeating the canvas. If the task also
 changes a multi-step completion flow, the same top area includes a Prototype tab
 whose screens use the same labels and states as the canvas artboards, with
 `data-goto` controls for the sequence. This is the bar.

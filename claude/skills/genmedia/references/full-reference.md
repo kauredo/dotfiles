@@ -89,7 +89,7 @@ Always run `schema` before `run` for an unfamiliar endpoint. The exact field nam
 
 ## run: execute a model
 
-Two forms — smart routing (no endpoint) and explicit endpoint.
+Two forms, smart routing (no endpoint) and explicit endpoint.
 
 ### Smart routing (preferred for default-quality requests)
 

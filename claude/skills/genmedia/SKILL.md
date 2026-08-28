@@ -89,7 +89,7 @@ genmedia status fal-ai/veo3.1 "$REQ" \
  --json
 ```
 
-Smart routing also works for async — the response includes `routed` and `endpoint_id` so you know which endpoint to poll on `status`:
+Smart routing also works for async, the response includes `routed` and `endpoint_id` so you know which endpoint to poll on `status`:
 
 ```bash
 SUBMIT=$(genmedia run "a 30-second video of waves" --async --json)

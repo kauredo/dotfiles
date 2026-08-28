@@ -10,9 +10,9 @@ The rubrics are not yours to invent. They live in `~/Notes/03_Resources/intervie
 
 **Read `reference/calibration.md` in this skill directory before assigning a single rating.** The answer keys tell you what each level contains. That file tells you where the levels actually sit, which is different and is where scoring goes wrong. The short version: a 5 is Senior II in practice and you will almost never award one, 4 is the Senior bar, and a fluent answer grounded only in what the candidate has already done is a 3 no matter how good it sounded.
 
-> **Voice — read this first, it applies to every word of output.** The report goes to hiring managers and sometimes to the candidate. It must read like an engineer who sat in the room, not a model producing a rubric summary. Short declarative sentences. Plain words. State the judgment instead of dressing it up.
+> **Voice, read this first, it applies to every word of output.** The report goes to hiring managers and sometimes to the candidate. It must read like an engineer who sat in the room, not a model producing a rubric summary. Short declarative sentences. Plain words. State the judgment instead of dressing it up.
 >
-> **No em dashes in prose. Ever.** Not as an aside, not a "correct" one. If you are about to type " — " inside a sentence, split the sentence or use a comma. The only exception is the report's own title line and stage headings, which follow the format the team already files (`<Name> — Technical Interview (Part II)`). Inside a bullet or a sentence there is no exception.
+> **No em dashes in prose. Ever.** Not as an aside, not a "correct" one. If you are about to type ", " inside a sentence, split the sentence or use a comma. The only exception is the report's own title line and stage headings, which follow the format the team already files (`<Name>, Technical Interview (Part II)`). Inside a bullet or a sentence there is no exception.
 >
 > Banned outright: significance-inflation verbs ("demonstrates", "showcases", "underscores", "exemplifies"), "robust", "comprehensive", "crucial", "solid grasp of", rule-of-three padding, tidy summary closers, and "reads"/"holds up" as evaluation verbs. Do not write "he demonstrated strong understanding of X" when "he knows X, and he gave a real example" says it. Do not narrate your own process ("I traced every answer", "after reviewing the transcript").
 >
@@ -22,7 +22,7 @@ The rubrics are not yours to invent. They live in `~/Notes/03_Resources/intervie
 >
 > **Mandatory final pass before you show anything:** the 14-check list in `~/.claude/writing-style.md` under "Mandatory final pass". Structural checks first, phrase grep last. Read that file if it is not in context. Running the grep first passes clean and feels finished, which is exactly how AI-sounding drafts have shipped before.
 
-## Step 1 — Resolve inputs
+## Step 1: Resolve inputs
 
 Argument: `$ARGUMENTS`
 
@@ -46,21 +46,21 @@ Argument: `$ARGUMENTS`
 
 **Audience** (`--audience`, optional, defaults to `internal`). `internal` is the filed evaluation: blunt, names gaps as gaps, records that you had to hand over an answer. `candidate` is feedback the person will read: same ratings, same named gaps, no commentary on how the interview felt to run and no hire language. Never guess this one. If the user's request suggests they want something to send the candidate and no flag was passed, ask which before writing.
 
-## Step 2 — Read the transcript in full, then the rubric
+## Step 2: Read the transcript in full, then the rubric
 
 Read the whole transcript before scoring anything. Large files come back truncated, so keep paging with `offset` until you have reached the end. **Never score from a partial read.** A single exchange near the end can flip a rating, and the interviewer's own closing feedback (often the last few minutes) is the best calibration signal in the file.
 
 Then read:
 
-- `~/Notes/03_Resources/interview-kits/Evaluation Grids.md` — the competency and stage rows for this role. These are the scoring surface.
-- The role's answer key — per-question level 1 through 5.
+- `~/Notes/03_Resources/interview-kits/Evaluation Grids.md`: the competency and stage rows for this role. These are the scoring surface.
+- The role's answer key, per-question level 1 through 5.
 - The role's kit, when you need the interviewer guidelines or the intended stage order.
 
 **Questions asked outside the role's own kit.** Interviews drift, and a good interviewer asks whatever the project needs. When an exchange has no matching question in the role's answer key (API versioning in a full-stack interview, a Kubernetes question in a back-end one), grep the other answer keys for it and score it against the rubric that actually covers it. Say which key you borrowed from in the report footer. Do not invent a rubric, and do not drop the exchange for lack of one.
 
 **AI-Native Development** only has a rubric in the Design Engineer kit. Any role's interview may probe it, so borrow that one and note it.
 
-## Step 3 — Establish who is speaking
+## Step 3: Establish who is speaking
 
 Do this before the evidence map, because every rating downstream depends on it and it is the easiest thing in the whole process to get silently wrong.
 
@@ -73,7 +73,7 @@ From the opening minutes, where people introduce themselves, build a roster: eac
 - **Flag low-confidence segments rather than scoring them.** A passage where you cannot tell who is talking is not evidence. Say so in the footer and score around it.
 - **Note who else was in the room.** An observer who barely speaks still shapes the session, and a second interviewer's questions belong to them, not to the lead.
 
-## Step 4 — Build the evidence map
+## Step 4: Build the evidence map
 
 Before any rating exists, walk the transcript once and record, per topic:
 
@@ -85,7 +85,7 @@ Before any rating exists, walk the transcript once and record, per topic:
 - **Honesty and bluffing.** Note every "I don't know" and every claim that outran the candidate's actual experience. Both are load-bearing. A candidate who never bluffs is a different hire from one who does, at the same score.
 - **Whether the topic was actually probed.** An area the interviewer raised once and let drop is not a measured weakness. Mark it unprobed.
 
-## Step 5 — Fan out the scorers
+## Step 5: Fan out the scorers
 
 Invoke one subagent per stage in the role's grid (typically 3 to 5: Personal ↔ Professional, the two or three technical stages, Advanced Deep-Dive, plus AI-Native when it came up). Send them **in a single message with multiple tool_use blocks** so they run concurrently. Use `subagent_type: "general-purpose"`.
 
@@ -104,7 +104,7 @@ Each scorer gets:
 
 Tell the user which scorers you are running in one line.
 
-## Step 6 — Calibrate against inflation
+## Step 6: Calibrate against inflation
 
 Scorers are generous. They pattern-match a plausible-sounding answer to the level-3 text, then drift up from there. Before aggregating, re-read `reference/calibration.md` and then the transcript passage behind every rating of 3 or higher, and check five things:
 
@@ -130,7 +130,7 @@ Then two checks on the rows rather than the ratings:
 
 Record what you downgraded, reclassified, or overruled, one line each, in the report footer. The user needs to be able to overrule you back.
 
-## Step 7 — Separate the level call from the recommendation
+## Step 7: Separate the level call from the recommendation
 
 Two independent questions, and conflating them is the classic failure of an interview write-up.
 
@@ -158,12 +158,12 @@ Verify any claim the later write-up makes about the earlier one first (Step 1). 
 
 **Check whether feedback given in an earlier round was acted on.** If an interviewer named something to fix and the next round shows the same behaviour, that is a finding about coachability that outweighs any single answer. If it was acted on, say that too, because it is the best evidence of growth a process can generate.
 
-## Step 8 — Write the report
+## Step 8: Write the report
 
 Output in chat, in this shape. It mirrors the format the team already files.
 
 ```
-# <Candidate name> — Technical Interview <round, if any>
+# <Candidate name>: Technical Interview <round, if any>
 
 **Note:** Overall Recommendation is a <recommendation>, leveled as <level and track> rather than
 <the level and track they interviewed for>.
@@ -235,9 +235,9 @@ Same ratings, same named gaps, same specificity. What changes:
 - Keep the "what would have moved this up a point" element from every scorer and make it the most prominent part of each section. That is the entire value of the document to the person receiving it.
 - Keep the honest gaps. Softening them wastes the candidate's time, which is the one thing this document exists to save.
 
-## Step 9 — Offer the file, do not write it uninvited
+## Step 9: Offer the file, do not write it uninvited
 
-Show the report in chat first. Then offer to save it as markdown, defaulting to `~/Downloads/<Candidate> — Technical Interview<round>.md`.
+Show the report in chat first. Then offer to save it as markdown, defaulting to `~/Downloads/<Candidate>, Technical Interview<round>.md`.
 
 **Never write a candidate evaluation into `~/Notes/`.** That vault is a git repository that syncs, and named candidate evaluations were deliberately kept out of it (see `0_Interview_Kits_Index.md`). Downloads or a path the user names, nothing else. Same reason: do not publish one as an artifact unless the user explicitly asks.
 

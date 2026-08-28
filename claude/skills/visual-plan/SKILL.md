@@ -64,21 +64,21 @@ surface.
 - **Gate thoughtfully.** A visual plan is a richer review surface, not only a
   tool for giant projects. Use it when the user needs to see, compare, comment
   on, or approve a direction before code, even for a modest UI/state/workflow
-  change. Skip it for truly trivial, unambiguous work — typos, one-line fixes, a
+  change. Skip it for truly trivial, unambiguous work, typos, one-line fixes, a
   single well-specified function, anything whose diff you could describe in one
-  sentence — and just make the change. Never pad a plan with filler and never
+  sentence, and just make the change. Never pad a plan with filler and never
   ship a single-step plan.
 - **Research before you draft.** Read the real files, actions, schema, and
   patterns first; name actual files, symbols, and data shapes instead of
   inventing them. Check existing `actions/` before proposing endpoints and prefer
   named client helpers over raw fetch. Delegate wide exploration to a sub-agent.
-  Lead with reuse: for each step, name what it reuses — existing actions, schema,
-  components, helpers — before what it adds, so the plan explains the genuinely new
+  Lead with reuse: for each step, name what it reuses, existing actions, schema,
+  components, helpers, before what it adds, so the plan explains the genuinely new
   delta instead of redescribing what already exists.
 - **Decide the hard-to-reverse bets first.** For non-trivial backend, data, or API
   work, sketch where the feature is headed, then call out the decisions that are
-  expensive to undo once data or callers depend on them — wire format, public ids,
-  data-model shape, auth and ownership boundaries — and get those right in the plan
+  expensive to undo once data or callers depend on them, wire format, public ids,
+  data-model shape, auth and ownership boundaries, and get those right in the plan
   even if most of the feature ships later. Then scope to the smallest first cut that
   proves the approach without foreclosing it, stating both what is in and what is
   explicitly deferred.
@@ -104,7 +104,7 @@ surface.
   the positive model directly.
 - **Planning is read-only.** Make no source edits while building or reviewing the
   plan. Start editing only after the user approves the direction.
-- **Clarify vs. assume.** Do not ask how to build it — explore and present the
+- **Clarify vs. assume.** Do not ask how to build it, explore and present the
   approach and options in the plan. Ask a clarifying question only when an
   ambiguity would change the design and you cannot resolve it from the code; use
   the host agent's normal ask-user-question flow and batch 2-4 high-leverage
@@ -118,7 +118,7 @@ surface.
   with rationale or put it in that bottom form with a recommended default.
 - **The plan is the approval gate.** After surfacing it, ask the user to review
   and approve before you write code, and name which files/areas the work touches.
-  Presenting the plan and requesting sign-off is the approval step — do not ask a
+  Presenting the plan and requesting sign-off is the approval step, do not ask a
   separate "does this look good?" question.
 - **The document is the source of truth, not the chat.** When scope shifts,
   update the plan with `update-visual-plan` rather than only changing course in
@@ -126,7 +126,7 @@ surface.
   a correction to an earlier draft inside the plan itself. Re-read the approved
   plan before major steps.
 
-## Create A Structured Agent-Native Plan — Never Inline
+## Create A Structured Agent-Native Plan: Never Inline
 
 The deliverable is ALWAYS a structured Agent-Native Plan, not a chat-only plan.
 The hosted Plan MCP connector (`plan` server, or legacy `agent-native-plans`) is
@@ -140,7 +140,7 @@ the default surface is hosted; choose the right Plan mode for the user's
 ownership, privacy, sharing, and branding needs.
 
 By default, create the plan via the Plan MCP connector. NEVER hand the plan over
-as inline chat content — no Markdown prose, ASCII sketch, table, or fenced
+as inline chat content, no Markdown prose, ASCII sketch, table, or fenced
 wireframe. Some clients lazy-load connector tools through a deferred tool
 registry instead of showing the `plan` namespace upfront; before declaring the
 connector missing, search/load tools with the host's discovery surface
@@ -170,7 +170,7 @@ forward only the code-research and plan-composition guidance here.
    clarifying questions as needed before generating the plan. If a source plan
    already exists, gather its exact text from the user's paste, a referenced
    file, or recent visible agent context; do not invent source text.
-2. Call `get-plan-blocks` for the authoritative block catalog — do not author
+2. Call `get-plan-blocks` for the authoritative block catalog, do not author
    from memorized tags. Then call the mode-matched create tool:
    `create-visual-plan` for document-first plans (architecture, backend, data,
    refactor, API), `create-ui-plan` for UI-first plans, `create-prototype-plan`
@@ -202,7 +202,7 @@ forward only the code-research and plan-composition guidance here.
    Always include the actual URL in chat so the next step is a click in CLI or
    other text-only hosts. When the host exposes an embedded browser/preview panel
    and a tool can open arbitrary URLs there, open the returned plan URL
-   automatically for convenient review — a convenience and smoke test, never the
+   automatically for convenient review, a convenience and smoke test, never the
    only handoff or the access
    model. Plans should load out of the box for the local agent and local browser
    session; if a signed-in embedded browser cannot read a local plan that an
@@ -230,24 +230,24 @@ forward only the code-research and plan-composition guidance here.
 
 ## Self-Review Before Handoff
 
-For high-stakes plans — architecture, backend, data-model, migration, multi-file,
-or otherwise risky work — run one adversarial self-review pass before treating the
+For high-stakes plans, architecture, backend, data-model, migration, multi-file,
+or otherwise risky work, run one adversarial self-review pass before treating the
 plan as final. Skip it for small, UI-only, or single-decision plans where the cost
 outweighs the value. Keep the pass cheap and non-blocking:
 
 - **Surface the plan first, review concurrently.** Post the link and let the user
-  start reading, then run the review in parallel — never make the user wait on it.
+  start reading, then run the review in parallel, never make the user wait on it.
 - **Review the written plan; do not re-research.** Critique the plan text and its
   own blocks. The grounding was already done while drafting, so the review checks
   the output instead of re-exploring the repo.
 - **Spawn one skeptical reviewer** whose only job is to find what is weak, missing,
-  or wrong — not to praise. Point it at: hard-to-reverse decisions made implicitly
+  or wrong, not to praise. Point it at: hard-to-reverse decisions made implicitly
   or not at all (wire format, public ids, data-model shape, auth, ownership); steps
   not anchored in real files or symbols; a menu of options where the plan should
   commit to one; obvious missing decisions ("what happens when X?", "why not Y?");
   and padding or single-step filler.
 - **Fix vs. ask.** Apply clear-cut fixes yourself with `update-visual-plan`
-  `contentPatches` — vague non-goals, unanchored claims, an obvious missing
+  `contentPatches`: vague non-goals, unanchored claims, an obvious missing
   decision. Route genuine judgment calls back to the user instead: add them to the
   bottom `question-form` Open Questions block or batch them into the normal
   ask-user-question flow. Do not silently decide them.
@@ -316,24 +316,24 @@ and screen ids across both surfaces. The canvas is the inspectable static refere
 the prototype is the interactive version of that same flow, not a separate
 design direction.
 
-## Wireframe quality — read `references/wireframe.md`
+## Wireframe quality: read `references/wireframe.md`
 
-UI recap/plan wireframes must meet a strict quality bar — full-width chrome,
+UI recap/plan wireframes must meet a strict quality bar, full-width chrome,
 pinned bottom bars, real product content, before/after comparability, the right
 `surface` preset, `--wf-*` tokens instead of hex, and no `<html>`/`<style>`/font
 tags. Before authoring ANY wireframe / `<Screen>` / `WireframeBlock`, READ
-`references/wireframe.md` in this skill directory — it is the single source of
+`references/wireframe.md` in this skill directory, it is the single source of
 truth for HTML wireframe quality, shared word for word with `/visual-plan`
 and `/visual-recap`. Do not author wireframes from memory.
 
-## Canvas — read `references/canvas.md`
+## Canvas: read `references/canvas.md`
 
 The canvas is the single source of truth for static UI mockups: the `surface`
 locks each artboard's footprint, mixed surfaces lay out
 in lanes, annotations are plain-text designer notes anchored by
 `targetId`/`placement`, and edits are surgical `contentPatches`. Before
 authoring or editing ANY canvas, artboard, or annotation, READ
-`references/canvas.md` in this skill directory — it is the single source of truth
+`references/canvas.md` in this skill directory, it is the single source of truth
 for canvas/artboard mechanics. Do not author canvas layouts from memory.
 Canvas artboards use the same HTML wireframe path as document-body
 `WireframeBlock` screens: author `<Screen surface="..." html={...} />` with a
@@ -342,19 +342,19 @@ semantic HTML fragment. Do not author fresh kit-tree children such as
 those are legacy compatibility markup for old plans and produce brittle canvas
 layouts.
 
-## Document quality — read `references/document-quality.md`
+## Document quality: read `references/document-quality.md`
 
 The document is a serious technical plan, not marketing: outcome-first,
 prose-first, self-contained, built from the right native blocks, with open
 questions in a single bottom `question-form` and a pre-handoff visual check.
 Before authoring the plan document, READ `references/document-quality.md` in this
-skill directory — it is the single source of truth for the document quality bar.
+skill directory, it is the single source of truth for the document quality bar.
 Do not write the document from memory.
 
-## Good vs. bad exemplar — read `references/exemplar.md`
+## Good vs. bad exemplar: read `references/exemplar.md`
 
-For a worked example of the bar — a great UI-first plan and `/visual-plan`, plus
-the anti-patterns to avoid — READ `references/exemplar.md` in this skill
+For a worked example of the bar, a great UI-first plan and `/visual-plan`, plus
+the anti-patterns to avoid, READ `references/exemplar.md` in this skill
 directory before authoring a plan.
 
 ## Tool Guidance
@@ -383,14 +383,14 @@ directory before authoring a plan.
 - `get-plan-feedback`: read unconsumed human feedback. Use it frequently; it
   returns grouped threads, exact anchor details, expected resolver, and recent
   review-event payloads so agents can act only on the comments meant for them.
-- `get-plan-blocks`: resolve block tags before authoring — do not memorize tags;
+- `get-plan-blocks`: resolve block tags before authoring, do not memorize tags;
   call this first to get the authoritative tag names, required fields, and prop
   shapes from the live block registry.
 - `export-visual-plan`: export HTML, Markdown fallback, structured JSON, and MDX
   files for repo check-in.
 
 When the user critiques a plan's look or structure, fix the renderer or this
-skill — never hand-edit one stored plan. Turn feedback into better guidance.
+skill, never hand-edit one stored plan. Turn feedback into better guidance.
 
 ## Local-Files Privacy Mode
 
@@ -463,7 +463,7 @@ This section applies to hosted plans with `get-plan-feedback` /
 tools; interpret file/chat feedback directly, edit the MDX files, rerun the
 local bridge check/serve/verify command, and report the new local URL.
 
-`get-plan-feedback` returns rich anchors — read them before acting on any comment.
+`get-plan-feedback` returns rich anchors, read them before acting on any comment.
 
 - **Coordinate frames.** `targetX`/`targetY` are percentages *within* the
   element named by `targetSelector`/`targetKind`. Bare `x`/`y` are percentages
@@ -478,10 +478,10 @@ local bridge check/serve/verify command, and report the new local URL.
   point) only when no node id is present.
 - **Text quotes.** Resolve `textQuote` against current prose using
   `contextBefore`/`contextAfter` for disambiguation. If `ambiguous: true`, ask
-  the user — do not guess which occurrence is meant.
+  the user, do not guess which occurrence is meant.
 - **Detached comments.** `get-plan-feedback` flags threads whose quoted text no
   longer exists as `detached` (in `detachedThreads`). Reconcile these against
-  rewritten content — never silently drop them.
+  rewritten content, never silently drop them.
 - **Routing.** `resolutionTarget` is the only routing signal: act on `agent`,
   treat `human` as context only. `@mentions` are people to notify, never a
   routing signal.
@@ -495,7 +495,7 @@ local bridge check/serve/verify command, and report the new local URL.
 Use `set-resource-visibility` to change who can see a plan (e.g. public, login,
 or org-scoped). Use `share-resource` to grant specific users or roles access
 by email or role. Gate visibility before sharing any plan that covers
-unreleased or private work — default to the narrowest scope that meets the
+unreleased or private work, default to the narrowest scope that meets the
 review need.
 
 ## Setup & Authentication
@@ -505,7 +505,7 @@ There are two ways into Plans.
 **Coding agent (CLI).** Install once with the Agent-Native CLI. The command
 installs the Plans skills, registers the hosted Plans MCP connector, and runs
 auth/setup for the selected local client(s) in the same step (a one-time browser
-sign-in at setup — this is intended), so the first tool call in that client does
+sign-in at setup, this is intended), so the first tool call in that client does
 not hit an OAuth wall:
 
 ```bash
@@ -524,7 +524,7 @@ whenever you are ready, or choose a narrower `--client`. Auth and MCP tool
 loading are per client config/session.
 
 **Browser (people you share with).** Open the Plans editor and create & edit
-with no sign-up — you work as a guest. Sign in only when you want to save or
+with no sign-up, you work as a guest. Sign in only when you want to save or
 share; signing in claims the plans you made as a guest into your account.
 
 Sharing and commenting require an account: public/shared plans are viewable by

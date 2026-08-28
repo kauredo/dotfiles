@@ -10,7 +10,7 @@ Run a design critique loop. Repeat until satisfied.
 
 - If `$ARGUMENTS` specifies files or components, use those
 - If `$ARGUMENTS` is empty, run `git diff --name-only HEAD` to get files changed in this session (unstaged + staged). If nothing is uncommitted, use `git diff --name-only HEAD~1` to get the last commit's changes
-- Filter to only UI-relevant files (`.tsx`, `.jsx`, `.css`, `.html`) — skip tests, configs, scripts, and non-UI code
+- Filter to only UI-relevant files (`.tsx`, `.jsx`, `.css`, `.html`), skip tests, configs, scripts, and non-UI code
 
 If no UI files are found, tell the user and stop.
 
@@ -29,8 +29,8 @@ If no UI files are found, tell the user and stop.
 - Applying more changes would risk over-polishing or breaking what already works
 
 ### Rules
-- Be surgical — each round should only touch what the critique flagged
-- Don't gold-plate — "good enough to ship" beats "theoretically perfect"
-- Track rounds — report which round you're on and what changed
+- Be surgical, each round should only touch what the critique flagged
+- Don't gold-plate, "good enough to ship" beats "theoretically perfect"
+- Track rounds, report which round you're on and what changed
 - If the same issue keeps resurfacing after a fix, flag it to the user instead of looping forever
-- Max 4 rounds — if still finding critical issues after 4, stop and report what's left
+- Max 4 rounds, if still finding critical issues after 4, stop and report what's left
