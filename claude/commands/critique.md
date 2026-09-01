@@ -2,6 +2,22 @@ Conduct a holistic design critique, evaluating whether the interface actually wo
 
 **First**: Use the frontend-design skill for design principles and anti-patterns.
 
+## Step 0: Look at it rendered, and let someone else judge
+
+You cannot answer the AI slop question from source code. Two things have to be true for this critique to mean anything: you looked at the rendered page, and the judgment came from outside the context that built it.
+
+If the target can be rendered, do this before the rubric below.
+
+1. **Render it.** Launch the app with the `run` skill or the project's dev script, wait for it to be ready, then use the **chrome-devtools** MCP to navigate to each affected route and screenshot it. Desktop width, plus 390px if the change is responsive. Save the files to a temp dir. Reuse a dev server already running from an earlier round.
+2. **Find a bar to measure against.** Look for reference images the project already has: whatever `docs/design-system.md` points at, a `docs/references/` directory, anything the user pasted earlier in the session. Three or four in the same genre is enough.
+3. **Hand it to a fresh subagent.** Spawn a `general-purpose` agent with `model: "opus"` and give it the screenshot paths, the reference paths, and the rubric below. Tell it to `Read` each image. Give it nothing else: no code, no diff, no implementation notes, no earlier critiques, no account of why any choice was made. If it can see the reasoning, it will agree with the reasoning.
+4. **Ask for a ranking, not a review.** "Rank these five images by polish and taste, ours is `<file>`, and name the two changes that would move it up." A ranking against real work gives a stable answer across runs. "Does this look beautiful and not AI-generated" gives a different answer every time. Say explicitly that the references set a quality floor, so it does not hand back a copy of one of them.
+5. Its verdict opens the report, as the Anti-Patterns Verdict below.
+
+**With no reference images available**, tell the critic to name three or four real products in the same genre and rank against those from memory. Say in the report that the bar was self-supplied, which makes it softer.
+
+**If the target cannot be rendered** (a component with no route, tokens in isolation, no dev server), critique from the code and say so in the report's first line. A code-only critique cannot answer Section 1 with any confidence.
+
 ## Design Critique
 
 Evaluate the interface across these dimensions:

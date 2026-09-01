@@ -32,7 +32,13 @@ The context you need either way: target audience and use cases, brand personalit
 
 ## Phase 2: Foundation
 
-**First, decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options.
+**First, diverge.** Skip this for a small tweak. For a new page, a new site, or a redesign, produce three or four genuinely different directions before committing to one:
+
+- Give the model a source of randomness from outside itself so it stops reaching for its defaults. Have it run `openssl rand -hex 24` and derive the creative direction from that string: palette, layout, typography, texture. Prompting for "something unique" or "decide at random" does not work, because the model predicts what random-sounding looks like, which is its own template.
+- Or write a brief with a reference borrowed from outside software: a video game, an interior design trend, an art installation. "Each section is a still from a 16-bit platformer." "An isometric city where the features are neighborhoods." The more specific the brief, the more the model has to decide against.
+- Build each direction as a rough throwaway, show them side by side, say which one you would pick and why, then ask the user. Write down their reaction, especially what they dislike, and feed that back as the sharpening prompt.
+
+**Then decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options.
 
 ### Standalone Mode
 1. Use design tokens from `/tokens/` if present
@@ -51,12 +57,16 @@ For every component:
 2. Follow `interface-guidelines` skill for interaction patterns
 3. Reference `/docs/` for specific techniques
 4. Use composition over duplication
+5. When a section needs visual weight, generate real imagery with the `genmedia` skill (fal.ai) rather than reaching for a CSS gradient or a blurred blob. Coding agents default to gradients and shapes because those are code, and that reflex is one of the clearest signs nobody art-directed the page.
 
 ## Phase 4: Refinement
 
+Reviewing your own design is not an independent check. You can see the code, the rationale, and the last three attempts, so you grade generously. The judgment has to come from outside that context.
+
 After building:
-1. Run `design-polish` skill for systematic final pass
-2. Run `design-review` skill for accessibility verification
+1. Run `/critique`. Its Step 0 screenshots the running page and hands the judgment to a fresh subagent that cannot see the code. Apply what holds up.
+2. Run `design-polish` skill for systematic final pass
+3. Run `design-review` skill for accessibility verification
 
 ## Phase 5: Quality Gate
 
@@ -69,14 +79,19 @@ Then close out the feature:
 1. Run `/code-review` and apply all fixes.
 2. Run `/polish-loop` until it comes back clean.
 
+**Invoked from `/ship`?** Stop after Phase 4. Ship owns this close-out at its own Steps 3 and 4.
+
 ## Quick Reference
 
 | Need | Resource |
 |------|----------|
 | Persisted design context | `docs/design-system.md` (via `/teach-impeccable`) |
+| Divergent directions | seed string (`openssl rand -hex 24`) or an outside-reference brief |
 | Style / palette / type / charts | `ui-ux-pro-max` skill |
 | Aesthetic direction | `frontend-design` skill |
+| Real imagery | `genmedia` skill (fal.ai) |
 | Interaction patterns | `interface-guidelines` skill |
+| Independent design judgment | `/critique` (its Step 0) |
 | Final polish | `design-polish` skill |
 | Accessibility review | `design-review` skill |
 | Close-out review | `/code-review` (apply fixes) then `/polish-loop` |
@@ -96,3 +111,7 @@ Then close out the feature:
 - Glassmorphism everywhere
 - Same-sized card grids
 - Gradient text on metrics
+
+### Refinement
+- Adding when the fix is subtracting. AI piles things on and rarely takes them away: glow effects, highlighted words, labels repeating what the image already says, custom controls that beat the platform ones at nothing. Cut those before you add anything.
+- Grading your own work from inside the context that produced it

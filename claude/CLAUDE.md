@@ -20,11 +20,20 @@ When I ask about personal projects, tasks, or life organization, check the vault
 
 These tools overlap. Compose them, don't pick one at random:
 
-1. **Decide the look** → `ui-ux-pro-max` skill. Pull a style, palette, font pairing, or chart type from its databases before writing component code.
-2. **Build it** → `frontend-design` skill / `/frontend-design`. Generates the distinctive, production-grade UI.
-3. **Check it** → `design-review` (a11y + visual issues), then `design-polish` (final pass before shipping). `interface-guidelines` for the rules on forms/buttons/nav/animation.
+1. **Find the direction** → before converging on anything, build three or four genuinely different takes. Seed each from a random string (`openssl rand -hex 24`) or from a brief with a reference borrowed from outside software. I pick, then we sharpen.
+2. **Decide the look** → `ui-ux-pro-max` skill. Pull a style, palette, font pairing, or chart type from its databases before writing component code.
+3. **Build it** → `frontend-design` skill / `/frontend-design`. Generates the distinctive, production-grade UI. Use `genmedia` for real imagery instead of one more CSS gradient.
+4. **Check it** → screenshot critic loop first (fresh subagent, screenshot only, ranked against real designs), then `design-review` (a11y + visual issues), then `design-polish` (final pass before shipping). `interface-guidelines` for the rules on forms/buttons/nav/animation.
 
-Skip steps for small tweaks. Full chain for a new page or site from scratch.
+The `build-ui` skill runs all four with the detail. Which door:
+
+| Situation | Entry point |
+|---|---|
+| New project, or a full redesign | `build-ui`, all four steps, direction hunt included |
+| New feature with UI | `/ship`, which invokes `build-ui` at its implement step |
+| Reworking a page whose identity is already settled | `build-ui` from step 2, skip the direction hunt |
+| Small tweak (spacing, one color, one component) | Just do it, then `/critique` if it is user-facing |
+| "Does this look AI-generated?" | `/critique` alone. It screenshots and asks an outside subagent |
 
 ---
 
