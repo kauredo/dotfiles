@@ -39,6 +39,23 @@ command -v pyenv >/dev/null && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(py
 if [[ $(uname) == "Darwin" ]]; then
   # macOS specific settings
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+  # Android/Java toolchain for app-mobile builds (RN 0.86 needs JDK 17, not 21).
+  # Their absence burned two Play versionCodes on the 1.0.22 release; see
+  # app-mobile/RELEASES.md. Note the brew prefix is not itself a JDK home: it
+  # holds bin symlinks and no release/lib, which Gradle reads to pick a
+  # toolchain. The real home is the bundle under libexec.
+  JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
+  [[ -z "$JAVA_HOME" ]] && JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+  if [[ -x "$JAVA_HOME/bin/java" ]]; then
+    export JAVA_HOME
+    export PATH="$JAVA_HOME/bin:$PATH"
+  else
+    unset JAVA_HOME
+  fi
+
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
+  export PATH="$ANDROID_HOME/platform-tools:$PATH"
 fi
 
 # Single-user installers (Claude Code, uv, rustup) drop binaries here on every
