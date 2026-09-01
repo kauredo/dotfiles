@@ -59,6 +59,16 @@ For every component:
 4. Use composition over duplication
 5. When a section needs visual weight, generate real imagery with the `genmedia` skill (fal.ai) rather than reaching for a CSS gradient or a blurred blob. Coding agents default to gradients and shapes because those are code, and that reflex is one of the clearest signs nobody art-directed the page.
 
+### Motion beyond CSS
+
+CSS transitions cover most of what a page needs. For the two cases below, generate the motion with a video model through `genmedia`.
+
+**Animated graphics that do not read as video.** Generate a looping clip against a solid background, then chroma key it out, or run a video matting model when the edges are complex. What you get back is an animation you can layer anywhere in the UI. For anything glassy, chrome, or refractive, render the clip over the page's own background colors first so the refraction bakes into the pixels, then matte the background out. Render it on a neutral background and composite afterwards and the glass looks fake.
+
+**Scroll and gesture transitions.** Many video models interpolate between two keyframe images, so two product stills become a transition clip you can scrub frame by frame as the user scrolls or swipes. Chain several by seeding each clip with the previous clip's final frame, which keeps the sequence continuous. Ask `genmedia` for a model with strong physics and temporal consistency.
+
+Video is billed per clip. Check `genmedia pricing <endpoint_id>` before a batch and keep the clips short.
+
 ## Phase 4: Refinement
 
 Reviewing your own design is not an independent check. You can see the code, the rationale, and the last three attempts, so you grade generously. The judgment has to come from outside that context.
@@ -89,7 +99,7 @@ Then close out the feature:
 | Divergent directions | seed string (`openssl rand -hex 24`) or an outside-reference brief |
 | Style / palette / type / charts | `ui-ux-pro-max` skill |
 | Aesthetic direction | `frontend-design` skill |
-| Real imagery | `genmedia` skill (fal.ai) |
+| Real imagery and motion | `genmedia` skill (fal.ai) |
 | Interaction patterns | `interface-guidelines` skill |
 | Independent design judgment | `/critique` (its Step 0) |
 | Final polish | `design-polish` skill |
@@ -111,7 +121,8 @@ Then close out the feature:
 - Glassmorphism everywhere
 - Same-sized card grids
 - Gradient text on metrics
+- Custom controls where the platform ships a real one. A hand-rolled button, select, or text field almost always looks worse than the stock iOS, Android, or browser component, and rolling your own throws away the accessibility that came with it
 
 ### Refinement
-- Adding when the fix is subtracting. AI piles things on and rarely takes them away: glow effects, highlighted words, labels repeating what the image already says, custom controls that beat the platform ones at nothing. Cut those before you add anything.
+- Adding when the fix is subtracting. AI piles things on and rarely takes them away: glow effects, highlighted words, labels repeating what the image already says, custom controls that beat the platform ones at nothing. The subtraction pass is its own prompt: simplify the layout into an image-centric grid, strip gradients, glows, and containers holding nothing, and fall back to native components.
 - Grading your own work from inside the context that produced it
