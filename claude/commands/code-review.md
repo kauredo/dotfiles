@@ -300,6 +300,22 @@ If a reviewer returned no findings, omit them from the per-file sections; the `R
 
 If **no reviewer** found anything, say so plainly: "No issues found across N reviewers.", skip the table and per-file sections entirely.
 
+## Step 6.5: Adversarial pass on your own report
+
+Step 5 vetted the reviewers. Nothing has yet vetted *you*. Run these four before drafting anything. Each exists because it caught a real error that had already survived seven reviewers and a full Step 5 pass.
+
+**1. Re-sync the PR before you trust the report.** Re-fetch the head SHA and the whole conversation (`gh pr view --json headRefOid`, plus the three comment/review endpoints from Step 1). Reviewers take minutes to tens of minutes, and the author is pushing and replying the entire time.
+- If the head moved, diff old against new **restricted to the reviewed files**. Unchanged means your anchors hold, and you say so in the report. Changed means re-verify every anchor in that file.
+- Read every comment posted since you started. A finding the author answered while you were reviewing is settled or refuted, not a finding. Posting it announces that you did not read the thread. This bites hardest on your strongest item, because the author is working the same list you are.
+
+**2. Separate the mechanism you proved from the conclusion you drew.** For each finding, state both, then ask whether the first actually gets you to the second. They come apart most often on **negative claims**: "this line never executes", "nothing covers X", "no caller does Y", "this cannot happen". A negative claim needs an *enumeration* of every path to the thing, not a demonstration on the one path the finding happens to name. If you cannot enumerate, shrink the claim to what you did establish ("the spec at `file:line` does not reach it"), which is smaller and true. This is the one that got through in practice: proving a mocked method does not yield its block established the mechanism, but the conclusion "that line never runs" required checking every other spec reaching that line, and two of them did.
+
+**3. Execute anything resting on external-system semantics.** A finding about how a database, framework, or library behaves (lock modes, isolation levels, mocking-library semantics, connection pooling, callback order, GC, scheduling) sits on rung `asserted` until you run it, however confident the reviewer and however textbook the claim. There is almost always a container, a REPL, or a scratch schema already up. Ten lines and two minutes moves it to `reproduced`, and a finding you can paste a transcript into is one the author cannot wave off. Reviewers state these claims fluently and are wrong at a rate that does not track their fluency.
+
+**4. Reconcile against the author's own evidence.** If the author posted measurements anywhere in the ticket or the thread (coverage output, benchmarks, mutation counts, query plans, log samples), walk every surviving finding past them. Numbers that contradict a finding kill it. Numbers that match your independent read earn one line in the report, because two methods agreeing is the most useful thing you can hand the user. Neither defer to the author's data nor ignore it. Reconcile it.
+
+Anything that dies here goes into the `Filtered in vetting` footer with what killed it, exactly as in Step 5. If a finding you already showed the user dies here, say plainly that it is dropped and why, then move on.
+
 ## Step 7: Draft the messages, then explain in plain language
 
 **Don't ask what to do next. Don't call `AskUserQuestion` here.** After the report, always draft the comments inline in the chat so the user can read and refine them, then close with a plain-language explanation. The user posts/fixes on their own say-so later.
