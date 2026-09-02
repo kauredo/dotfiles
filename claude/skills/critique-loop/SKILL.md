@@ -31,7 +31,7 @@ If no UI files are found, tell the user and stop.
 
 ### Check that it is converging
 
-Run two rounds, then look at the two scores before you commit to a third. Rising means the loop is working, so keep going. Flat or falling after two rounds of fixes means the critic will not be satisfied by more of the same, and every further round burns tokens on a design it has already decided against. Stop and tell the user what the critic keeps objecting to.
+Each `/critique` report opens with `Critic score: N/10`. Record it. Run two rounds, then look at the two scores before you commit to a third. Rising means the loop is working, so keep going. Flat or falling after two rounds of fixes means the critic will not be satisfied by more of the same, and every further round burns tokens on a design it has already decided against. Stop and tell the user what the critic keeps objecting to.
 
 ### Rules
 - Be surgical, each round should only touch what the critique flagged

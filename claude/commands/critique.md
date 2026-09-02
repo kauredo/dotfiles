@@ -104,7 +104,9 @@ None of these is banned. A gradient, a card, or a label can be the right call, a
 Structure your feedback as a design director would:
 
 ### Anti-Patterns Verdict
-**Start here.** Pass/fail: Does this look AI-generated? List specific tells from the skill's Anti-Patterns section. Be brutally honest.
+**Start here.** Open with the critic's score on its own line, as `Critic score: N/10`, so a loop can compare rounds. If the critique was code-only with no screenshot, write `Critic score: none (code-only)` instead, and say why.
+
+Then pass/fail: does this look AI-generated? Name every tell you found, both the four in the Section 1 table and the ones in the frontend-design skill's Anti-Patterns section. Be brutally honest.
 
 ### Overall Impression
 A brief gut reaction, what works, what doesn't, and the single biggest opportunity.
