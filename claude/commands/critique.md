@@ -9,8 +9,18 @@ You cannot answer the AI slop question from source code. Two things have to be t
 If the target can be rendered, do this before the rubric below.
 
 1. **Render it.** Launch the app with the `run` skill or the project's dev script, wait for it to be ready, then use the **chrome-devtools** MCP to navigate to each affected route and screenshot it. Desktop width, plus 390px if the change is responsive. Save the files to a temp dir. Reuse a dev server already running from an earlier round.
+
+   The MCP refuses to attach when a Chrome is already running on its profile (`The browser is already running for ~/.cache/chrome-devtools-mcp/chrome-profile`). That browser may be the user's, so do not kill it. Screenshot headless instead, against a scratch profile of your own:
+
+   ```
+   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+     --hide-scrollbars --window-size=1440,900 --screenshot="$OUT/shot.png" \
+     --user-data-dir="$OUT/cprofile" "$URL"
+   ```
+
+   Run it with a timeout and check for the file afterwards rather than trusting the exit code. Headless Chrome writes the PNG and then sometimes hangs instead of exiting, so the command times out on a screenshot that is already on disk.
 2. **Find a bar to measure against.** Look for reference images the project already has: whatever `docs/design-system.md` points at, a `docs/references/` directory, anything the user pasted earlier in the session. Three or four in the same genre is enough.
-3. **Hand it to a fresh subagent.** Spawn a `general-purpose` agent with `model: "opus"` and give it the screenshot paths, the reference paths, and the rubric below. Tell it to `Read` each image. Give it nothing else: no code, no diff, no implementation notes, no earlier critiques, no account of why any choice was made. If it can see the reasoning, it will agree with the reasoning.
+3. **Hand it to a fresh subagent.** Spawn a `general-purpose` agent with `model: "opus"` and give it the screenshot paths, the reference paths, Section 1's table below, and the path `~/.claude/critique-rubric.md` to read for the rest. Tell it to `Read` each image. Give it nothing else: no code, no diff, no implementation notes, no earlier critiques, no account of why any choice was made. If it can see the reasoning, it will agree with the reasoning.
 4. **Ask for a ranking, not a review.** "Rank these five images by polish and taste, ours is `<file>`, and name the two changes that would move it up." A ranking against real work gives a stable answer across runs. "Does this look beautiful and not AI-generated" gives a different answer every time. Say explicitly that the references set a quality floor, so it does not hand back a copy of one of them.
 5. **Ask for a score out of 10** alongside the ranking: how close is this to what a good studio would ship. Never tell the critic what score you are aiming for. A critic that knows the bar is 9 starts handing out 9s.
 6. Its verdict and its score open the report, as the Anti-Patterns Verdict below.
@@ -44,60 +54,7 @@ None of these is banned. A gradient, a card, or a label can be the right call, a
 
 **The test**: If you showed this to someone and said "AI made this," would they believe you immediately? If yes, that's the problem.
 
-### 2. Visual Hierarchy
-- Does the eye flow to the most important element first?
-- Is there a clear primary action? Can you spot it in 2 seconds?
-- Do size, color, and position communicate importance correctly?
-- Is there visual competition between elements that should have different weights?
-
-### 3. Information Architecture
-- Is the structure intuitive? Would a new user understand the organization?
-- Is related content grouped logically?
-- Are there too many choices at once? (cognitive overload)
-- Is the navigation clear and predictable?
-
-### 4. Emotional Resonance
-- What emotion does this interface evoke? Is that intentional?
-- Does it match the brand personality?
-- Does it feel trustworthy, approachable, premium, playful, whatever it should feel?
-- Would the target user feel "this is for me"?
-
-### 5. Discoverability & Affordance
-- Are interactive elements obviously interactive?
-- Would a user know what to do without instructions?
-- Are hover/focus states providing useful feedback?
-- Are there hidden features that should be more visible?
-
-### 6. Composition & Balance
-- Does the layout feel balanced or uncomfortably weighted?
-- Is whitespace used intentionally or just leftover?
-- Is there visual rhythm in spacing and repetition?
-- Does asymmetry feel designed or accidental?
-
-### 7. Typography as Communication
-- Does the type hierarchy clearly signal what to read first, second, third?
-- Is body text comfortable to read? (line length, spacing, size)
-- Do font choices reinforce the brand/tone?
-- Is there enough contrast between heading levels?
-
-### 8. Color with Purpose
-- Is color used to communicate, not just decorate?
-- Does the palette feel cohesive?
-- Are accent colors drawing attention to the right things?
-- Does it work for colorblind users? (not just technically, does meaning still come through?)
-
-### 9. States & Edge Cases
-- Empty states: Do they guide users toward action, or just say "nothing here"?
-- Loading states: Do they reduce perceived wait time?
-- Error states: Are they helpful and non-blaming?
-- Success states: Do they confirm and guide next steps?
-
-### 10. Microcopy & Voice
-- Is the writing clear and concise?
-- Does it sound like a human (the right human for this brand)?
-- Are labels and buttons unambiguous?
-- Does error copy help users fix the problem?
-- **Has anyone rewritten the copy since the model wrote it?** Model-written copy is placeholder text. It shows you the structure and the line lengths, the same way Lorem ipsum does, and then it has to be replaced. Readers who see a wall of AI-generated text skim past it, so this can decide whether a page reads as tasteful faster than any of the visual checks above. Flag every string still in its generated form and rewrite it against `~/.claude/writing-style.md`. The rewrite is almost always shorter.
+**Sections 2 through 10 live in `~/.claude/critique-rubric.md`.** Read that file now and work through every dimension in it: visual hierarchy, information architecture, emotional resonance, discoverability, composition, typography, color, states and edge cases, and microcopy. Section 1 above is not the whole critique.
 
 ## Generate Critique Report
 
