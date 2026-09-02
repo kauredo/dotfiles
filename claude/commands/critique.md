@@ -12,7 +12,10 @@ If the target can be rendered, do this before the rubric below.
 2. **Find a bar to measure against.** Look for reference images the project already has: whatever `docs/design-system.md` points at, a `docs/references/` directory, anything the user pasted earlier in the session. Three or four in the same genre is enough.
 3. **Hand it to a fresh subagent.** Spawn a `general-purpose` agent with `model: "opus"` and give it the screenshot paths, the reference paths, and the rubric below. Tell it to `Read` each image. Give it nothing else: no code, no diff, no implementation notes, no earlier critiques, no account of why any choice was made. If it can see the reasoning, it will agree with the reasoning.
 4. **Ask for a ranking, not a review.** "Rank these five images by polish and taste, ours is `<file>`, and name the two changes that would move it up." A ranking against real work gives a stable answer across runs. "Does this look beautiful and not AI-generated" gives a different answer every time. Say explicitly that the references set a quality floor, so it does not hand back a copy of one of them.
-5. Its verdict opens the report, as the Anti-Patterns Verdict below.
+5. **Ask for a score out of 10** alongside the ranking: how close is this to what a good studio would ship. Never tell the critic what score you are aiming for. A critic that knows the bar is 9 starts handing out 9s.
+6. Its verdict and its score open the report, as the Anti-Patterns Verdict below.
+
+Reuse this prompt verbatim on every round. Editing it between rounds means the scores are no longer comparable, and a rising score is the only evidence you have that the fixes are working.
 
 **With no reference images available**, tell the critic to name three or four real products in the same genre and rank against those from memory. Say in the report that the bar was self-supplied, which makes it softer.
 
@@ -27,6 +30,17 @@ Evaluate the interface across these dimensions:
 **This is the most important check.** Does this look like every other AI-generated interface from 2024-2025?
 
 Review the design against ALL the **DON'T** guidelines in the frontend-design skill, they are the fingerprints of AI-generated work. Check for the AI color palette, gradient text, dark mode with glowing accents, glassmorphism, hero metric layouts, identical card grids, generic fonts, and all other tells.
+
+Then walk this list. Look for each pattern by name, and where you find one, try the alternative and compare the two.
+
+| Overused pattern | Try instead |
+|---|---|
+| Eyebrow text, meaning the small label above a heading that restates what the heading already says | Delete it. Nine times out of ten nothing is lost |
+| Background gradients | A photograph, a texture, a pattern, or a flat solid color |
+| Cards and containers around everything | A flatter layout. A grid or tiles, with the borders gone |
+| Many fonts, text styles, and heading levels | One or two fonts and two to four styles. Accent colors and italics used a few times, not throughout |
+
+None of these is banned. A gradient, a card, or a label can be the right call, and prompting a model to avoid all four from the start makes it overthink and reach for stranger patterns instead. That is why this list belongs here in refinement, where you are looking at a rendered page, and not in the build prompt.
 
 **The test**: If you showed this to someone and said "AI made this," would they believe you immediately? If yes, that's the problem.
 
@@ -83,6 +97,7 @@ Review the design against ALL the **DON'T** guidelines in the frontend-design sk
 - Does it sound like a human (the right human for this brand)?
 - Are labels and buttons unambiguous?
 - Does error copy help users fix the problem?
+- **Has anyone rewritten the copy since the model wrote it?** Model-written copy is placeholder text. It shows you the structure and the line lengths, the same way Lorem ipsum does, and then it has to be replaced. Readers who see a wall of AI-generated text skim past it, so this can decide whether a page reads as tasteful faster than any of the visual checks above. Flag every string still in its generated form and rewrite it against `~/.claude/writing-style.md`. The rewrite is almost always shorter.
 
 ## Generate Critique Report
 

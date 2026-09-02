@@ -24,9 +24,14 @@ If no UI files are found, tell the user and stop.
 5. Briefly note what you fixed and which commands you ran
 
 ### Stop when
+- The critic's score reaches 9 out of 10. It scores every round in `/critique` Step 0, and it never sees the target, so a 9 is a real 9
 - No new critical or high-priority issues surface
 - Remaining suggestions are purely subjective taste, not real problems
 - Applying more changes would risk over-polishing or breaking what already works
+
+### Check that it is converging
+
+Run two rounds, then look at the two scores before you commit to a third. Rising means the loop is working, so keep going. Flat or falling after two rounds of fixes means the critic will not be satisfied by more of the same, and every further round burns tokens on a design it has already decided against. Stop and tell the user what the critic keeps objecting to.
 
 ### Rules
 - Be surgical, each round should only touch what the critique flagged
