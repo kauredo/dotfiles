@@ -1,9 +1,10 @@
-Deep design audit of one app: every route, the whole scroll of each, phone and
-desktop, hover and focus and open-menu states, the load sequence as frames, and
-the product interior behind the login. Use when the ask is "critique this app
+Deep design audit of one app, ending in plans: every route, the whole scroll of
+each, phone and desktop, hover and focus and open-menu states, the load
+sequence as frames, and the product interior behind the login, then one plan in
+`plans/` per fix, written by `improve`. Use when the ask is "critique this app
 properly", when a logo or brand needs judging on its own, or when
 `/portfolio-critique` has pointed at a product and the next step is the full
-treatment.
+treatment. `--pick` stops to choose which fixes get plans.
 
 **First**: read `/critique`. The rubric and the outside-the-context rule are the
 same. What changes is coverage. `/critique` judges the fold of one route in one
@@ -251,21 +252,42 @@ with the full-page captures alongside the findings. Structure:
 State the bar: no reference images were supplied, so each critic ranked against
 memory. The scores are a band.
 
-## Step 4: Hand it on
+## Step 4: Plan, via the `improve` skill
 
-End by saying the next command, not by offering options. It is one of:
+The run is not finished at a report. It is finished when `plans/` holds one plan
+per row of the routing table, written for an executor with no memory of this
+session. Invoke the **`improve`** skill (Skill tool) with this input, filling in
+the path:
 
-- `/improve` in the audited repo. It reads the audit from `docs/` and writes
-  `plans/`, one per row of the routing table, in the order the report set.
-- `/ship <row>` directly, for a row routed to `/ship`, when the user wants the
-  bug gone before the planning round.
+```
+plan from docs/design-audit-<date>.md. Every row of "Where each fix goes" is a
+vetted finding: skip your own audit and the Vet phase, take the rows as the
+findings, and write one plan per row in the report's order. Rows routed to
+/ship are bugs with evidence attached; a plan for one of those is short. Rows
+routed to /build-ui, /harden, /simplify, /normalize, /clarify, or /adapt name
+that command as the executor's tool in the plan body. Reconcile with the
+existing plans/ index rather than duplicating.
+```
 
-`/ship` calls `improve` itself and routes UI steps through `build-ui`, so once
-`plans/` exists the whole chain runs from there. The audit's job is to be the
-document that chain reads.
+`improve` keeps its own rules: it reads the code to specify each plan
+properly, it never edits source, and it writes only under `plans/`. It also
+stops to ask which findings to plan when it can; pass `--pick` to keep that
+gate, otherwise tell it to plan every row and record that default in
+`plans/README.md`, the way `/ship` runs unattended.
+
+**Done when** `plans/README.md` lists every row of the routing table with a
+plan file, numbered after whatever was already there.
+
+## Step 5: Hand it on
+
+One line, naming the first plan by title: `/ship <title>`. `/ship` calls
+`improve` to verify the plan, routes UI steps through `build-ui`, and writes the
+PR back into `plans/`. For a product with several bug rows, say `/ship` will
+stack them.
 
 ## Cost
 
-Five opus critics per product, each reading thirty to fifty images. One product
-is roughly the agent spend of a whole portfolio triage. Run one product, let the
-user react, then the next.
+Five opus critics per product, each reading thirty to fifty images, then an
+`improve` run that reads the codebase once per plan. One product is more than
+the agent spend of a whole portfolio triage. Run one product, let the user
+react, then the next.
