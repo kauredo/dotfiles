@@ -89,6 +89,13 @@ If the app is a native/mobile target instead, use the appropriate tool (XcodeBui
 
 ## Step 6: PR + open
 
+**If the run produced more than one reviewable change, stack the PRs.** Invoke
+the **`stacked-prs`** skill and follow it instead of opening one branch with a
+combined diff. That is the default whenever the task has an execution order
+(several plans, "one by one", "separate reviewable PRs", fixes that must land in
+sequence). One self-contained change stays one PR; the rest of this step is then
+the whole of it.
+
 Unless `--no-pr`:
 
 1. Commit anything uncommitted with a concise conventional-commit message (`feat:`/`fix:`/`refactor:`…). **Never mention Claude or Anthropic** in commits or PR text.
@@ -155,5 +162,5 @@ Not part of the unattended run: `/ship` opens PRs and never merges them, so this
 - **Unattended is the default.** `--gated` puts the three approval gates back. Skipping the gates is not license to guess: on genuine ambiguity, or a call the user would clearly want to make, still stop and ask.
 - **Verify a plan before building it.** An index row is a claim about the code, not the code. Check the artifacts exist before executing a plan, and treat a finished plan as a STOP.
 - **Stop on red.** A failing suite or a genuine ambiguity halts the pipeline and surfaces to the user; don't push through it.
-- Reuse the existing skills/agents (`improve`, `polish-loop`, `frontend-design`, the reviewer subagents) rather than reimplementing their logic here.
+- Reuse the existing skills/agents (`improve`, `polish-loop`, `frontend-design`, `stacked-prs`, the reviewer subagents) rather than reimplementing their logic here.
 - This is one command; if the user only wants part of the flow, point them at the underlying skill (`/improve`, `/code-review`, `/polish-loop`) instead of running the whole thing.
