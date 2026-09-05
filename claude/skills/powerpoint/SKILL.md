@@ -9,6 +9,10 @@ description: |-
   - user: "Audit this deck for layout issues" -> generate thumbnail grid for inspection
 ---
 <instructions>
+<scope_split>
+Use this skill for from-scratch, high-fidelity new decks (the html2pptx pipeline below). For editing, analyzing, or proofreading an *existing* Office document, including an existing .pptx, use the `officecli` skill instead.
+</scope_split>
+
 <powerpoint_professional_suite>
 
 <high_fidelity_creation>

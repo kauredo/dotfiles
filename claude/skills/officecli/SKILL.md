@@ -7,6 +7,8 @@ description: Create, analyze, proofread, and modify Office documents (.docx, .xl
 
 AI-friendly CLI for .docx, .xlsx, .pptx. Single binary, no dependencies, no Office installation needed.
 
+**Scope split**: use this skill for editing, analyzing, or proofreading *existing* Office documents across .docx/.xlsx/.pptx. For a from-scratch, high-fidelity new deck, use the `powerpoint` skill's html2pptx pipeline instead.
+
 ## Install & Update
 
 Same command for both install and upgrade:
