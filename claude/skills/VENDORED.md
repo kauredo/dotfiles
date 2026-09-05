@@ -42,6 +42,7 @@ https://github.com/backnotprop/pstack
 | technical-writing | scope note added (this owns document shape, `writing-style.md` owns voice and wins on conflict); the two `unslop` references repointed at `writing-style.md` |
 | unslop | `disable-model-invocation: true` added; description rewritten to defer to `writing-style.md` |
 | why | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
+| how | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
 
 ## genmedia.sh registry: installed by the `genmedia` CLI
 https://github.com/fal-ai-community/genmedia-cli
