@@ -28,34 +28,17 @@ Once green, proceed directly to Phase 2, do NOT wait for user input.
 
 ## Phase 2: Critique Loop (UI files only)
 
-Skip this phase if no UI files (`.tsx`, `.jsx`, `.css`, `.html`) were changed.
+Skip this phase if no UI files (`.tsx`, `.jsx`, `.css`, `.html`) were changed, and go straight to the summary below.
 
-Execute this loop autonomously: do NOT pause between rounds:
+Invoke the `critique-loop` skill on those files. It owns the round loop, the critic-score convergence check, and the stop conditions (round cap included), don't restate them here.
 
-```
-for round = 1 to 4:
-  1. Run `/critique` on the UI files
-  2. Read the critique report
-  3. Apply all actionable fixes yourself: edit the files directly
-  4. If the critique recommends specific commands, run them
-  5. Run linters/type-check to verify
-  6. Check: are there any new critical/high issues that weren't in the previous round?
-     - YES → continue to next round
-     - NO → stop the loop
-```
-
-### Stop the critique loop when
-- No new critical or high-priority issues compared to the previous round
-- Remaining suggestions are subjective taste, not real problems
-- Further changes would risk over-polishing or breaking what works
-- Round 4 completes (hard max)
+Once it finishes, run linters/type-check to verify nothing broke. If they're red, fix and re-run before reporting.
 
 ## Rules
 
 - **Act, don't just report.** Every finding should result in either a file edit or an explicit "skipped because X" note. Never produce a report and stop without applying fixes.
 - Be surgical: only touch what audits and critiques flag
 - Don't gold-plate, "good enough to ship" beats "theoretically perfect"
-- Track progress: tell the user which phase/round you're on (e.g. "Phase 2, Critique Round 2")
-- If the same issue keeps resurfacing across rounds, flag it to the user instead of looping
-- Run type-check and lint after each round of fixes
+- Track progress: tell the user which phase you're on; `critique-loop` reports its own round progress
+- Run type-check and lint after Phase 1's fixes, and again once the critique loop completes
 - At the end, give a brief summary: phases completed, rounds run, what was found, what was fixed, what's left (if anything)
