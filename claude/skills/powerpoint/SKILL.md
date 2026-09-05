@@ -26,7 +26,7 @@ The preferred method for precise layout positioning:
 For deck editing or template mapping:
 - **Audit**: Generate thumbnail grid (`scripts/thumbnail.py`) to analyze layout.
 - **Duplication**: Use `scripts/rearrange.py` to duplicate and reorder slides.
-- **Text Injection**: Use `scripts/replace.py` with the JSON inventory to populate content.
+- **Text Injection**: Generate the JSON inventory with `scripts/inventory.py <input.pptx> <output.json>`, then apply it with `scripts/replace.py`.
 </template_structure>
 
 <design_quality>
@@ -34,6 +34,7 @@ For deck editing or template mapping:
 - **Colors**: You MUST NOT use the `#` prefix in PptxGenJS hex codes (causes corruption).
 - **Layout**: You SHOULD prefer two-column or full-slide layouts. You MUST NOT stack charts below text.
 - **Verification**: You MUST generate a final thumbnail grid with `--cols 4` to inspect for text cutoff or overlap issues.
+- **Raw-XML validation**: for schema validation or structure work beyond what the html2pptx path covers, see `references/ooxml.md` and its `unpack.py` / `validate.py` / `pack.py` scripts under `references/ooxml/scripts/`.
 </design_quality>
 
 </powerpoint_professional_suite>
