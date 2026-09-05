@@ -40,7 +40,7 @@ The context you need either way: target audience and use cases, brand personalit
 - Build each direction as a rough throwaway, show them side by side, say which one you would pick and why, then ask the user. Write down their reaction, especially what they dislike, and feed that back as the sharpening prompt.
 - Try the direction that sounds like it cannot work. "There is no way this looks good" is a signal you have left the median, and the agent will sometimes land it. When it does not, throw the result away and keep the prompt. Retry the ones that failed when a new model ships, since a brief that was too ambitious for one generation is often exactly what the next one needs.
 
-**Then decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options. If the Design Context names a real product as a reference, pull its actual DESIGN.md from Refero Styles (`styles.refero.design`, see `ui-ux-pro-max`'s Step 1b) first  -  a real per-site extraction beats reconstructing the site from training memory.
+**Then decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options. If the Design Context names a real product as a reference, run `ui-ux-pro-max`'s Step 1b (Refero Styles) first to get its actual DESIGN.md.
 
 ### Standalone Mode
 1. Use design tokens from `/tokens/` if present

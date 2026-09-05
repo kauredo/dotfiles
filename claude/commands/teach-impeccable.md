@@ -24,7 +24,7 @@ Use the `AskUserQuestion` tool to clarify what you cannot infer. Focus only on w
 
 ### Brand & Personality
 - How would you describe the brand personality in 3 words?
-- Any reference sites or apps that capture the right feel? What specifically about them? If they name one, fetch its DESIGN.md from `styles.refero.design` (or via the `refero-styles-mcp-server` if configured) and fold the actual palette/type/spacing into the Aesthetic Direction section below, instead of just recording the site name as free text.
+- Any reference sites or apps that capture the right feel? What specifically about them? If they name one, use `ui-ux-pro-max`'s Step 1b to fetch its actual DESIGN.md, then fold the palette/type/spacing into the Aesthetic Direction section below instead of recording the site name as free text.
 - What should this explicitly NOT look like? Any anti-references?
 
 ### Aesthetic Preferences
