@@ -70,6 +70,16 @@ Extract from the user request:
 - **Style keywords**: playful, vibrant, minimal, dark mode, content-first, immersive, etc.
 - **Stack**: detect from the project  -  check `package.json` deps (react/next/vue/svelte/nuxt/@angular), `pubspec.yaml` (Flutter), `*.xcodeproj`/`Package.swift` (SwiftUI), `composer.json` (Laravel), or React Native markers (`app.json` + `react-native` dep). If nothing is detectable and stack guidance matters, ask the user. **Never assume a stack**  -  a hardcoded default silently misroutes every recommendation.
 
+### Step 1b: Real-Site References
+
+If the user (or the brief) names a specific real product or site as a reference or anti-reference, do not reconstruct its design system from training memory  -  fetch the actual one. `styles.refero.design` extracts real DESIGN.md files (palette, type scale, spacing, component notes) from 2,000+ shipped products, free and with no login:
+
+```bash
+curl -s "https://styles.refero.design/<slug>"   # try the product's slug directly
+```
+
+If the plain slug 404s, browse `https://styles.refero.design/?sort=popular` or search from the homepage. If `refero-styles-mcp-server` is configured (see this skill's README), prefer its `refero_match_style`/`refero_get_design_md` tools over manual fetches  -  they score matches by mood/keyword/color instead of guessing a slug. Use the fetched DESIGN.md as a concrete constraint feeding into Step 2 below, not as a template to clone verbatim.
+
 ### Step 2: Generate Design System (REQUIRED for new pages/projects)
 
 Use `--design-system` when the task needs a coherent product-wide visual direction:
