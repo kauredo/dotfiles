@@ -6,6 +6,21 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
+## Mandatory preparation (run this first)
+
+Every command that invokes this skill (`bolder`, `colorize`, `quieter`, `simplify`, and any other design command) must run this before its own assessment and changes.
+
+You cannot do a great job without necessary context: target audience (critical), desired use-cases (critical), brand personality/tone, existing brand colors, what's truly essential vs nice-to-have for this product, and everything else a great human designer would need. Attempt to gather these from the current thread or codebase first.
+
+1. If you don't find *exact* information and have to infer from existing design and functionality, you MUST STOP and ask the user directly to clarify what you cannot infer, and whether you got it right.
+2. Otherwise, if you can't fully infer, or your confidence is medium or lower, you MUST ask the user directly with clarifying questions before proceeding.
+
+Do NOT proceed until you have answers. Guessing leads to generic AI slop.
+
+The calling command must then let this skill run to completion, so it knows all the DO's and DON'Ts below, before it proceeds with its own work.
+
+---
+
 Approach this as the design lead at a small studio known for giving every client a visual identity that could not be mistaken for anyone else's. This client has already rejected proposals that felt templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take one real aesthetic risk you can justify.
 
 ## Ground it in the subject
