@@ -15,6 +15,8 @@
  *   --login /login --user a@b.c --pass secret
  *                    sign in first (fills the first email and password fields on
  *                    that path, submits, keeps the session for every capture)
+ *   --state s.json   start every context from this Playwright storageState instead
+ *                    (for a session a driver script set up: signed in, tenant picked)
  */
 
 const fs = require('fs');
@@ -227,12 +229,22 @@ async function mobileMenu(browser, url, slug) {
     await page.waitForTimeout(1000);
     // Prefer an explicit label, then aria-expanded, then anything in the header;
     // and skip zero-size matches, or the first hit is a hidden language switcher.
-    const burger = page.locator(
-      'button[aria-label*="menu" i], button[aria-label*="abrir" i], button[aria-label*="open" i], ' +
-      'button[aria-label*="nav" i], button[aria-expanded], [class*="hamburger" i], header button, nav button'
-    ).filter({ has: page.locator(':scope') }).locator('visible=true').first();
-    const box = (await burger.count()) ? await burger.boundingBox() : null;
-    if (box && box.width > 16 && box.height > 16) {
+    // A comma list matches in DOM order, so an off-canvas "Close menu" button
+    // beats the real trigger. Try the selectors in priority order instead, and
+    // never pick a sign-out button.
+    const candidates = [
+      'button[aria-label*="open" i]', 'button[aria-label*="abrir" i]',
+      'button[aria-label*="menu" i]:not([aria-label*="close" i])',
+      'button[aria-label*="nav" i]:not([aria-label*="close" i])',
+      'button[aria-expanded="false"]', '[class*="hamburger" i]', 'header button', 'nav button',
+    ];
+    let burger = null, box = null;
+    for (const sel of candidates) {
+      const loc = page.locator(sel).filter({ hasNotText: /sign ?out|log ?out|sair|terminar sess/i }).locator('visible=true').first();
+      const b = (await loc.count()) ? await loc.boundingBox() : null;
+      if (b && b.width > 16 && b.height > 16) { burger = loc; box = b; break; }
+    }
+    if (burger) {
       await burger.click({ timeout: 4000 });
       await page.waitForTimeout(650);
       const f = path.join(OUT, `${slug}-mobile-menu.png`);
@@ -318,6 +330,16 @@ async function captureRoute(browser, url, slug) {
 /** Sign in once and carry the cookies into every later context. */
 async function signIn(browser) {
   const loginPath = arg('--login');
+  const givenState = arg('--state');
+  if (givenState) {
+    // A storageState saved by a driver that already signed in (and, say, picked a
+    // tenant). Every context from here on starts from it.
+    const plain = browser.newContext.bind(browser);
+    browser.newContext = o => plain({ ...o, storageState: givenState });
+    report.signedIn = { state: givenState };
+    console.log(`using saved session ${givenState}`);
+    return;
+  }
   if (!loginPath) return;
   const ctx = await browser.newContext({ viewport: DESKTOP });
   const page = await ctx.newPage();
