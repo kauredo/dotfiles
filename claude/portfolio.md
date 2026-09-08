@@ -47,6 +47,7 @@ Columns:
 | Francisco Catarro | kiko-personal | portfolio | https://kiko-personal.vercel.app | personal-site | public | 0 | personal/kiko-personal |
 | STARS Study | cbsa-study | product | https://cbsa-study.vercel.app | research-tool | did not render | 0 | none linked |
 | SINAIA Suite | sinaia-demo | product | https://sinaia-demo.vercel.app | forms-app | wall | 0 | ~/code/sinaia-suite-formularios |
+| UpSpeech | upspeech.app | marketing | https://upspeech.app | healthtech-marketing | public | 0 | upspeech/upspeech-website |
 
 ## Boots locally
 
@@ -58,6 +59,8 @@ Columns:
 | D&D Project | web | product | local:node | game-tool | personal/dnd-project |
 | D&D Riders | web | product | local:node | game-tool | personal/dnd-riders |
 | Marketing | web | marketing | local:node | saas-marketing | personal/marketing |
+| UpSpeech | web app | product | local:docker (`./dev.sh start`, http://localhost:3051, demo users `client|therapist|admin|owner@upspeech.app` / password123) | therapy-app | upspeech/app-frontend |
+| UpSpeech | mobile app | mobile | local:expo (iOS sim against localhost:3050) | therapy-mobile-app | upspeech/app-mobile |
 
 ## Skipped
 
