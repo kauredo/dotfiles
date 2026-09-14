@@ -158,12 +158,63 @@ and only as far as review has actually reached — `gh stack merge` with no
 argument takes the whole stack, so pass the PR number when only the lower half
 is approved.
 
+Sync the stack onto the trunk first (`gh stack sync`), or the merge replays a
+stale base. `gh stack merge --squash` produces **one squash commit per PR**, not
+one for the whole stack, so the per-PR history survives on the trunk.
+
 Afterwards:
 
 ```bash
 gh stack sync --prune                # drop local branches for merged PRs
 git worktree remove ../<repo>-stack  # once the whole stack has landed
 ```
+
+#### Merging by hand, without the extension
+
+This is where a stack gets damaged. Two rules, both learned the hard way:
+
+**Retarget every child to the trunk BEFORE merging its parent.** Merging the
+bottom PR with `--delete-branch` does not retarget the next one, it **closes**
+it. A closed PR can be neither reopened (`Could not open the pull request`) nor
+retargeted (`Cannot change the base branch of a closed pull request`), so the
+only recovery is opening a fresh PR for the same branch and losing the review
+thread. Retarget first, then the deletion is harmless:
+
+```bash
+for n in <children>; do gh pr edit $n --base <trunk>; done
+```
+
+**Rebase each branch with `--onto`, never plain `rebase <trunk>`.** Squashing
+gives the parent a new sha the child's history does not contain, so a plain
+rebase replays the whole ancestry and conflicts:
+
+```bash
+git rebase --onto origin/<trunk> <old-parent-head>   # replays only this branch's commits
+```
+
+Capture every branch head sha up front, before merging anything: you need the
+old parent head after its remote branch is gone. Check the commit count is
+unchanged after each rebase rather than checking the tree is identical, because
+a moving trunk legitimately changes the tree.
+
+Then **poll `gh pr view <n> --json mergeable` until it returns MERGEABLE**
+before calling `gh pr merge`. GitHub recomputes mergeability asynchronously
+after a force-push, and an immediate merge fails on a branch that is fine.
+
+#### Mixed stacks
+
+A PR created by `gh stack` refuses a manual retarget: `Cannot change the base
+branch because the pull request is part of a stack`. A branch you added later
+with plain git is not part of the stack and `gh stack` will not see it.
+
+The extension's metadata lives in `.git/worktrees/<name>/gh-stack`, so `gh
+stack` only runs **from the worktree that created the stack**, and only while
+that worktree is on a branch the stack owns. `gh stack view` saying "current
+branch is not part of a stack" usually means you are in the wrong worktree or on
+a hand-made branch, not that the stack is gone.
+
+So for a mixed stack: retarget the hand-made PRs to the trunk, let `gh stack`
+land the managed ones, then rebase and merge each hand-made branch by hand.
 
 ## House rules that still apply
 
