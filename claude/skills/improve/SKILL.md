@@ -91,6 +91,16 @@ plans/
 
 Before writing anything: record `git rev-parse --short HEAD`, every plan stamps the commit it was written against (the executor uses it for drift detection). If `plans/` already exists from a previous run, **reconcile, don't duplicate**: read `plans/README.md`, keep numbering monotonic, skip findings already planned or listed as rejected, and mark superseded plans stale in the index. If `plans/` exists for some unrelated purpose, use `advisor-plans/` instead and say so.
 
+**An established `plans/` has its own shape, and it wins over the template.** Before writing the first file, look for the evidence and follow what you find:
+
+- **A linter or a hook** (`plans/lint.mjs`, `plans/*.mjs`, a `pre-push` in `.githooks/`). Read it. It tells you the required front-matter keys and which README column each must equal, and it will block the push when they disagree. Run it before you commit, not after.
+- **The existing files.** Open the two highest-numbered plans and copy their heading shape, their front-matter and their section names exactly. A template that disagrees with the corpus is the template that is wrong.
+- **The index.** When `plans/README.md` is a long catalogue with a priority section or a status narrative, **add one row and change nothing else.** Rewriting it as a short generated index destroys work that is not yours to replace. Only write the whole file when you created it.
+- **A board or issue mirror** (a `sync-board`-style script, a `.github/workflows` job over `plans/`). If plans are mirrored to issues, file the new one the same way in the same sitting, or it is invisible to everyone working from the board.
+- **How numbers are claimed.** Where parallel sessions share the repo, pick the next number from a freshly fetched default branch rather than your local checkout, and push the new plan immediately. An unpushed plan is an invisible claim on its number.
+
+Say in your summary which of these you found and followed.
+
 Write each plan **for the weakest plausible executor**. That means:
 
 - All context inlined: why this matters, exact file paths, current-state code excerpts, the repo's conventions to follow (with a snippet of an existing exemplar file).
