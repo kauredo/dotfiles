@@ -1,11 +1,23 @@
-# GitHub: Pending (Draft) PR Reviews
+# GitHub: Posting PR Reviews
 
-GitHub natively supports "draft reviews", a review that stays in PENDING state with all its comments, only visible to you, until you explicitly submit it. Useful after a `/code-review` when you want to triage findings before they hit the PR author.
+## Which event to submit
 
-`gh` doesn't expose pending reviews directly. Use `gh api` and **omit the `event` field**:
+The **severity floor** for blocking a merge is HIGH. Findings at or above the floor earn `REQUEST_CHANGES`; everything under it goes out as `COMMENT`.
+
+- `-f event=COMMENT` is the default, and covers every review whose surviving findings top out at MEDIUM. It notifies the author and leaves the merge open.
+- `-f event=REQUEST_CHANGES` when a CRITICAL or HIGH survives vetting. It blocks the merge and reads as "this isn't safe to ship", so a stack of MEDIUMs and nits stays under the floor.
+- **No `event` field** leaves the review PENDING, visible only to you until you submit it in the GitHub UI. Two cases earn it: the user asks for a private draft, or you're self-reviewing your own PR before requesting reviewers.
+- `-f event=APPROVE` stays the user's call. Ask for it; never pick it yourself.
+
+Name the event, and the floor reasoning behind it, in the line that offers to post, so the user can redirect before anything goes out. When the call is close (one HIGH the author may have context on, say), ask instead of guessing.
+
+## The `gh api` form
+
+`gh` doesn't expose review creation directly, so go through `gh api`:
 
 ```bash
 gh api repos/<OWNER>/<REPO>/pulls/<PR>/reviews \
+  -f event=COMMENT \
   -f body="<top-level summary>" \
   -F 'comments[][path]=path/to/file.js' \
   -F 'comments[][line]=63' \
@@ -15,9 +27,8 @@ gh api repos/<OWNER>/<REPO>/pulls/<PR>/reviews \
   -F 'comments[][body]=<finding body>'
 ```
 
-- **No `-f event=...`** → stays PENDING. You'll see a "Finish your review" banner on the PR page.
-- Adding `-f event=APPROVE | REQUEST_CHANGES | COMMENT` submits immediately instead.
-- In the GitHub UI you can edit/delete individual comments before submitting.
+- Drop the `-f event=...` line to keep it PENDING. You'll get a "Finish your review" banner on the PR page.
+- In the GitHub UI you can edit or delete individual comments before submitting a pending review.
 
 ## Comment fields
 
@@ -26,14 +37,9 @@ gh api repos/<OWNER>/<REPO>/pulls/<PR>/reviews \
 - `body`: markdown supported.
 - For multi-line ranges: `start_line` + `line` (+ optional `start_side`/`side`).
 
-## When to use
+## From /code-review to a posted review
 
-- After `/code-review` produces a list of findings, post them as a pending review so you can skim/edit before the author gets notified.
-- For self-review on your own PRs before requesting reviewers.
-
-## From /code-review to a posted pending review
-
-`/code-review` is intentionally broad, it surfaces nitpicks alongside real defects so the full landscape is visible. Going from that report to a pending review is filtering, verifying, and softening. When the user opts into posting after a PR-sourced `/code-review`, run this workflow.
+`/code-review` is intentionally broad, it surfaces nitpicks alongside real defects so the full landscape is visible. Going from that report to a posted review is filtering, verifying, and softening. When the user opts into posting after a PR-sourced `/code-review`, run this workflow.
 
 ### 1. Triage: drop the nitpicks
 
@@ -100,11 +106,11 @@ Within a single posted review, vary the shapes. A typical mix: one or two direct
 
 ### 4. Show drafts before posting
 
-Present the drafted top-level body and inline comments to the user as a clearly-labeled list. Wait for explicit approval before invoking `gh api`. Don't post a pending review uninvited, even though it's only visible to them, a surprise review is annoying.
+Present the drafted top-level body and inline comments to the user as a clearly-labeled list, and name the event you plan to submit. Post once they say to, and only then: a `COMMENT` review notifies the author the moment it lands, and even a PENDING one shows up on their own PR list unannounced.
 
 ### 5. Post
 
-Use the `gh api` form at the top of this file. Omit `event` to keep it PENDING. After posting, give the user the PR URL so they can finish the review in the GitHub UI.
+Use the `gh api` form at the top of this file with the event you named in step 4. Afterwards, hand the user the review URL from the response. For a PENDING review, tell them it's waiting behind "Finish your review" in the GitHub UI.
 
 ## Tone for GitHub review content
 

@@ -38,7 +38,7 @@ These are the standards for comments *in the code* (not for review prose). They 
 - **No tombstone comments for removed code.** When code is deleted, delete it. Do not leave `# removed the retry here, see PROJ-1234`, do not leave the old implementation commented out, do not leave `# (was: legacy path)`. Git history is the record. The only exception is when something's *absence* is load-bearing and non-obvious, e.g. a deliberately empty rescue or a hook that must stay unimplemented, and even then the comment explains the current state, not what used to be there.
 
 **How this interacts with posted reviews.** `~/.claude/github-pending-review.md` bans comment-length and verbosity critique from copy-pasteable PR comments, because other developers read it as noise. That rule wins. So:
-- Reviewing someone else's PR: report these in the in-chat report, and drop them from the pending review during triage. A tombstone comment or a comment that contradicts the code is substance and may be posted; "this comment is too long" may not.
+- Reviewing someone else's PR: report these in the in-chat report, and drop them from the posted review during triage. A tombstone comment or a comment that contradicts the code is substance and may be posted; "this comment is too long" may not.
 - Writing or fixing code yourself (local sources, `/ship`, applying fixes the user approved): apply the standards directly, no discussion needed.
 
 ## Step 1: Resolve the diff source
@@ -324,12 +324,12 @@ Anything that dies here goes into the `Filtered in vetting` footer with what kil
 
 **The drafts may only narrow the vetted report, never strengthen it.** Step 6 findings have been through Step 5; the rewrite into conversational prose has not. Before showing any draft, compare each claim in it against the claim in the finding it came from. Anything the finding did not assert is new and unverified: send it back through Step 5 or cut it. This is where compression mints over-general claims, and the drafts are the one output in the pipeline that no reviewer has read. If the writing pass flags a sentence as an aphoristic closer, treat that as a signal the claim may be over-general rather than merely over-tidy, and re-test it before you smooth the prose.
 
-**For PR sources**: go straight to drafting a pending review, following the triage + tone rules in `~/.claude/github-pending-review.md` (triage → verify line numbers → draft each finding in a real voice). Show the drafts inline as a clearly-labeled list:
+**For PR sources**: go straight to drafting the review, following the triage + tone rules in `~/.claude/github-pending-review.md` (triage → verify line numbers → draft each finding in a real voice). Show the drafts inline as a clearly-labeled list:
 
 - the top-level review body, then
 - each inline comment under its `file:line` anchor.
 
-Do **not** run `gh api` yet. End the drafts with one line telling the user to say the word when they want it posted (it'll go up as PENDING, visible only to them). If they later say to post, use the `gh api` pending-review form from `~/.claude/github-pending-review.md`.
+Do **not** run `gh api` yet. End the drafts with one line telling the user to say the word when they want it posted, and **name the event you intend to submit**, per the severity floor in `~/.claude/github-pending-review.md`. If they later say to post, use the `gh api` form from that same file.
 
 **For non-PR sources** (`--staged`, `--commit`, `--branch`, no argument), draft the concrete fixes as a short plan (one bullet per substantive finding: `file:line` → the change), applying the same triage rules to filter nitpicks first. Don't edit any files yet. End by telling the user to say the word when they want the fixes applied.
 
