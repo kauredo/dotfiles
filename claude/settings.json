@@ -98,5 +98,6 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
