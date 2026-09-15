@@ -57,7 +57,8 @@
     "ralph-wiggum@claude-code-plugins": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
     "context-mode@context-mode": true,
-    "builder-skills@builder-skills": true
+    "builder-skills@builder-skills": true,
+    "upspeech@agent-kit": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -82,6 +83,12 @@
       "source": {
         "source": "github",
         "repo": "anthropics/claude-code"
+      }
+    },
+    "agent-kit": {
+      "source": {
+        "source": "github",
+        "repo": "UpSpeech/agent-kit"
       }
     }
   },
