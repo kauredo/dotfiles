@@ -72,7 +72,7 @@ Invoke the **`improve`** skill (Skill tool) with the task as its input to produc
 Run the full multi-agent review on the diff (the `/code-review` workflow, inlined here):
 
 1. Assemble the diff (`git diff <base>...HEAD`) and read project context (`CLAUDE.md`, `AGENTS.md`, manifests).
-2. Fan out the reviewer subagents **in parallel, in one message**: `security-reviewer`, `correctness-reviewer`, `test-reviewer`, `performance-reviewer`, `architecture-reviewer`, `style-reviewer`. Skip a reviewer only when clearly irrelevant to the diff.
+2. **Triage, then fan out.** Read Step 3 of `~/.claude/commands/code-review.md` and use its table to pick which of the seven the diff needs: `security-reviewer`, `correctness-reviewer`, `test-reviewer`, `performance-reviewer`, `architecture-reviewer`, `style-reviewer`, `premise-verifier`. That table is the only copy of the skip conditions, so read it rather than guessing, and say which you skipped. A docs-only branch runs one reviewer, not seven. Invoke the ones you picked **in parallel, in one message**. They declare `model: sonnet` in their own frontmatter, so they cost Sonnet whatever the session runs on; do not override it.
 3. **Vet** the findings, open the cited code and confirm each CRIT/HIGH and any finding resting on a factual claim before trusting it. Drop the ones whose premise doesn't hold. (Reviewers over-report.)
 4. Aggregate into the severity table + per-file format.
 
