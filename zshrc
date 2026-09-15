@@ -63,6 +63,13 @@ fi
 # its installer happened to append to the untracked ~/.zshrc.local.
 export PATH="$HOME/.local/bin:$PATH"
 
+# Claude Code spawns subagents for the review fan-outs, the Explore sweeps in
+# `improve`, and the per-repo hops in `flow-map`. An agent whose definition names
+# no model inherits the session's, so an Opus session running `improve deep`
+# costs eight Opus agents. This makes Sonnet the floor for those; an agent that
+# needs more asks by name in its own frontmatter, as `critique` does.
+export CLAUDE_CODE_SUBAGENT_MODEL=sonnet
+
 # Load aliases
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
 
