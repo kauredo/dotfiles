@@ -202,6 +202,11 @@ the versioned `claude/` config:
   machines regardless of username.
 - Skills are linked individually, so plugin-managed skills in `~/.claude/skills`
   are left untouched.
+- `~/.claude-b` is a second account (`claude-b`, or `ccc` with permissions
+  skipped). It has its own login, and its config, skills, plugins, memories
+  and transcripts are symlinks back into `~/.claude`. User-scope MCP servers
+  are copied from `~/.claude.json`, so re-run `link-dotfiles.sh` after adding
+  one. Run `claude-b` once and log in with the second account.
 
 ### Other agent tools
 

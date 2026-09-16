@@ -17,5 +17,7 @@ alias rt="bundle exec rails test "
 
 # Claude Code
 alias cc="claude --dangerously-skip-permissions"
+alias claude-b="CLAUDE_CONFIG_DIR=~/.claude-b claude"
+alias ccc="CLAUDE_CONFIG_DIR=~/.claude-b claude --dangerously-skip-permissions"
 alias claude-work="CLAUDE_CONFIG_DIR=~/.claude-work claude"
 alias claude-ujet="CLAUDE_CONFIG_DIR=~/.claude-ujet claude"
