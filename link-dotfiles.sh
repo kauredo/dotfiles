@@ -110,6 +110,35 @@ for d in "$SRC/skills"/*/; do
   link "$SRC/skills/$name" "$DST/skills/$name"
 done
 
+# Second Claude account (the `claude-b` / `ccc` aliases). CLAUDE_CONFIG_DIR keeps
+# its own login, and everything else points back at ~/.claude so both accounts
+# share memories, transcripts, skills and settings. sessions/, session-env/,
+# shell-snapshots/ and cache/ stay per-account because they are per-process.
+DST_B="$HOME/.claude-b"
+mkdir -p "$DST_B"
+for f in "$DST"/*.md "$DST/settings.json" "$DST/history.jsonl"; do
+  [ -e "$f" ] && link "$f" "$DST_B/$(basename "$f")"
+done
+for d in agents commands hooks scripts skills plugins projects plans file-history context-mode; do
+  mkdir -p "$DST/$d"
+  link "$DST/$d" "$DST_B/$d"
+done
+# .claude.json holds the login too, so it cannot be linked. Copy only the
+# user-scope MCP servers across; re-run after `claude mcp add` to sync them.
+if command -v python3 >/dev/null 2>&1 && [ -f "$HOME/.claude.json" ]; then
+  python3 - "$HOME/.claude.json" "$DST_B/.claude.json" <<'PY'
+import json, os, sys
+src, dst = sys.argv[1], sys.argv[2]
+servers = json.load(open(src)).get("mcpServers", {})
+data = json.load(open(dst)) if os.path.exists(dst) else {}
+data["mcpServers"] = servers
+with open(dst, "w") as f:
+    json.dump(data, f, indent=2)
+os.chmod(dst, 0o600)
+print(f"synced {len(servers)} MCP servers into {dst}")
+PY
+fi
+
 # ~/.agents/skills is the cross-tool user-scope skills path. Codex reads it on
 # every session, from the working directory up to the repo root and then here.
 # Created rather than probed for, because it is the one location we actively
