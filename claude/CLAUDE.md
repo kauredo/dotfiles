@@ -2,13 +2,7 @@
 
 ## Personal Knowledge Base
 
-My personal knowledge base (Obsidian vault) lives at `~/Notes/`.
-
-- Read `~/Notes/AGENDA.md` for current priorities, open threads, and recent activity
-- The vault follows PARA method: Projects, Areas, Resources, Archive
-- Full instructions in `~/Notes/CLAUDE.md`
-
-When I ask about personal projects, tasks, or life organization, check the vault.
+Personal projects, tasks, or life organization: check my Obsidian vault at `~/Notes/`, starting with `AGENDA.md` for current priorities and open threads. The vault's own `CLAUDE.md` has the full instructions.
 
 ---
 
@@ -34,84 +28,35 @@ Full detail lives in the `build-ui` skill.
 
 ## Coding Guidelines
 
-Behavioral guidelines to reduce common LLM coding mistakes. Bias toward caution over speed. For trivial tasks, use judgment.
+### 1. Before Acting
 
-### 1. Think Before Coding
+Pick the gate that matches the task:
 
-**Don't assume. Don't hide confusion. Surface tradeoffs. Ask first.**
+- **Ambiguous intent** (unclear scope, several valid readings, or a tradeoff that is mine to decide): ask with `AskUserQuestion`, stating your assumptions in the question.
+- **Clear intent, but 3+ steps or an architectural decision**: enter plan mode.
+- **Everything else**: state a brief plan inline, each step paired with its check, then act.
 
-Always use the `AskUserQuestion` tool to get clarity before acting. Default to asking, not guessing. This applies to:
-- Ambiguous requirements or unclear scope
-- Multiple valid interpretations of a request
-- Architecture or design decisions with tradeoffs
-- Anything where you're less than confident about the intent
+If a simpler approach exists, say so, and push back when warranted. If something goes sideways mid-task, stop and re-plan.
 
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask via `AskUserQuestion`.
-- If multiple interpretations exist, ask which one, don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask via `AskUserQuestion`.
+### 2. Simplicity and Surgical Changes
 
-### 2. Simplicity First
+Write the minimum code the request needs, in the style of the surrounding code. If it could be 50 lines instead of 200, write the 50. Handle only errors that can actually happen.
 
-**Minimum code that solves the problem. Nothing speculative.**
+Every changed line traces directly to the request. Clean up the orphans your own change created (imports, variables, functions it left unused), and mention any other dead code instead of removing it.
 
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
+### 3. Goal-Driven Execution
 
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+Turn each task into a verifiable goal, then loop until it passes:
 
-### 3. Surgical Changes
-
-**Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it, don't delete it.
-
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Dead code should be cleaned up, unless it's commented out intentionally or has a comment explaining why it exists.
-
-The test: Every changed line should trace directly to the user's request.
-
-### 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
 - "Add validation" → "Write tests for invalid inputs, then make them pass"
 - "Fix the bug" → "Write a test that reproduces it, then make it pass"
 - "Refactor X" → "Ensure tests pass before and after"
 
-For multi-step tasks, state a brief plan:
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
+### 4. Read the Real Docs
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+Third-party API, library, framework, CLI, cloud service, or SDK behavior: invoke `builder-skills:read-the-damn-docs` before answering or integrating from memory.
 
-### 5. Plan Before Building
-
-**Use plan mode for any non-trivial task (3+ steps or architectural decisions).**
-
-- Enter plan mode to think through approach before writing code.
-- If something goes sideways mid-task, STOP and re-plan, don't keep pushing down a broken path.
-- Use subagents to keep the main context clean: offload research, exploration, and parallel analysis.
-- One focused task per subagent. Don't duplicate work between main context and subagents.
-
-### 6. Read the Real Docs
-
-**Don't reason about third-party behavior from memory. Look it up.**
-
-Before integrating, upgrading, debugging, or answering anything about a third-party API, library, framework, CLI, cloud service, or model/provider SDK, invoke the `builder-skills:read-the-damn-docs` skill, it forces a web search for the current official docs and reads the primary source before you assume. This matters most for auth, billing, data, migration, deployment, and anything where API drift would burn time. (The `claude-api` skill already does this for Anthropic SDK work; this is the general-purpose version for everything else.)
-
-### 7. Git Commits
+### 5. Git Commits
 
 - When I say `/commit`: stage relevant files, write a concise commit message, and commit. No push unless asked.
 - **Never mention Anthropic or Claude** in commit messages or co-author lines.
@@ -120,19 +65,11 @@ Before integrating, upgrading, debugging, or answering anything about a third-pa
 - If a pre-commit hook fails, fix it and make a NEW commit. Never amend.
 - The message body is prose I will read, so `writing-style.md` applies to it. The conventional-commit format is the only part that is exempt.
 
-### 8. Neutral phrasing for security findings (Fable/Mythos-tier only)
+### 6. Fable-Tier Security Phrasing
 
-**Applies only if you are a Claude Fable or Mythos-tier model** (model id `claude-fable-*` / Mythos). Other models can skip this section.
-
-The Fable safeguards pattern-match on offensive-security vocabulary even in clearly authorized, defensive work (audits of my own code, pentests I asked for, CTF-style exercises). To avoid false-positive flags that interrupt the task, describe vulnerabilities in fix-oriented, neutral terms, especially in subagent/workflow prompts and args, where dense clusters of this language trip the classifier hardest:
-
-- Say "missing authorization check on endpoint X" rather than "endpoint X has zero auth, exposing PHI, lets anyone exfiltrate patient data."
-- Say "unscoped tenant lookup" rather than "cross-tenant read by enumeration / break tenant isolation."
-- Describe the defect and the fix; skip the attacker-playbook framing ("how to break in," "exfiltrate," "tamper with"). Precision does not require exploit narration.
-- Presentation only. Do NOT drop, soften, or downgrade the severity of a real finding. A genuine auth bypass is still P0; report it fully, just in defensive language.
+If you are a Claude Fable or Mythos-tier model (`claude-fable-*`) and are writing up security findings or delegating security review, read `~/.claude/fable-security-phrasing.md` first.
 
 @RTK.md
 @writing-style.md
 
 <!-- github-pending-review.md is not imported here, /code-review loads it on demand by path when posting a pending PR review. -->
-
