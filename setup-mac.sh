@@ -146,6 +146,29 @@ if [ -f "$SCRIPT_DIR/link-dotfiles.sh" ]; then
     "$SCRIPT_DIR/link-dotfiles.sh"
 fi
 
+# Third-party agent skills and CLIs. These update from upstream, so they are
+# installed here rather than copied into claude/skills/. The launch-video skill
+# in ~/code/personal/marketing runs /brag and the Hyperframes skills, and uses
+# genmedia for generated atmosphere. Non-fatal: needs Node from nvm above.
+if command -v npx &> /dev/null; then
+    echo "Installing brag and HyperFrames agent skills..."
+    npx -y skills add https://github.com/latent-spaces/brag --skill brag -g -y \
+        || echo "Could not install brag. Retry: npx skills add https://github.com/latent-spaces/brag --skill brag -g"
+    npx -y hyperframes skills update \
+        || echo "Could not install HyperFrames skills. Retry: npx hyperframes skills update"
+else
+    echo "npx not found, skipping brag and HyperFrames skills"
+fi
+
+if ! command -v genmedia &> /dev/null; then
+    echo "Installing genmedia (fal.ai CLI)..."
+    curl https://genmedia.sh/install -fsS | bash \
+        && echo "genmedia installed. Add your fal.ai key with: genmedia setup" \
+        || echo "Could not install genmedia. Retry: curl https://genmedia.sh/install -fsS | bash"
+else
+    echo "genmedia already installed"
+fi
+
 # Clone the Notes vault (personal knowledge base). The global CLAUDE.md and the
 # os-audit launchd job both reference ~/Notes, so the setup depends on it.
 # Cloned, not submoduled: it has its own sync cadence (.cli.sh). Non-fatal —

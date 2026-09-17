@@ -18,6 +18,9 @@ This repository contains scripts and configuration files to quickly set up a con
   - The same skills reach Codex and anything else reading `~/.agents/skills`.
     `lib/render-agent-configs.py` renders the rest into the shapes those tools
     need. See "Other agent tools" below
+  - Third-party skills that update from upstream are installed by `setup-mac.sh`
+    instead of copied in: `brag` and the HyperFrames skills (via `npx`), plus the
+    `genmedia` CLI. The marketing hub's `launch-video` skill depends on all three
 
 - **Scheduled jobs** (`launchd/`, rendered into `~/Library/LaunchAgents` on macOS):
 

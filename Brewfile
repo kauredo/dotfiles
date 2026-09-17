@@ -17,6 +17,7 @@ brew "tree"                    # Display directories as trees
 brew "wget"                    # Internet file retriever
 brew "zsh-syntax-highlighting" # Fish-like syntax highlighting for Zsh
 brew "jq"                      # Command-line JSON processor
+brew "ffmpeg"                  # Video/audio tool with ffprobe (Hyperframes renders, the launch-video skill)
 
 # Programming languages and environments
 brew "nvm"                     # Node Version Manager
