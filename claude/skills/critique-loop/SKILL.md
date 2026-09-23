@@ -29,7 +29,7 @@ A component that opens, selects or changes with its data is several screens, and
 
 1. Capture every state on the list, under the same file names as round 1, then run `/critique` on the target with those screenshots and the list.
 2. Record two things: the `Critic score: N/10`, and the critic's top objection verbatim. Scores alone cannot separate a fix that never reached the screen from an objection that is structural. The objection text can.
-3. Apply the fixes worth applying, leaving subjective preference and anything that would over-engineer.
+3. Open the code behind each finding before you change anything, then apply the ones worth applying, leaving subjective preference and anything that would over-engineer. The critic judges a screenshot and has never seen the implementation, so any finding about how something is built is a **premise**, not a fact: "these two states differ only in hue" is false where the icons are already distinct glyphs. A premise that does not hold gets written down and dropped, because changing working code to satisfy one is worse than leaving it alone.
 4. Run the commands the critique recommends (`/harden`, `/bolder`, `/quieter`, `/clarify`, `/colorize`, `/optimize`, `/normalize`) on the files it names.
 5. Check for a **half-landed** fix: for each rule the round changed, read the computed style of the element it targets in the browser, and confirm the value is yours. The cascade eats fixes and the screenshot still changes: an `!important` in a library theme, a later rule of the same specificity, a site-wide `:focus-visible` shadow. The computed value names the winner; a screenshot only shows the result.
 6. Report the round number, the score, and what changed.
