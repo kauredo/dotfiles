@@ -13,7 +13,7 @@ Not always-loaded. Check 14 opens this file and greps the draft against every en
 - **Hedge openers / throat-clearing.** No "In today's fast-moving landscape," "When it comes to X," "As we navigate." Start with the actual point.
 - **Resolution/summary closers.** No "Overall," "In conclusion," "At the end of the day," and no one-line section recap that restates what was just said.
 - **Sycophantic openers.** No "Great question," "What a fascinating idea."
-- **"Reads" as an evaluation verb.** No "the fix reads right," "this reads clean," "it reads as X." Say "the fix looks right," or just state the judgment plainly ("the logic is correct").
+- **"Reads" as an evaluation verb.** No "the fix reads right," "this reads clean," "it reads as X." Say "the fix looks right," or just state the judgment plainly ("the logic is correct"). Bare **"holds"** is the same crutch as "holds up": no "your reading holds," "the claim holds," "the invariant holds." Say what was checked and what came back, or state the judgment.
 - **Recapping what's already settled.** When acknowledging that something is done or resolved, don't list each resolved item back to the person. They did the work, they know what it was. Say it's handled and move on. Kill the "both threads resolved: X, and Y" outline.
 
 ## Structure and rhythm
