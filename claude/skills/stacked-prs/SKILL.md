@@ -162,12 +162,29 @@ Sync the stack onto the trunk first (`gh stack sync`), or the merge replays a
 stale base. `gh stack merge --squash` produces **one squash commit per PR**, not
 one for the whole stack, so the per-PR history survives on the trunk.
 
-Afterwards:
+**The GitHub button does the same thing.** Once `gh stack submit` has linked
+the PRs, the top PR's merge box shows **Squash and merge stack (N)**. It lands
+the whole stack atomically, as one squash commit per PR, exactly like
+`gh stack merge --squash --yes` (confirmed 2026-09-24: four PRs became four
+commits on `main`). Hand the user either one, and never merge a stack PR by PR
+from the web UI.
+
+**Run every out-of-band deploy before the merge, from the top branch.** When
+the trunk's CI ships only part of the system (Vercel ships a Next.js frontend
+but not the Convex backend, for example), deploy the rest by hand before the
+merge, from the top branch, because only the top holds every layer's change.
+Deploying from the trunk ships none of it. Check the deploy landed (a function
+list, a health check), then merge.
+
+Afterwards, in this order, from the stack's own worktree:
 
 ```bash
 gh stack sync --prune                # drop local branches for merged PRs
 git worktree remove ../<repo>-stack  # once the whole stack has landed
 ```
+
+Prune first: `gh stack` only runs from the worktree that created the stack, so
+once that worktree is removed, the merged branches have to be deleted by hand.
 
 #### Merging by hand, without the extension
 
