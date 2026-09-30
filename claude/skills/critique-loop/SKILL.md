@@ -1,12 +1,12 @@
 ---
 name: critique-loop
-description: "Critique, fix and re-critique a screen across its states until the score stops rising; a plateau escalates to a redesign fan-out."
+description: "Critique, fix and re-critique a screen across its states until every finding is resolved; a plateau escalates to a redesign fan-out, and two critics contradicting each other escalate to a blind ranking."
 disable-model-invocation: true
 ---
 
 # Critique Loop
 
-Run a design critique loop until the score stops rising.
+Run a design critique loop until every finding is resolved.
 
 ## Resolve target
 
@@ -27,19 +27,28 @@ A component that opens, selects or changes with its data is several screens, and
 
 ## Each round
 
-1. Capture every state on the list, under the same file names as round 1, then run `/critique` on the target with those screenshots and the list.
-2. Record two things: the `Critic score: N/10`, and the critic's top objection verbatim. Scores alone cannot separate a fix that never reached the screen from an objection that is structural. The objection text can.
+1. Capture every state on the list into `round-N/`, under the same file names every round, then run `/critique` on the target with those screenshots and the list. Add two questions to the critique prompt:
+
+   > For each graphic element, name the established UI pattern its shape quotes, and say whether that pattern's conventional meaning matches what this element is for.
+
+   > These shapes have already been tried and rejected, with the reason each was rejected: `<the rejection ledger>`. Propose something that is none of them.
+
+   The first question catches a misread quote in round 1 rather than one round per quote: a filled track quotes percent-complete, seven slots quote a weekday tracker, and a critic shown one shape names only the quote in front of it. The second is what stops critics handing each other's rejects back. Both lines are empty on round 1 except the pattern question; the ledger fills as the loop runs.
+2. Record three things: the `Critic score: N/10`, the critic's top objection verbatim, and **every finding with what you did about it** (applied, dropped as a premise, or handed on). Scores alone cannot separate a fix that never reached the screen from an objection that is structural, and a per-finding record is what shows the central element getting worse while unrelated repairs lift the number.
 3. Open the code behind each finding before you change anything, then apply the ones worth applying, leaving subjective preference and anything that would over-engineer. The critic judges a screenshot and has never seen the implementation, so any finding about how something is built is a **premise**, not a fact: "these two states differ only in hue" is false where the icons are already distinct glyphs. A premise that does not hold gets written down and dropped, because changing working code to satisfy one is worse than leaving it alone.
 4. Run the commands the critique recommends (`/harden`, `/bolder`, `/quieter`, `/clarify`, `/colorize`, `/optimize`, `/normalize`) on the files it names.
 5. Check for a **half-landed** fix: for each rule the round changed, read the computed style of the element it targets in the browser, and confirm the value is yours. The cascade eats fixes and the screenshot still changes: an `!important` in a library theme, a later rule of the same specificity, a site-wide `:focus-visible` shadow. The computed value names the winner; a screenshot only shows the result.
-6. Report the round number, the score, and what changed.
+6. Add every shape the round replaced to the **rejection ledger**: the element, the shape, and the reason the critic gave. It is one list, carried into every later critique prompt, and it is what keeps round 3 from proposing what round 1 threw out.
+7. Report the round number, the score, and what changed.
+8. Post the **round comment** on the PR: the round number, the score, the top objection, the per-finding record from step 2, and every screenshot in `round-N/`, each captioned with its state. Publish the images the way the repo publishes PR screenshots (its `AGENTS.md` says how); on a private repo that is a URL the reviewer's own session can load. Before the PR exists, the `round-N/` folders wait, and the step that opens the PR posts one round comment per round, in order. Done when the PR shows every round, so a reviewer can watch the screen change and see why.
 
 ## Stop when
 
-- The score reaches 9. The critic scores every round in `/critique` Step 0 and never sees the target, so a 9 is a real 9.
+- **Every finding from the last round is resolved** and the score reaches 9. Two gates, because they fail apart: a round that repairs three small things and breaks the central element scores higher and is further from done. The per-finding record from step 2 is the check.
 - Only subjective taste is left.
-- A **reversal**: a critic asks to undo what an earlier round's critic asked for (fills, then no fills; codes, then names). Two fresh critics disagreeing is a matter of taste, and another round only picks a side at random. Keep what is shipped and list both asks for the user.
 - Four rounds are spent. Report what remains.
+
+A **reversal** does not stop the loop, it redirects it: a critic asks to undo what an earlier round's critic asked for (fills, then no fills; codes, then names). Two shapes, each rejected in favour of the other, is a question sequential rounds cannot answer, because each critic sees one shape and no history. Go to [`CONTESTED-ELEMENT.md`](CONTESTED-ELEMENT.md), which builds the candidates and ranks them side by side, then come back here with the winner.
 
 ## Plateau
 
@@ -69,8 +78,11 @@ Apply the answer as one round and re-score. Still flat means the direction is th
 
 - Surgical: a round touches only what the critique flagged.
 - "Good enough to ship" beats "theoretically perfect".
-- When the same objection survives two fixes, hand it to the user rather than spending a third.
+- When the same objection survives two fixes, hand it to the user rather than spending a third. An objection that flips rather than survives is a reversal, and goes to [`CONTESTED-ELEMENT.md`](CONTESTED-ELEMENT.md) instead.
+- A finding that needs a call outside design (a clinical threshold, a pricing tier, a legal line) goes to the user with the critic's reasoning. Picking the number yourself to close the finding ships an invented fact.
 
 ## Finish
+
+Check the PR carries a round comment for every round, the last one included.
 
 When a round changed JavaScript (a new render path, a handler, a popup), the loop also changed behaviour the critic cannot see. Before reporting, run the `correctness-reviewer` agent on the loop's diff and fix what it confirms: edge data the seed skipped, library behaviour, focus and keyboard paths.
