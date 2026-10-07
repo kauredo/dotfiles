@@ -62,6 +62,8 @@ The ranking winner goes back onto the canvas as a board, the losers into the led
 
 Done when the last round left every finding applied, dropped as a stated premise, or handed to the user, and the score is 9. Short of that, stop when only taste or user calls remain, or after 8 rounds, and report what is left and why.
 
+When the loop moves onto built stories, capture each one after its play function has finished, then blur the focused element before the screenshot: a play function that clicked a link leaves a focus ring, and the critic reads it as a second outlined button. Render each component at the width the page will give it (a story decorator with the column's max width); a card stretched to 1280 gets critiqued for empty space it will never have.
+
 Whole-screen scores on canvas mocks flatten around 6 to 7 even while blind rankings give single elements an 8: a critic marks a hand-drawn mock down for fidelity no fix can supply. When the score holds flat through a re-ask and a fan-out, stop iterating the mock and recommend building the winners as real screens (stories or a scratch route) and running `critique-loop` there. Every second round, and at every stop, give the user the canvas link, the score trend, and the open calls they must make, each with the critic's reasoning.
 
 When a design is picked to ship, its boards are the spec: open the build with `build-ui` or the project's equivalent and link the canvas.
