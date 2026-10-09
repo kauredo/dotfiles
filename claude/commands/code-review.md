@@ -325,8 +325,6 @@ Anything that dies here goes into the `Filtered in vetting` footer with what kil
 
 **Run the mandatory final pass from the Voice block on every draft before you show it** (the 14 checks in `~/.claude/writing-style.md`, structural ones first, phrase grep last). This applies to the report, the review body, each inline comment, and any reply to an existing thread. It also applies to a follow-up round on a PR you already reviewed, which is where check 7 matters most.
 
-**The drafts may only narrow the vetted report, never strengthen it.** Step 6 findings have been through Step 5; the rewrite into conversational prose has not. Before showing any draft, compare each claim in it against the claim in the finding it came from. Anything the finding did not assert is new and unverified: send it back through Step 5 or cut it. This is where compression mints over-general claims, and the drafts are the one output in the pipeline that no reviewer has read. If the writing pass flags a sentence as an aphoristic closer, treat that as a signal the claim may be over-general rather than merely over-tidy, and re-test it before you smooth the prose.
-
 **For PR sources**: go straight to drafting the review, following the triage + tone rules in `~/.claude/github-pending-review.md` (triage → verify line numbers → draft each finding in a real voice). Show the drafts inline as a clearly-labeled list:
 
 - the top-level review body, then
@@ -335,6 +333,12 @@ Anything that dies here goes into the `Filtered in vetting` footer with what kil
 Do **not** run `gh api` yet. End the drafts with one line telling the user to say the word when they want it posted, and **name the event you intend to submit**, per the severity floor in `~/.claude/github-pending-review.md`. If they later say to post, use the `gh api` form from that same file.
 
 **For non-PR sources** (`--staged`, `--commit`, `--branch`, no argument), draft the concrete fixes as a short plan (one bullet per substantive finding: `file:line` → the change), applying the same triage rules to filter nitpicks first. Don't edit any files yet. End by telling the user to say the word when they want the fixes applied.
+
+**Gate.** The drafts and the report reach the user only after these three run, with their output in the transcript. Run them again before posting if the head has moved since.
+
+1. **Anchors read.** Print every `file:line` in the report and the drafts from the reviewed head, in one batch (`sed -n '<line>p' <file>` in the worktree). Each printed line is the code its comment talks about. Diff-offset arithmetic does not count as a read.
+2. **Claims sourced.** The drafts narrow the vetted report and add nothing to it, because the rewrite into conversational prose is the one output no reviewer has read. List every number, threshold, count, frequency and always/never/every in the drafts, and beside each quote the vetted finding sentence or tool output that backs it. A claim with no quote gets cut, or stated as unknown, exactly as the reviewer left it. An aphoristic closer flagged by the writing pass is a sign the claim grew in compression, so re-test it here.
+3. **Ledger.** The report ends with `Gate: N/N anchors read, M/M claims sourced`. The review is done when that line is present and both counts are whole.
 
 Then, **always**, add a final section titled **"In plain language"**: a short, non-technical explanation of what the PR/diff changes and what the findings mean, written for someone who won't read the code (PM, manager, the author's future self). No code identifiers, no file paths, no jargon, describe the behavior and the risk in everyday terms. A few sentences, not a wall. Follow the voice rules at the top of this file: plain, direct, no significance-inflation, no tidy summary closer.
 
