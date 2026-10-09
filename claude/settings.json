@@ -57,21 +57,13 @@
     "command": "$HOME/.claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "frontend-design@claude-plugins-official": false,
     "code-simplifier@claude-plugins-official": false,
     "ruby-lsp@claude-plugins-official": true,
     "ralph-wiggum@claude-code-plugins": true,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": false,
     "context-mode@context-mode": true,
     "builder-skills@builder-skills": true
   },
   "extraKnownMarketplaces": {
-    "ui-ux-pro-max-skill": {
-      "source": {
-        "source": "github",
-        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
-      }
-    },
     "context-mode": {
       "source": {
         "source": "github",
