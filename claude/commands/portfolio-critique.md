@@ -205,8 +205,10 @@ Lead with the leaderboard, in Step 4's order:
 Then:
 
 - **The bottom five**, each with its two changes from Step 2 and the command to
-  reach for: `/impeccable critique`, `/polish-loop`, `/impeccable distill`, `/impeccable bolder`,
-  `/impeccable quieter`, `/impeccable polish`, `/impeccable colorize`.
+  reach for: `/impeccable critique`, `/polish-loop`, `/impeccable distill`,
+  `/impeccable typeset`, `/impeccable layout`, `/impeccable bolder`,
+  `/impeccable quieter`, `/impeccable colorize`, `/impeccable animate` (or
+  `apple-design` for gesture motion), `/impeccable polish`.
 - **Brand verdicts**, one paragraph per multi-surface product, worst
   inconsistency first.
 - **Tells across the portfolio**: how many surfaces show each one. A pattern on

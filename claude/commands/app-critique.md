@@ -277,7 +277,12 @@ with the full-page captures alongside the findings. Structure:
   | A mark or logo | `ui-ux-pro-max:design` for the exploration, then `/impeccable critique` |
   | Imagery the page is missing | a real screenshot first; `genmedia` only for what cannot be photographed |
   | Contrast, states, empty states, error paths | `/impeccable harden` |
-  | Too many styles, duplicated sections, dead space | `/impeccable distill` |
+  | Duplicated sections, dead space, more on screen than the job needs | `/impeccable distill` |
+  | Type hierarchy, more than four type styles, fonts mixed across routes | `/impeccable typeset`, onto the families already in use |
+  | Spacing, rhythm, alignment, a grid that drifts between routes | `/impeccable layout` |
+  | Colour that is timid or missing its job | `/impeccable colorize`, inside the palette in use |
+  | Safe and forgettable, or loud and overstimulating | `/impeccable bolder` or `/impeccable quieter` |
+  | Motion: entrances, transitions, feedback | `/impeccable animate`; a drag, swipe, sheet or spring goes to `apple-design` |
   | The same operation named or laid out three ways | `/impeccable polish`, against the design system |
   | Copy, labels, register, locale | `/impeccable clarify`, against `~/.claude/writing-style.md` |
   | Phone layout that stopped being designed | `/impeccable adapt` |
@@ -297,8 +302,8 @@ plan from docs/design-audit-<date>.md. Every row of "Where each fix goes" is a
 vetted finding: skip your own audit and the Vet phase, take the rows as the
 findings, and write one plan per row in the report's order. Rows routed to
 /ship are bugs with evidence attached; a plan for one of those is short. Rows
-routed to /build-ui or to /impeccable harden, distill, polish, clarify, or adapt
-name that command as the executor's tool in the plan body. Reconcile with the
+routed to /build-ui, an /impeccable command, or apple-design
+name that tool as the executor's tool in the plan body. Reconcile with the
 existing plans/ index rather than duplicating.
 ```
 
