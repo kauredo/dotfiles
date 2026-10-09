@@ -1,6 +1,6 @@
-# Quick Reference  -  Full Rule Set (all 10 categories)
+# Quick Reference: Full Rule Set (all 10 categories)
 
-Load this file when doing a UI review/audit pass, or when you need the full checklist for a category beyond the priority table in SKILL.md. Each rule is also present verbatim in `data/ux-guidelines.csv` / `data/app-interface.csv` and is reachable via `--domain ux` / `--domain web` search  -  this file is a static index for quick scanning without a search round-trip.
+Load this file when doing a UI review/audit pass, or when you need the full checklist for a category beyond the priority table in SKILL.md. Each rule is also present verbatim in `data/ux-guidelines.csv` / `data/app-interface.csv` and is reachable via `--domain ux` / `--domain web` search, this file is a static index for quick scanning without a search round-trip.
 
 ## Quick Reference
 
@@ -107,7 +107,7 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 - `viewport-units` - Prefer min-h-dvh over 100vh on mobile
 - `orientation-support` - Keep layout readable and operable in landscape mode
 - `content-priority` - Show core content first on mobile; fold or hide secondary content
-- `visual-hierarchy` - Establish hierarchy via size, spacing, contrast  -  not color alone
+- `visual-hierarchy` - Establish hierarchy via size, spacing, contrast, not color alone
 - `compact-label-overflow` - Choose badge, status tag, filter chip, or removable value from its semantics; keep essential labels available and disclose unavoidable truncation to pointer and keyboard users
 - `chip-collection-reflow` - Wrap the collection before shrinking labels; make a `+n` overflow summary an operable disclosure instead of hiding values
 
@@ -155,7 +155,7 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 - `motion-consistency` - Unify duration/easing tokens globally; all animations share the same rhythm and feel
 - `opacity-threshold` - Fading elements should not linger below opacity 0.2; either fade fully or remain visible
 - `modal-motion` - Modals/sheets should animate from their trigger source (scale+fade or slide-in) for spatial context (HIG, MD)
-- `navigation-direction` - Forward navigation animates left/up; backward animates right/down  -  keep direction logically consistent (HIG)
+- `navigation-direction` - Forward navigation animates left/up; backward animates right/down, keep direction logically consistent (HIG)
 - `layout-shift-avoid` - Animations must not cause layout reflow or CLS; use transform for position changes
 - `cancellable-state-transitions` - Rapid state changes must cancel/replace prior micro-interactions safely, set the new final state explicitly, and never depend on an animation-end event for correctness
 
