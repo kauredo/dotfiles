@@ -31,7 +31,9 @@ Done when you hold, for every screen in scope, the real data it can show, the re
 
 ## 3. Variants first
 
-Before any loop, give the user 3 genuinely different variants per screen, each committed to an idea you can name, and say each one's tradeoff in the reply, not on the board. Let the user pick or remix. **Different audiences get different structures**: two audiences sharing one hero component is the first thing a critic and a user both notice.
+Before any loop, give the user 3 genuinely different variants per screen, each committed to an idea you can name, and say each one's tradeoff in the reply, not on the board. Let the user pick or remix.
+
+Diverge the way `build-ui` Phase 2 does: one agent per variant, spawned in parallel in a single message, each blind to the others and seeded with its own `openssl rand -hex 24` string or an outside-reference brief. Each gets step 1's grounding, tokens included, and runs `frontend-design` for its aesthetic calls. A variant that needs a palette or type pairing the tokens lack takes one from `ui-ux-pro-max`. **Different audiences get different structures**: two audiences sharing one hero component is the first thing a critic and a user both notice.
 
 Done when the user has picked the direction per screen. Their picks become the loop's targets.
 
