@@ -69,8 +69,8 @@ https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
 | frontend-design | em dashes replaced |
 
 Copied from the Claude plugin installation. The licence is stored beside the
-skill. The `frontend-design@claude-plugins-official` plugin is disabled in
-`~/.claude/settings.json`, so only this copy loads. Upstream has since grown a
+skill. The `frontend-design@claude-plugins-official` plugin is uninstalled, so only
+this copy loads. Upstream has since grown a
 longer body (typography rules, structural devices, a plan-build-critique
 process); this copy keeps the "Mandatory preparation" block the design commands
 depend on.
@@ -85,8 +85,8 @@ https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 Only the `ui-ux-pro-max` runtime skill is vendored, including its search scripts,
 data, and references. The plugin's other specialist skills and development files
 are not required by the design stack in `CLAUDE.md`. The licence is stored beside
-the skill. The `ui-ux-pro-max@ui-ux-pro-max-skill` plugin is disabled in
-`~/.claude/settings.json`, so only this copy loads. This copy also carries the
+the skill. The `ui-ux-pro-max@ui-ux-pro-max-skill` plugin and its marketplace are
+uninstalled, so only this copy loads. This copy also carries the
 Refero Styles step (Step 1b) and stack detection, which upstream does not have.
 
 ## emilkowalski/skills: MIT
@@ -100,6 +100,22 @@ Installed with `npx skills add emilkowalski/skills@apple-design -g`, then moved
 here and removed from the `npx skills` lock, so `npx skills update` no longer
 sees it. The licence is stored beside the skill. `build-ui` Phase 3 and
 `interface-guidelines` point at it for gesture-driven motion.
+
+## Moved out of `npx skills`
+
+Installed with `npx skills add … -g`, then copied here, removed from the
+`~/.agents/.skill-lock.json` lock and symlinked, so `npx skills update` no
+longer sees them. To refresh one, `npx skills add` it into a scratch project
+and copy the folder over. Em dashes were replaced in their Markdown only;
+scripts, JSON and HTML templates keep theirs, since some are runtime strings.
+
+| Skill | Source | Licence |
+|---|---|---|
+| hyperframes, hyperframes-animation, hyperframes-audio, hyperframes-cli, hyperframes-core, hyperframes-creative, hyperframes-keyframes, hyperframes-registry, hyperframes-studio, media-use, motion-graphics | https://github.com/heygen-com/hyperframes | Apache-2.0 |
+| brag | https://github.com/latent-spaces/brag | MIT |
+| svg-character-animation | https://github.com/calesthio/openmontage | MIT per its frontmatter; the repo is AGPL-3.0 |
+
+`brag/assets/` is 16 MB of music and sound effects the skill renders with.
 
 ## iOfficeAI/OfficeCLI: install script, not a repo copy
 https://github.com/iOfficeAI/OfficeCLI
