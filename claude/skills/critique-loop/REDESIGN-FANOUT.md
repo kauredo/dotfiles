@@ -21,7 +21,7 @@ One agent asked for three options returns one idea in three paint jobs. Spawn th
 - **Strip**: remove every element that is not load-bearing, `/impeccable distill` taken past where you would normally stop.
 - **Lead with type**: the accent font and a real hierarchy carry the page, and the containers go. `/impeccable typeset` sets the scale.
 - **Reorder**: change what the screen is about, so a different thing is the first thing seen. `/impeccable shape` re-plans the screen around the new primary task.
-- **Borrow**: take the structure of whichever reference the critic ranked top, in our palette and our components. Fetch that product's real design system through `ui-ux-pro-max` Step 1b (Refero Styles) and work from it.
+- **Borrow**: take the structure of whichever reference the critic ranked top, in our palette, our type and our components. Fetch that product's real design system through `ui-ux-pro-max` Step 1b (Refero Styles) to read its structure accurately; its fonts and colours stay behind.
 - **Overdrive**, only when the critic calls the screen safe or forgettable: `/impeccable overdrive`, one technically ambitious move made inside the frozen list.
 
 Build them in the running app, on scratch routes, with seeded data and the real component library. Mocks plateau: a set of them sat flat at 7/10 across three rounds and only started moving once the loop ran against built screens. A candidate that is already real code is also one you can merge instead of re-implement.
