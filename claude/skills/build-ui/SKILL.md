@@ -57,9 +57,10 @@ The context you need either way: target audience and use cases, brand personalit
 For every component:
 1. Consult the `frontend-design` skill for aesthetic direction
 2. Follow `interface-guidelines` skill for interaction patterns
-3. Reference `/docs/` for specific techniques
-4. Use composition over duplication
-5. When a section needs visual weight, generate real imagery with the `genmedia` skill (fal.ai) rather than reaching for a CSS gradient or a blurred blob. Coding agents default to gradients and shapes because those are code, and that reflex is one of the clearest signs nobody art-directed the page.
+3. When the component moves with the user's hand (drag, swipe, sheet, carousel, pull-to-refresh), build its motion from the `apple-design` skill: springs, velocity handoff, momentum, rubber-banding. Its code targets `motion` on the web; on React Native, carry the same physics over to Reanimated and Gesture Handler.
+4. Reference `/docs/` for specific techniques
+5. Use composition over duplication
+6. When a section needs visual weight, generate real imagery with the `genmedia` skill (fal.ai) rather than reaching for a CSS gradient or a blurred blob. Coding agents default to gradients and shapes because those are code, and that reflex is one of the clearest signs nobody art-directed the page.
 
 ### Motion beyond CSS
 
@@ -104,6 +105,7 @@ Then close out the feature:
 | Aesthetic direction | `frontend-design` skill |
 | Real imagery and motion | `genmedia` skill (fal.ai) |
 | Interaction patterns | `interface-guidelines` skill |
+| Gesture-driven motion, springs, materials | `apple-design` skill |
 | Independent design judgment | `/critique` (its Step 0) |
 | Named AI tells and their alternatives | `/critique` (its Section 1 table) |
 | Copy that ships | rewrite by hand against `~/.claude/writing-style.md` |

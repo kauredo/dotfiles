@@ -48,7 +48,7 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - NEVER: Animate layout props (`top`, `left`, `width`, `height`)
 - NEVER: `transition: all`, list properties explicitly
 - SHOULD: Use ease-out-quart/quint/expo for natural deceleration
-- MUST: Animations interruptible and input-driven
+- MUST: Animations interruptible and input-driven. `apple-design` has the how: springs, velocity handoff, momentum projection, rubber-banding
 
 ## Layout
 
