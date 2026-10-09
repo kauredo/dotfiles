@@ -26,7 +26,7 @@ Detected when NONE of the above are present.
 
 Check for `docs/design-system.md` (the persisted Design Context).
 - **If it exists**, read it and use it, do not re-interview.
-- **If it doesn't**, run `/teach-impeccable` to interview the user (via `AskUserQuestion`) and persist the result to `docs/design-system.md`, linked from the project `CLAUDE.md`. Then continue.
+- **If it doesn't**, run `/impeccable init`. It interviews the user (via `AskUserQuestion`) for the product record and persists it to `docs/design-system.md`, linked from the project `CLAUDE.md`. Init leaves visual taste to later steps, so ask for the rest yourself (brand personality in three words, reference sites, anti-references, light or dark, colors to use or avoid) and add it to the same file under a `## Design Context` section. Then continue.
 
 The context you need either way: target audience and use cases, brand personality (3 words), aesthetic direction and references, anti-references (what to avoid).
 
@@ -77,7 +77,7 @@ Video is billed per clip. Check `genmedia pricing <endpoint_id>` before a batch 
 Reviewing your own design is not an independent check. You can see the code, the rationale, and the last three attempts, so you grade generously. The judgment has to come from outside that context.
 
 After building:
-1. Run `/critique`. Its Step 0 screenshots the running page and hands the judgment to a fresh subagent that cannot see the code. Apply what holds up.
+1. Run `/impeccable critique`. Its Step 0 screenshots the running page and hands the judgment to a fresh subagent that cannot see the code. Apply what holds up.
 2. Run `design-polish` skill for systematic final pass
 3. Run `design-review` skill for accessibility verification
 
@@ -99,15 +99,15 @@ Then close out the feature:
 
 | Need | Resource |
 |------|----------|
-| Persisted design context | `docs/design-system.md` (via `/teach-impeccable`) |
+| Persisted design context | `docs/design-system.md` (via `/impeccable init`) |
 | Divergent directions | seed string (`openssl rand -hex 24`) or an outside-reference brief |
 | Style / palette / type / charts | `ui-ux-pro-max` skill |
 | Aesthetic direction | `frontend-design` skill |
 | Real imagery and motion | `genmedia` skill (fal.ai) |
 | Interaction patterns | `interface-guidelines` skill |
 | Gesture-driven motion, springs, materials | `apple-design` skill |
-| Independent design judgment | `/critique` (its Step 0) |
-| Named AI tells and their alternatives | `/critique` (its Section 1 table) |
+| Independent design judgment | `/impeccable critique` (its Step 0) |
+| Named AI tells and their alternatives | `/impeccable critique` (its AI tells table) |
 | Copy that ships | rewrite by hand against `~/.claude/writing-style.md` |
 | Final polish | `design-polish` skill |
 | Accessibility review | `design-review` skill |

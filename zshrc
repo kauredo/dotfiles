@@ -67,7 +67,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # `improve`, and the per-repo hops in `flow-map`. An agent whose definition names
 # no model inherits the session's, so an Opus session running `improve deep`
 # costs eight Opus agents. This makes Sonnet the floor for those; an agent that
-# needs more asks by name in its own frontmatter, as `critique` does.
+# needs more asks by name in its own frontmatter, as the outside critic in `/impeccable critique` does.
 export CLAUDE_CODE_SUBAGENT_MODEL=sonnet
 
 # Load aliases

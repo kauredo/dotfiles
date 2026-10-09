@@ -15,10 +15,10 @@ If no changed files are found at all, tell the user and stop.
 
 ## Phase 1: Audit
 
-1. Run `/audit` on all target files
+1. Run `/impeccable audit` on all target files
 2. Read the audit report carefully
 3. **Immediately apply all fixes yourself**: edit the actual files. Skip anything that's subjective preference or over-engineering
-4. If the audit recommends running specific commands (e.g. `/harden`, `/optimize`, `/normalize`), run those on the relevant files
+4. If the audit recommends running specific commands (e.g. `/impeccable harden`, `/impeccable optimize`, `/impeccable polish`), run those on the relevant files
 5. Run linters/type-check to verify fixes don't break anything
 6. Report briefly: what you fixed, what you skipped and why
 

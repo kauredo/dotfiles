@@ -30,6 +30,11 @@ wayfinder map when one exists, so the two compose. See its own file.
 
 `agents/openai.yaml` (Codex) dropped from each.
 
+Last synced to upstream `b0618bc` on 2026-10-09. That sync took upstream's
+`CONTEXT.md` → `GLOSSARY.md` rename (and `CONTEXT-MAP.md` → `GLOSSARY-MAP.md`),
+and `improve` now reads `GLOSSARY.md` to match. `resolving-merge-conflicts` was
+deleted upstream on 2026-09-24, so this copy has nothing left to track.
+
 ## backnotprop/pstack: MIT, mirror of cursor/plugins/pstack
 https://github.com/backnotprop/pstack
 
@@ -66,14 +71,13 @@ https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
 
 | Skill | Local changes |
 |---|---|
-| frontend-design | em dashes replaced |
+| frontend-design | rewritten around a "Mandatory preparation" block and a local "Match complexity to the vision" paragraph; upstream's typography, structure, motion, cliché-cluster, plan and writing rules merged in beside them on 2026-10-09; "confirm the subject with the client" skipped, since the preparation block covers it; em dashes replaced |
 
 Copied from the Claude plugin installation. The licence is stored beside the
-skill. The `frontend-design@claude-plugins-official` plugin is uninstalled, so only
-this copy loads. Upstream has since grown a
-longer body (typography rules, structural devices, a plan-build-critique
-process); this copy keeps the "Mandatory preparation" block the design commands
-depend on.
+skill. The `frontend-design@claude-plugins-official` plugin is uninstalled, so
+only this copy loads. This copy is no longer a straight vendor: to refresh it,
+diff upstream against the version merged on 2026-10-09 and port the new rules by
+hand.
 
 ## nextlevelbuilder/ui-ux-pro-max-skill: MIT
 https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
@@ -88,6 +92,29 @@ are not required by the design stack in `CLAUDE.md`. The licence is stored besid
 the skill. The `ui-ux-pro-max@ui-ux-pro-max-skill` plugin and its marketplace are
 uninstalled, so only this copy loads. This copy also carries the
 Refero Styles step (Step 1b) and stack detection, which upstream does not have.
+
+Last synced to upstream main `1a2c459` (2.13.0) on 2026-10-09. Everything outside
+`SKILL.md` is a straight copy, `scripts/tests/` included, so a re-sync copies
+over all but `SKILL.md` and merges that file by hand.
+
+## pbakaus/impeccable: Apache-2.0
+https://github.com/pbakaus/impeccable, `c5ae03e` (v4.5.1), from `plugin/skills/impeccable`
+
+| Skill | Local changes |
+|---|---|
+| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table, prints `Critic score: N/10` second, and skips its questions when a loop calls it; em dashes replaced |
+
+Replaces the old commands `adapt`, `audit`, `bolder`, `clarify`, `colorize`,
+`critique`, `extract`, `harden`, `normalize` (now `polish`), `onboard`,
+`optimize`, `quieter`, `simplify` (now `distill`) and `teach-impeccable` (now
+`init`). LICENSE and NOTICE sit beside the skill.
+
+The compiled binary that `scripts/impeccable` downloads on first run hardcodes
+`PRODUCT.md` and `DESIGN.md`, so `context` and `live` report both missing. The
+override section tells the model to read `docs/design-system.md` itself. The
+upstream hooks (SessionStart, PostToolUse on Edit and Write, a 30-second Stop
+pass) and the `impeccable-*` subagents are not installed; the skill falls back
+to `reference/degraded/` without them.
 
 ## emilkowalski/skills: MIT
 https://github.com/emilkowalski/skills

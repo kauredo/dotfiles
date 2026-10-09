@@ -6,8 +6,9 @@ properly", when a logo or brand needs judging on its own, or when
 `/portfolio-critique` has pointed at a product and the next step is the full
 treatment. `--pick` stops to choose which fixes get plans.
 
-**First**: read `/critique`. The rubric and the outside-the-context rule are the
-same. What changes is coverage. `/critique` judges the fold of one route in one
+**First**: read the impeccable skill's critique reference
+(`~/.claude/skills/impeccable/reference/critique.md`). The rubric and the
+outside-the-context rule are the same. What changes is coverage. `/impeccable critique` judges the fold of one route in one
 still; `/portfolio-critique` measured that as about 20% of one page on one route,
 with everything that animates in on scroll captured at opacity 0. This command
 exists to see the rest.
@@ -78,7 +79,7 @@ local boot has no image storage, so photos come up as broken images, and a
 signed-in capture can be seven shots of the same login page when the session
 did not stick. Both look like design defects to a critic. Whatever the
 environment did to the captures goes into every critic prompt as one sentence,
-the same way `/critique` tells a critic a login wall is a login wall.
+the same way the impeccable critique tells a critic a login wall is a login wall.
 
 **Done when** every surface has a `capture.json` and the control reads clean.
 
@@ -273,13 +274,13 @@ with the full-page captures alongside the findings. Structure:
   | A token change across codebases (accent, radius, label colour) | `/improve plan` then `/ship` |
   | A page or component that needs its composition rethought | `/build-ui` from step 2, identity settled |
   | The whole identity, per the verdict | `/build-ui` from step 1, direction hunt included, seeded with the keep-list |
-  | A mark or logo | `ui-ux-pro-max:design` for the exploration, then `/critique` |
+  | A mark or logo | `ui-ux-pro-max:design` for the exploration, then `/impeccable critique` |
   | Imagery the page is missing | a real screenshot first; `genmedia` only for what cannot be photographed |
-  | Contrast, states, empty states, error paths | `/harden` |
-  | Too many styles, duplicated sections, dead space | `/simplify` |
-  | The same operation named or laid out three ways | `/normalize` |
-  | Copy, labels, register, locale | `/clarify`, against `~/.claude/writing-style.md` |
-  | Phone layout that stopped being designed | `/adapt` |
+  | Contrast, states, empty states, error paths | `/impeccable harden` |
+  | Too many styles, duplicated sections, dead space | `/impeccable distill` |
+  | The same operation named or laid out three ways | `/impeccable polish`, against the design system |
+  | Copy, labels, register, locale | `/impeccable clarify`, against `~/.claude/writing-style.md` |
+  | Phone layout that stopped being designed | `/impeccable adapt` |
 
 State the bar: no reference images were supplied, so each critic ranked against
 memory. The scores are a band.
@@ -296,8 +297,8 @@ plan from docs/design-audit-<date>.md. Every row of "Where each fix goes" is a
 vetted finding: skip your own audit and the Vet phase, take the rows as the
 findings, and write one plan per row in the report's order. Rows routed to
 /ship are bugs with evidence attached; a plan for one of those is short. Rows
-routed to /build-ui, /harden, /simplify, /normalize, /clarify, or /adapt name
-that command as the executor's tool in the plan body. Reconcile with the
+routed to /build-ui or to /impeccable harden, distill, polish, clarify, or adapt
+name that command as the executor's tool in the plan body. Reconcile with the
 existing plans/ index rather than duplicating.
 ```
 

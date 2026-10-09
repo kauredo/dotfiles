@@ -1,6 +1,6 @@
 # Critique rubric: dimensions 2-10
 
-Loaded by `/critique`. Section 1 (AI Slop Detection) stays in the command itself, because it is the check the whole critique exists for. These are the nine dimensions that follow it.
+Loaded by `/impeccable critique`. The AI tells check stays in the impeccable skill's critique reference (`skills/impeccable/reference/critique.md`, Step 0), because it is the check the whole critique exists for. These are the nine dimensions that follow it.
 
 ### 2. Visual Hierarchy
 - Does the eye flow to the most important element first?

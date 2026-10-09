@@ -3,7 +3,8 @@ brand verdict per product, and a count of which AI tells repeat. Use when
 critiquing more than one project, comparing the surfaces of one product, or
 ranking apps against each other.
 
-**First**: read `/critique`. Every per-surface judgment here runs that rubric
+**First**: read the impeccable skill's critique reference
+(`~/.claude/skills/impeccable/reference/critique.md`). Every per-surface judgment here runs that rubric
 unchanged, and Step 1 below reuses its screenshot recipe. This command adds the
 two things a portfolio needs and a single critique cannot give you: a **brand**
 pass comparing the surfaces of one product against each other, and a **blind
@@ -38,7 +39,7 @@ hold answers that cost a render to learn, and a blind regenerate discards them.
 
 ## Step 1: Render every surface
 
-**Desktop** follows `/critique` Step 0: headless Chrome, one scratch profile,
+**Desktop** follows that reference's Step 0: headless Chrome, one scratch profile,
 check for the file afterwards rather than trusting the exit code. Add
 `--virtual-time-budget=9000` so client-rendered apps finish painting before the
 shot. Save to one run directory as `$OUT/<surface>-desktop.png` at 1440x900.
@@ -204,8 +205,8 @@ Lead with the leaderboard, in Step 4's order:
 Then:
 
 - **The bottom five**, each with its two changes from Step 2 and the command to
-  reach for: `/critique`, `/polish-loop`, `/simplify`, `/bolder`, `/quieter`,
-  `/normalize`, `/colorize`.
+  reach for: `/impeccable critique`, `/polish-loop`, `/impeccable distill`, `/impeccable bolder`,
+  `/impeccable quieter`, `/impeccable polish`, `/impeccable colorize`.
 - **Brand verdicts**, one paragraph per multi-surface product, worst
   inconsistency first.
 - **Tells across the portfolio**: how many surfaces show each one. A pattern on

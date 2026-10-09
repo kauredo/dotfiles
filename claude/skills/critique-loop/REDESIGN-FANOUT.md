@@ -18,7 +18,7 @@ Plateaus live in the variable list almost every time, which is what lets the fan
 
 One agent asked for three options returns one idea in three paint jobs. Spawn the candidates in parallel, each blind to the others, each given the frozen list and the screen's real content, each seeded with a different structural premise:
 
-- **Strip**: remove every element that is not load-bearing, `/simplify` taken past where you would normally stop.
+- **Strip**: remove every element that is not load-bearing, `/impeccable distill` taken past where you would normally stop.
 - **Lead with type**: the accent font and a real hierarchy carry the page, and the containers go.
 - **Reorder**: change what the screen is about, so a different thing is the first thing seen.
 - **Borrow**: take the structure of whichever reference the critic ranked top, in our palette and our components.

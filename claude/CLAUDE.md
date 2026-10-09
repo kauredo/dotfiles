@@ -19,8 +19,8 @@ Which door:
 | New project, or a full redesign | `build-ui`, all four steps, direction hunt included |
 | New feature with UI | `/ship`, which invokes `build-ui` at its implement step |
 | Reworking a page whose identity is already settled | `build-ui` from step 2, skip the direction hunt |
-| Small tweak (spacing, one color, one component) | Just do it, then `/critique` if it is user-facing |
-| "Does this look AI-generated?" | `/critique` alone. It screenshots and asks an outside subagent |
+| Small tweak (spacing, one color, one component) | Just do it, then `/impeccable critique` if it is user-facing |
+| "Does this look AI-generated?" | `/impeccable critique` alone. It screenshots and asks an outside subagent |
 
 Full detail lives in the `build-ui` skill.
 
