@@ -170,6 +170,23 @@ https://www.npmjs.com/package/@agent-native/core
 
 These two share an identical ~230-word "Installed Mode" preamble; if either is hand-edited going forward, extract that shared block into one file both point at rather than maintaining two copies (see the writing-for-agents audit finding).
 
+## coreyhaines31/marketingskills: MIT, Copyright (c) 2025 Corey Haines
+https://github.com/coreyhaines31/marketingskills, `1efedbc` (skills v2.1.3), 2026-10-10
+
+| Skill | Local changes |
+|---|---|
+| pricing | `evals/` dropped; em dashes replaced |
+| competitor-profiling | `evals/` dropped; em dashes replaced |
+
+Cloned and copied, never in the `npx skills` lock. The licence is stored beside
+each skill. `pricing` is the upstream rename of `pricing-strategy`, which is the
+name `npx skills find` still lists. Both skills point at sibling skills that are
+not vendored (`paywalls`, `cro`, `schema`, `ai-seo`, `competitors` and others)
+and read `.agents/product-marketing.md` from the project when it exists.
+`competitor-profiling` prefers the Firecrawl and DataForSEO MCPs, neither of
+which is installed, so it runs on its WebFetch fallback and marks SEO metrics
+unavailable.
+
 ## The em dash rule applies to these too
 
 August 2026: every em dash in this directory was replaced, vendored copies
