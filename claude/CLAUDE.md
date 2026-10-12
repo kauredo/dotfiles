@@ -65,7 +65,15 @@ Third-party API, library, framework, CLI, cloud service, or SDK behavior: invoke
 - If a pre-commit hook fails, fix it and make a NEW commit. Never amend.
 - The message body is prose I will read, so `writing-style.md` applies to it. The conventional-commit format is the only part that is exempt.
 
-### 6. Fable-Tier Security Phrasing
+### 6. Shell Commands the Checker Can Read
+
+Run every shell command as a program with plain arguments, so the permission checker can read it: `docker exec app bundle exec rspec spec/foo_spec.rb`. A script quoted into `bash -c`, `sh -c` or `eval` is opaque to the checker, which stops and prompts me even in bypass mode, and a background agent sits stalled on that prompt.
+
+- Longer than one command: write a script file and run the file.
+- Pipes, filters and redirects go outside any wrapper, on its output.
+- Every subagent brief that involves shell commands carries this rule.
+
+### 7. Fable-Tier Security Phrasing
 
 If you are a Claude Fable or Mythos-tier model (`claude-fable-*`) and are writing up security findings or delegating security review, read `~/.claude/fable-security-phrasing.md` first.
 
