@@ -18,12 +18,19 @@ With no UI files in the target, say so and stop.
 
 ## States
 
-A component that opens, selects or changes with its data is several screens, and the critic judges only the ones it is shown. Before round 1, list the target's **states** at desktop and 390px: each data shape it renders (empty, one, many, too long, past and future), each interaction (open, selected, keyboard focus), and each edge the real data holds. Every round captures the same list, in the same order, under the same file names, so rounds stay comparable.
+A component that opens, selects or changes with its data is several screens, and the critic judges only the ones it is shown. Before round 1, list the target's **states** at desktop and 390px. Every round captures the same list, in the same order, under the same file names, so rounds stay comparable.
+
+Build the list from the code first, then the data:
+
+1. **Every branch in the changed render code.** Read each conditional that decides what renders: a feature flag, a role, a permission, an ownership check (authored or not, own or shared), a length or count. Each combination that changes the visible result is a state. A menu built from `[...optional, always]` is two states, because it holds one item whenever the optional part is empty.
+2. **Each data shape it renders**: empty, one, many, too long, past and future, and each edge the real data holds.
+3. **Each interaction**: open, selected, hovered, keyboard focus.
 
 - Use the repo's capture script when it has one (look under `scripts/` for a name with `capture` or `states`). It seeds the states and screenshots them in one command.
 - Seed from the shape of production rows, awkward cases included: a name typed two ways, a missing time, a value the parser half-understands. The page breaks on those, and only seeded data can show the critic one.
 - Emulate a real phone at 390px (touch, mobile viewport). Text wraps there in ways a resized desktop window hides.
 - Give the critic the list: one line per screenshot saying which state it shows.
+- Add a **crop** of every row or control group the diff changed, at 2x, beside the full screenshot. A 4px drift is invisible at page scale and obvious at row scale.
 
 ## Each round
 
@@ -37,10 +44,11 @@ A component that opens, selects or changes with its data is several screens, and
 2. Record three things: the `Critic score: N/10`, the critic's top objection verbatim, and **every finding with what you did about it** (applied, dropped as a premise, or handed on). Scores alone cannot separate a fix that never reached the screen from an objection that is structural, and a per-finding record is what shows the central element getting worse while unrelated repairs lift the number.
 3. Open the code behind each finding before you change anything, then apply the ones worth applying, leaving subjective preference and anything that would over-engineer. The critic judges a screenshot and has never seen the implementation, so any finding about how something is built is a **premise**, not a fact: "these two states differ only in hue" is false where the icons are already distinct glyphs. A premise that does not hold gets written down and dropped, because changing working code to satisfy one is worse than leaving it alone.
 4. Run the commands the critique recommends (`/impeccable harden`, `bolder`, `quieter`, `distill`, `clarify`, `colorize`, `typeset`, `layout`, `animate`, `optimize`, `polish`) on the files it names. A finding about something that moves under the hand (a drag, a swipe, a sheet, a spring) goes to the `apple-design` skill instead of `animate`.
-5. Check for a **half-landed** fix: for each rule the round changed, read the computed style of the element it targets in the browser, and confirm the value is yours. The cascade eats fixes and the screenshot still changes: an `!important` in a library theme, a later rule of the same specificity, a site-wide `:focus-visible` shadow. The computed value names the winner; a screenshot only shows the result.
-6. Add every shape the round replaced to the **rejection ledger**: the element, the shape, and the reason the critic gave. It is one list, carried into every later critique prompt, and it is what keeps round 3 from proposing what round 1 threw out.
-7. Report the round number, the score, and what changed.
-8. Post the **round comment** on the PR: the round number, the score, the top objection, the per-finding record from step 2, and every screenshot in `round-N/`, each captioned with its state. Publish the images the way the repo publishes PR screenshots (its `AGENTS.md` says how); on a private repo that is a URL the reviewer's own session can load. Before the PR exists, the `round-N/` folders wait, and the step that opens the PR posts one round comment per round, in order. Done when the PR shows every round, so a reviewer can watch the screen change and see why.
+5. **Measure alignment** in the browser, every round, because a critic reading pixels misses a few of them. For each changed row, read `getBoundingClientRect()` of each direct child's visible content (the icon or the text, not its padded hit box) and compare vertical centres against the row's primary element, the title or the label. Anything more than 1px off goes into the round's findings record, whatever the critic said. The usual cause is `items-start` with a 44px button or a `pt-*` nudge beside a shorter text row; centre the pieces in a box the primary row's height. Done when every changed row is measured in every state on the list.
+6. Check for a **half-landed** fix: for each rule the round changed, read the computed style of the element it targets in the browser, and confirm the value is yours. The cascade eats fixes and the screenshot still changes: an `!important` in a library theme, a later rule of the same specificity, a site-wide `:focus-visible` shadow. The computed value names the winner; a screenshot only shows the result.
+7. Add every shape the round replaced to the **rejection ledger**: the element, the shape, and the reason the critic gave. It is one list, carried into every later critique prompt, and it is what keeps round 3 from proposing what round 1 threw out.
+8. Report the round number, the score, and what changed.
+9. Post the **round comment** on the PR: the round number, the score, the top objection, the per-finding record from step 2, and every screenshot in `round-N/`, each captioned with its state. Publish the images the way the repo publishes PR screenshots (its `AGENTS.md` says how); on a private repo that is a URL the reviewer's own session can load. Before the PR exists, the `round-N/` folders wait, and the step that opens the PR posts one round comment per round, in order. Done when the PR shows every round, so a reviewer can watch the screen change and see why.
 
 ## Stop when
 

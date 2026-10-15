@@ -25,12 +25,14 @@ Loaded by `/impeccable critique`. The AI tells check stays in the impeccable ski
 - Would a user know what to do without instructions?
 - Are hover/focus states providing useful feedback?
 - Are there hidden features that should be more visible?
+- Does every control earn its container? A menu with one item, tabs with one tab, a picker or segmented control with one option, or a disclosure hiding one line all cost a click to reach the only choice. Show that action or content directly, and keep the container for the state where it holds two or more.
 
 ### 6. Composition & Balance
 - Does the layout feel balanced or uncomfortably weighted?
 - Is whitespace used intentionally or just leftover?
 - Is there visual rhythm in spacing and repetition?
 - Does asymmetry feel designed or accidental?
+- In each row, do the icons, numbers, handles and actions share the vertical centre of the row's title? Judge it on a 2x crop of the row, since a few pixels of drift never shows at page scale.
 
 ### 7. Typography as Communication
 - Does the type hierarchy clearly signal what to read first, second, third?
