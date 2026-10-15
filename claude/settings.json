@@ -59,9 +59,8 @@
   "enabledPlugins": {
     "code-simplifier@claude-plugins-official": false,
     "ruby-lsp@claude-plugins-official": true,
-    "ralph-wiggum@claude-code-plugins": false,
     "context-mode@context-mode": true,
-    "builder-skills@builder-skills": true
+    "builder-skills@builder-skills": false
   },
   "extraKnownMarketplaces": {
     "context-mode": {
