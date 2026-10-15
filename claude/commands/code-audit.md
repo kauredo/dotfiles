@@ -1,5 +1,6 @@
 ---
-description: Whole-repo over-engineering audit. Sweeps the existing codebase (not a diff) for code that didn't need to exist, then hands back a prioritized delete-list.
+description: Audit the whole repo for over-engineering and get back a prioritized delete-list.
+disable-model-invocation: true
 argument-hint: "[path | --area <dir>]"
 ---
 
@@ -54,15 +55,15 @@ Sort surviving findings by **payoff**: estimated lines removed × confidence, hi
 
 <summary: M findings · ~N lines removable · across A areas>
 
-| Rank | Lines | File(s)                         | What to delete / simplify          |
-|------|-------|---------------------------------|------------------------------------|
-| 1    | ~120  | `lib/plugin_registry.rb`        | plugin system with one plugin      |
-| 2    | ~60   | `app/services/*_factory.rb`     | factories for 2-field objects      |
-| 3    | ~30   | `utils/retry.ts`                | reimplements p-retry (a dependency)|
+| Rank | Lines | Tag    | File(s)                         | What to delete / simplify          |
+|------|-------|--------|---------------------------------|------------------------------------|
+| 1    | ~120  | yagni  | `lib/plugin_registry.rb`        | plugin system with one plugin      |
+| 2    | ~60   | shrink | `app/services/*_factory.rb`     | factories for 2-field objects      |
+| 3    | ~30   | stdlib | `utils/retry.ts`                | reimplements p-retry (a dependency)|
 
 ---
 
-## 1 · `lib/plugin_registry.rb` · ~120 lines
+## 1 · `lib/plugin_registry.rb` · ~120 lines · yagni
 
 **Plugin system with a single plugin.** <2–4 sentences: what exists, why it's more machinery than the one use case needs, what to collapse it to. Note any caller that has to change.>
 
@@ -85,13 +86,23 @@ Then a footer:
 - <candidate>, kept: reachable via <router/DI/reflection>
 ```
 
+**Tag each finding** with one of these, shown in the table next to the title and again in its detail header:
+
+- `reuse`: duplicates something the repo already has; point at the existing one.
+- `stdlib`: hand-rolls what the language or an installed dependency already provides.
+- `yagni`: built for a need that never arrived (one-impl interface, unused option, single-value config).
+- `delete`: dead or unreachable; nothing needs it.
+- `shrink`: needed, but the same job fits in far fewer lines.
+- `efficiency`: wasted work that the simpler version also avoids. Only when the fix removes code.
+- `naming`: a name that hides what the thing does, where a rename would let a layer go.
+
 Formatting: one finding per ranked row; `~lines` is a conservative estimate; sort the detail sections by rank. Each detail block must be self-contained. Backticks around paths and identifiers. No preamble.
 
 If nothing survives vetting, say so plainly: "No over-engineering worth removing found across A areas.", skip the table.
 
 ## Step 6: Offer the next action
 
-After the report, ask via `AskUserQuestion` whether to (a) execute the top-K deletions as a branch of small, individually-revertable commits, or (b) leave the report. Don't touch code without explicit approval, and when approved, do the highest-confidence, lowest-risk items first, running the test suite between commits.
+After the report, ask via `AskUserQuestion` whether to (a) execute the top-K deletions as a branch of small, individually-revertable commits, or (b) leave the report. Don't touch code without explicit approval, and when approved, do the highest-confidence, lowest-risk items first, running the test suite between commits. Removing a whole feature end to end belongs to `unship`.
 
 ## Important
 

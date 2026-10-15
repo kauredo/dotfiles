@@ -10,15 +10,15 @@ https://github.com/mattpocock/skills
 |---|---|
 | codebase-design | two TypeScript samples swapped for Ruby |
 | diagnosing-bugs | none |
-| domain-modeling | none (vendored as a wayfinder dependency) |
-| grilling | none |
+| domain-modeling | vendored as a wayfinder dependency; `ADR-FORMAT.md` looks for the repo's own ADR directory, numbering and generator first, records one settled decision per ADR with rejected alternatives and a downside, and supersedes with a two-way link; `SKILL.md` reports a term defined nowhere as undefined |
+| grilling | each settled answer is logged as a decision record with a one-way or two-way door; "you pick" turns the remaining questions into open decisions carrying a recommendation; description defers to `barbeque` |
 | research | none (vendored as a wayfinder dependency) |
-| prototype | UI branch removed, delegates to `build-ui` |
+| prototype | UI branch removed, delegates to `build-ui`; the leftover UI clauses in its rules are cut too |
 | resolving-merge-conflicts | none |
 | tdd | none |
 | to-questionnaire | none |
 | wait-what | none |
-| wayfinder | defaults to the bundled `issue-tracker-local.md` instead of telling the user to run `/setup-matt-pocock-skills`; hand-off clause added naming `improve` as the edge of the map |
+| wayfinder | defaults to the bundled `issue-tracker-local.md` instead of telling the user to run `/setup-matt-pocock-skills`; hand-off clause added naming `improve` as the edge of the map; a Prototype ticket sends logic to `prototype` and look-and-feel to `build-ui` |
 | wizard | none |
 | writing-for-agents | none |
 
@@ -102,7 +102,7 @@ https://github.com/pbakaus/impeccable, `c5ae03e` (v4.5.1), from `plugin/skills/i
 
 | Skill | Local changes |
 |---|---|
-| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table, prints `Critic score: N/10` second, and skips its questions when a loop calls it; em dashes replaced |
+| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table, prints `Critic score: N/10` second, and skips its questions when a loop calls it; em dashes replaced; description trimmed from about 895 to about 290 characters |
 
 Replaces the old commands `adapt`, `audit`, `bolder`, `clarify`, `colorize`,
 `critique`, `extract`, `harden`, `normalize` (now `polish`), `onboard`,
@@ -143,6 +143,19 @@ scripts, JSON and HTML templates keep theirs, since some are runtime strings.
 | svg-character-animation | https://github.com/calesthio/openmontage | MIT per its frontmatter; the repo is AGPL-3.0 |
 
 `brag/assets/` is 16 MB of music and sound effects the skill renders with.
+`brag` has `disable-model-invocation: true` and a one-line description, since
+it only runs by name and its triggers collided with `hyperframes`.
+
+The hyperframes pack updates itself: its router runs `npx hyperframes skills
+update`, which writes real directories over the symlinks in `~/.claude/skills`.
+That happened on 2026-10-12 to nine of them (all but `-keyframes` and
+`-studio`), so they ran unedited upstream text. On 2026-10-15 those nine were
+copied back here from the newer install, em dashes replaced again, and
+relinked. After any future update, check `readlink ~/.claude/skills/hyperframes`
+and repeat that if it is a directory. Local description changes: `hyperframes`,
+`-animation`, `-audio`, `-registry`, `-studio` and `media-use` trimmed to about
+300 characters, and `hyperframes` defers short single-message pieces to
+`motion-graphics`.
 
 ## iOfficeAI/OfficeCLI: install script, not a repo copy
 https://github.com/iOfficeAI/OfficeCLI
@@ -158,7 +171,7 @@ These don't self-declare an origin (no install command, no metadata JSON, no LIC
 | Skill | Why it looks installed |
 |---|---|
 | powerpoint | Script set (`html2pptx.js`, `thumbnail.py`, `rearrange.py`, `replace.py`, `inventory.py`) and a full `references/ooxml/` schema tree match a packaged document-creation skill's shape, not hand-written notes. No self-declared source found. |
-| remotion-best-practices | `rules/` is a flat third-person reference dump (one file per topic) with no source string, install command, or license anywhere in the skill. |
+| remotion-best-practices | `rules/` is a flat third-person reference dump (one file per topic) with no source string, install command, or license anywhere in the skill. The description is rewritten locally to fire only in projects that already use Remotion and to defer to `hyperframes`. |
 
 ## agent-native/core: local-file build, installed via npx
 https://www.npmjs.com/package/@agent-native/core
@@ -175,8 +188,8 @@ https://github.com/coreyhaines31/marketingskills, `1efedbc` (skills v2.1.3), 202
 
 | Skill | Local changes |
 |---|---|
-| pricing | `evals/` dropped; em dashes replaced |
-| competitor-profiling | `evals/` dropped; em dashes replaced |
+| pricing | `evals/` dropped; em dashes replaced; description trimmed from about 870 to about 300 characters |
+| competitor-profiling | `evals/` dropped; em dashes replaced; description trimmed from about 690 to about 280 characters |
 
 Cloned and copied, never in the `npx skills` lock. The licence is stored beside
 each skill. `pricing` is the upstream rename of `pricing-strategy`, which is the
@@ -186,6 +199,59 @@ and read `.agents/product-marketing.md` from the project when it exists.
 `competitor-profiling` prefers the Firecrawl and DataForSEO MCPs, neither of
 which is installed, so it runs on its WebFetch fallback and marks SEO metrics
 unavailable.
+
+## vojtaholik/good-css: MIT
+https://github.com/vojtaholik/good-css, `92d436b`, 2026-10-15
+
+| Skill | Local changes |
+|---|---|
+| good-css | none |
+
+The skill folder only (`skills/good-css/`, with its eight `references/` files).
+The site, harness and the 92 KB `PRACTICES.md` source stay upstream. The licence
+is stored beside the skill. It sits under `build-ui` and `design-polish` at the
+CSS-technique level, which nothing else here covers.
+
+## joaopmarques/barbeque: MIT
+https://github.com/joaopmarques/barbeque, `b795fe3`, 2026-10-15
+
+| Skill | Local changes |
+|---|---|
+| barbeque | em dashes replaced; the slow cook follows `grilling`'s frontier rounds, limited to the 🔥 and 🥩 questions, where upstream asked one question at a time |
+
+The `.claude-plugin/` manifest is dropped. Barbeque calls `grilling` for its
+slow cook when it is installed, and `grilling` is vendored above.
+
+## cathrynlavery/diagram-design: MIT
+https://github.com/cathrynlavery/diagram-design, `d97c5c7`, 2026-10-15
+
+| Skill | Local changes |
+|---|---|
+| diagram-design | em dashes replaced in the Markdown files; description trimmed from about 840 to about 255 characters, with a `dataviz` deferral for data charts |
+
+The skill folder only (`skills/diagram-design/`, with its `references/`,
+`assets/` and `scripts/`), plus the repo licence beside `SKILL.md`. The plugin
+manifests, CI configs, docs and prompts stay upstream. It ships a neutral skin
+in `references/style-guide.md` and a first-run onboarding step that rekeys it to
+a project's design tokens from a URL, a folder or pasted values.
+
+## BuilderIO/skills: MIT
+https://github.com/BuilderIO/skills, `0ecfb56f3bf7`, 2026-10-15
+
+| Skill | Local changes |
+|---|---|
+| agent-watchdog, quick-recap, rewind, visual-edit | `disable-model-invocation: true`; description rewritten as a one-line human summary |
+| read-the-damn-docs, plow-ahead | description trimmed and front-loaded (the docs one said "Forces Codex") |
+| efficient-fable, efficient-frontier, plan-arbiter, stay-within-limits | none |
+
+All ten also have em dashes replaced in their Markdown. Copied from the
+`builder-skills@builder-skills` plugin cache, with the repo licence beside each.
+The plugin is disabled in `settings.json`, because its `visual-plan` and
+`visual-recap` duplicated the installed builds listed under agent-native/core,
+and Claude Code can't turn off one skill inside a plugin. Those two installed
+builds still tell the agent to avoid the `builder-skills:` copies, which no
+longer load. To refresh, re-enable the plugin long enough to update its cache,
+or clone the repo, and copy the folders over.
 
 ## The em dash rule applies to these too
 

@@ -29,6 +29,12 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - MUST: Errors inline next to fields; on submit, focus first error
 - MUST: `autocomplete` + meaningful `name`; correct `type` and `inputmode`
 - MUST: Compatible with password managers & 2FA
+- NEVER: Autofocus on touch devices (it opens the keyboard and scrolls the page)
+- SHOULD: Prefill fields from what the app already knows
+- MUST: No dead zone between a checkbox/radio and its label; the label is part of the hit target
+- SHOULD: Show a button's keyboard shortcut in its tooltip
+- SHOULD: Validate on blur, not on each keystroke. CSS `:user-invalid` (see `good-css`) does this without JS
+- MUST: Disable submit while a request is in flight
 
 ### State & Navigation
 - MUST: URL reflects state (deep-link filters/tabs/pagination)
@@ -41,14 +47,36 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - MUST: Confirm destructive actions or provide Undo
 - MUST: Use polite `aria-live` for toasts/inline validation
 
+### Overlays & Panels
+- SHOULD: Once one tooltip is open, neighbouring tooltips open with no delay
+- SHOULD: Submenus keep a safe triangle so diagonal pointer paths don't close them
+- MUST: Hidden panels get `inert` so focus and assistive tech skip them
+- MUST: Time-limited UI (auto-dismiss toasts, timers) pauses on `visibilitychange`
+
 ## Animation
 
 - MUST: Honor `prefers-reduced-motion`
-- MUST: Animate compositor-friendly props (`transform`, `opacity`) only
-- NEVER: Animate layout props (`top`, `left`, `width`, `height`)
+- MUST: Animate `transform` and `opacity`. Animate size or position only through a `good-css` technique (accordion height via `interpolate-size`, a sliding indicator)
 - NEVER: `transition: all`, list properties explicitly
 - SHOULD: Use ease-out-quart/quint/expo for natural deceleration
 - MUST: Animations interruptible and input-driven. `apple-design` has the how: springs, velocity handoff, momentum projection, rubber-banding
+- MUST: On a theme switch, suppress per-element transitions so every color flips together. When the brightness jump is large (dark to light), add one whole-page fade (`apple-design` covers brightness jumps)
+- SHOULD: Paired elements (trigger and popover, icon and label) share one easing and duration
+- SHOULD: framer-motion `AnimatePresence mode="popLayout"` when exits must not shift surrounding layout
+
+## Component APIs
+
+React components.
+
+- SHOULD: Compound components for multi-part widgets (`Tabs.Root`, `Tabs.Trigger`, `Tabs.Panel`)
+- SHOULD: Explicit `variant`/`size` props over piles of booleans
+- SHOULD: Take `children` over a prop per slot
+- MUST: Accept `className` as an escape hatch and merge it last
+- SHOULD: React 19 passes `ref` as a plain prop; skip `forwardRef`
+- MUST: Inputs work both controlled (`value`/`onChange`) and uncontrolled (`defaultValue`)
+- SHOULD: Context providers expose `state`, `actions` and `meta`
+- SHOULD: Extract an abstraction only after 2 or 3 real copies
+- MUST: `type="button"` on every non-submit `<button>`
 
 ## Layout
 

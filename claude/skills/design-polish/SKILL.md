@@ -7,6 +7,8 @@ description: Perform a meticulous final pass on UI code. Use when polishing comp
 
 Perform a meticulous final pass to catch all the small details that separate good work from great work.
 
+For CSS technique, use `good-css`. For a full audit, critique or redesign, use `impeccable`; this skill is the last-mile checklist.
+
 ## Pre-Polish Assessment
 
 1. **Is it functionally complete?** Don't polish incomplete work.
@@ -47,10 +49,7 @@ Every interactive element needs:
 - Error (validation state)
 
 ### Micro-interactions
-- Smooth transitions (150-300ms)
-- Consistent easing (ease-out-quart/quint/expo)
-- 60fps animations (only transform and opacity)
-- Respects `prefers-reduced-motion`
+Check every transition and animation against the Animation rules in `interface-guidelines`.
 
 ### Content & Copy
 - Consistent terminology
@@ -70,7 +69,7 @@ Every interactive element needs:
 - Clear required indicators
 - Helpful error messages
 - Logical tab order
-- Consistent validation timing
+- Validation timing follows the Forms rules in `interface-guidelines`
 
 ### Edge Cases
 - Loading states for all async actions
@@ -92,7 +91,7 @@ Every interactive element needs:
 - [ ] Error states are helpful
 - [ ] Loading states are clear
 - [ ] Empty states are welcoming
-- [ ] Touch targets are 44x44px minimum
+- [ ] Hit targets meet `interface-guidelines` (24px desktop, 44px mobile)
 - [ ] Contrast ratios meet WCAG AA
 - [ ] Keyboard navigation works
 - [ ] Focus indicators visible

@@ -1,6 +1,6 @@
 ---
 description: Multi-agent code review of local changes or a GitHub PR. Fans out to specialized reviewers in parallel and aggregates findings.
-argument-hint: "[pr-number | --staged | --branch | --commit <sha>]"
+argument-hint: "[pr-number | --staged | --branch | --commit <sha> | --base <ref>]"
 ---
 
 You are orchestrating a multi-agent code review. Your job is to assemble the diff + project context, fan out specialized reviewers in parallel, then aggregate their findings into one report.
@@ -49,6 +49,7 @@ Argument: `$ARGUMENTS`
 - **No argument** or `--branch` → review current branch vs. its merge-base with the default branch (try `origin/main`, `origin/master`, `origin/develop` in that order; pick the one that exists). Use `git merge-base HEAD <base>` to find the divergence point.
 - **`--staged`** → review staged changes only (`git diff --cached`).
 - **`--commit <sha>`** → review that single commit (`git show <sha>`).
+- **`--base <ref>`** → for stacked branches. Diff against `git merge-base HEAD <ref>` instead of the default branch, so only this layer's changes are in scope. Combine it with a PR number or the no-argument form; the layers below are somebody else's review.
 - **A number** (e.g. `1234`) → review GitHub PR #1234. Use `gh pr diff 1234` for the diff and `gh pr view 1234 --json title,body,baseRefName,headRefName,files` for metadata. If `gh` isn't authenticated, stop and tell the user.
 
 Capture:
@@ -66,6 +67,10 @@ Capture:
 Capture these alongside the diff. They are the conversation the new review needs to fit into, findings already raised, explanations the author already gave, requests already addressed.
 
 If the diff is empty, stop and tell the user there's nothing to review.
+
+**Exclusions: what the report leaves out.**
+- Generated output (lockfiles, compiled bundles, codegen, snapshots written by a tool) is skipped. A file that only looks generated gets a quick check first: if the header, the generator config, or the repo's build says a human wrote it, review it like any other file.
+- Anything CI already fails on (linter, type checker, formatter, a red test) is not re-reported. The author sees it on the PR already, and listing it only buries the findings CI cannot catch.
 
 ### PR sources: review in an isolated worktree
 
@@ -140,6 +145,11 @@ Invoke each selected reviewer via the Agent tool **in a single message with mult
 
 **Route repeated reads of the same external state to `correctness-reviewer`, not just `performance-reviewer`.** If the diff reads the same flag, config value, cached lookup, clock, or counter more than once in one logical operation, name those exact call sites in the correctness briefing and ask whether the two reads can disagree and what breaks if they do. Left to itself, performance answers the cost question ("it's a cheap in-process read, fine") and the consistency question never gets asked. This is cheap to add, and it's the briefing gap behind a real memoization miss: two reads of a flag refreshed every 30s could filter one half of a snapshot and not the other.
 
+**Put these standing asks in the matching briefings.**
+- `correctness-reviewer`: for any migration in the diff, would it run forward cleanly against a live table with existing rows, locks, and concurrent writes? A migration that only works on an empty database is a defect.
+- `test-reviewer`: a regression test that was deleted, skipped, or loosened (weaker assertion, wider tolerance, narrower fixture) is top severity, whatever else the diff does. Also ask whether each mock or stub has the shape of the real thing it stands in for (same fields, same error cases, same return type), because a mock that drifted from the contract passes while production fails.
+- every reviewer: never suggest removing validation, security checks, or accessibility code as a simplification. If one of them looks redundant, the finding is a question about why it exists.
+
 **When the diff adds a schema object, name each one in the `test-reviewer` briefing and ask what depends on it.** A migration spec asserting an index exists passes just as happily once the index is dropped, so it proves the migration ran and nothing more. List what the diff introduces (unique indexes, NOT NULL columns, defaults, checks, read indexes the diff's own queries rely on, batch or chunk constants) and ask, for each, whether removing it makes a test fail. Do the listing yourself: left alone, `test-reviewer` reads the migration spec, sees assertions on every column and index, and reports the coverage as complete.
 
 **When the diff adds a filter or guard to a shared read path, enumerate every consumer before you brief anyone.** A guard that hides rows from one reader is only a fix if every reader that must not see those rows has it. Grep for the table, the scope, the model, and the query helper the diff touches, list each consumer with its transport (HTTP response, websocket, Firebase or Firestore doc, push notification, DB-backed counter, report, background sweep), and put that list in the correctness and architecture briefings as an explicit task: "for each of these consumers, does the same gap exist, and does it need the same guard?" Do the enumeration yourself before fanning out, because the list is what shapes the briefings.
@@ -162,6 +172,8 @@ Expect six failure classes and act on each:
 - **Unverified remedy.** The finding gets traced; the fix usually does not, and the fix is the part that asks someone to change code. A *substitution* ("use X instead of Y") needs the equivalence check above. A *property claim* ("doing X would make Y true", "this guarantees Z", "that eliminates the window") is about code that does not exist yet, so grep and file-reads cannot test it. Either write the invariant down formally and check the fix against it, or port the affected methods into a standalone script and run them. Algorithmic claims (ordering, batching, dedup, traversal, scheduling) are always cheap to simulate: forty lines and two minutes. Watch for the giveaway verbs, since they mark exactly these claims: *would, ensures, guarantees, makes every, eliminates, so that*. If you cannot verify the property, propose the fix without it ("emit batches children-first so a parent never commits before its descendants", not "so every intermediate state is valid"). Reasoning about a failure mode is not the same as reasoning about the invariant: reversing the direction of a violated equality does not restore it.
 - **Duplicates.** The same issue from two reviewers, collapse the obvious ones now (aggregation handles the rest).
 - **Mechanism cleared on one lens's terms.** The most dangerous drop is not a false finding, it is a *true mechanism* that the reviewer who found it cleared using only its own lens's criteria. Whenever a reviewer surfaces a mechanism and then waves it off, re-ask what that mechanism means for the *other* lenses before you drop it. Mechanisms that trigger this: a cache or memo, a refresh interval, a background thread, a retry, a lock, a timeout, an async boundary, a short-circuit, an ordering guarantee. The classic shape is performance clearing something on cost grounds: "this reads the flag twice, but `on?` is just a frozen in-process hash refreshed every ~30s by a background thread, so it's free." Free is the right answer to *is it slow*. Nobody asked *can it return two different values*, which is what a 30-second refresh between two reads actually implies, and which is a correctness bug when the two reads build two halves of one snapshot. Before dropping, run the mechanism past each lens in one line: correctness (can it change or fail between uses?), security (can an attacker influence when it flips?), test (is either state covered?), architecture (does one caller depend on both uses agreeing?). If any of those questions has teeth, send the mechanism back to that reviewer or trace it yourself. Do not let "the reviewer who raised it said it was fine" stand in for an answer, because the reviewer that finds a mechanism is usually not the one that cares about its consequence.
+
+**Comprehension gate.** Before the report goes out, walk the diff hunk by hunk and ask whether you can explain why each one is correct. A hunk you cannot explain is a finding in its own right, even when no reviewer flagged it and nothing looks wrong. Code that nobody on the thread understands also needs a named owner, someone who will answer for it when it breaks. If the author cannot be that person, say so in the report.
 
 **"Verified by mutation" proves the test fails now, not that it is guaranteed to fail.** When an author (or a reviewer) defends a test by saying they deleted the production line and watched it go red, that establishes today's behavior on today's query plan with today's fixture ids. It does not establish that the assertion is *causally* tied to the guard. Keep the two questions apart: does it fail, and is the reason it fails guaranteed? A test whose outcome depends on an unordered `LIMIT 1`, hash iteration order, wall-clock timing, autoincrement id ordering, or a default that could change is order-dependent regardless of how green the mutation run was. Say so, and ask for one assertion that holds under any ordering rather than a better arrangement of the same fragile mechanism. Author confidence and a passing mutation check are evidence, not proof.
 
@@ -283,6 +295,8 @@ Every `t()` call omits the locale argument, so everything resolves to `en`, the 
 - <finding>, dropped: premise didn't hold (<what you traced>)
 - <finding>, dropped: by-design (author explained in PR thread)
 - <finding>, downgraded HIGH→LOW: <reason>
+
+Gate: N/N anchors read, M/M claims sourced
 ```
 
 Formatting rules:
@@ -298,6 +312,8 @@ Formatting rules:
 - **Copy-paste contract:** a reader should be able to select from the bold title line through the `**Suggested fix:**` line and paste it directly as a GitHub PR review comment with no editing needed. Do not reference reviewers, severity, or line numbers in the body prose, they belong in the H3 header.
 - **Spacing, strictly enforced:** exactly one blank line between every block in the output. That means: between the summary line and the table; between the table and the first `---`; between `---` and the next H2; between H2 and the first H3; between H3 and the bold title; between the bold title and the paragraph; between the paragraph and the `**Suggested fix:**` line; between the fix line and the trailing `---`; between findings; between the last finding of a file and the next H2. No double blank lines anywhere. No missing blank lines anywhere.
 - Use backticks around code identifiers and file paths.
+
+When the diff contains a change that is hard to undo once shipped, flag it in the summary. `~/.claude/one-way-doors.md` lists the categories and defines blast radius; read it if it is not in context. A one-way change with no rollback plan in the diff or the PR is a finding in its own right, the way that file defines it.
 
 If a reviewer returned no findings, omit them from the per-file sections; the `Reviewers run` footer already shows they ran.
 
@@ -348,7 +364,7 @@ Once the review is finished (report delivered, drafts shown, plain-language expl
 
 ## Important
 
-- Don't add findings of your own, your job is to orchestrate, not review. Vetting the reviewers' findings (Step 5: dropping, correcting, or downgrading what doesn't hold up against the actual code) is required and is not the same as adding new ones.
+- Add no findings of your own beyond three: a hunk the comprehension gate cannot explain, a one-way change with no rollback plan, and an acceptance criterion the diff does not satisfy. Your job is to orchestrate, not review. Vetting the reviewers' findings (Step 5: dropping, correcting, or downgrading what doesn't hold up against the actual code) is required and is not the same as adding new ones.
 - Don't fix anything. Reviewers suggest; the user decides.
 - If a reviewer fails or returns garbage, note it in the "Reviewers run" section but proceed with the rest.
 - Keep the report tight: no preamble, no "I'll now…" narration in the final output.

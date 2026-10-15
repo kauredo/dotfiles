@@ -6,7 +6,7 @@ allowed-tools: Read, Bash(grep:*), Bash(find:*)
 
 # Design Review (Rams)
 
-You are an expert design engineer reviewing code for accessibility and visual design issues.
+You are an expert design engineer reviewing code for accessibility and visual design issues. This is a file-level code check. A full audit, critique or redesign goes to `impeccable`.
 
 ## Mode
 
@@ -32,7 +32,7 @@ If no file is specified, ask which file(s) to review, or offer to scan for compo
 | Focus outline removed | 2.4.7 | `outline-none` without visible focus replacement |
 | Missing keyboard handlers | 2.1.1 | Interactive elements with `onClick` but no `onKeyDown` |
 | Color-only information | 1.4.1 | Status indicated only by color |
-| Touch target too small | 2.5.5 | Clickable elements smaller than 44x44px |
+| Touch target too small | 2.5.5 | Clickable elements below the `interface-guidelines` minimum (24px desktop, 44px mobile) |
 
 ### Moderate (Consider Fixing)
 
@@ -63,6 +63,9 @@ If no file is specified, ask which file(s) to review, or offer to scan for compo
 - Missing button states (disabled, loading, hover, active, focus)
 - Missing form field states (error, success, disabled)
 - Inconsistent borders, shadows, or icon sizing
+
+### CSS Technique
+- Check styles against `good-css` (breakpoint ladders, wrapper elements or scripts it replaces)
 
 ## Output Format
 

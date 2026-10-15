@@ -1,6 +1,7 @@
 ---
-description: End-to-end feature pipeline: plan (improve) → implement → code-review → apply → polish → PR with screenshots. Runs unattended by default; `--gated` puts the approval gates back.
-argument-hint: "<task description> [--gated] [--no-pr] [--ui|--no-ui] [--local] [--base <branch>]"
+description: Take a task from plan to opened PR with screenshots. Unattended by default; `--gated` puts the approval gates back.
+disable-model-invocation: true
+argument-hint: "<task description> [--gated|--ask] [--full-approve|-y|--fix-all] [--no-pr] [--ui|--no-ui] [--recap] [--local] [--base <branch>] [--plan <path>|--no-plan] [--grill|--no-grill]"
 ---
 
 You are driving a task from idea to opened PR. Run the pipeline below in order. By default the run is **unattended**: approve the plan yourself, apply every vetted substantive review fix, and open the PR without stopping. Pass `--gated` to get the three approval gates (plan, review-fix selection, PR) back. Keep your own narration minimal, the user wants the work done and the artifacts, not a play-by-play.
@@ -34,7 +35,7 @@ Three shapes:
 
 **1. Buildable now.** The task names what should change and what "done" looks like is checkable. Most tasks. Go straight to Step 1.
 
-**2. Underspecified, but it still fits one session.** You would have to invent requirements to proceed, and different reasonable guesses produce different work. Call the Skill tool for `grilling` and put the open questions to the user in one round, then go to Step 1 with the answers. This is the default for a genuinely new idea, and it is what makes `/ship <new idea>` work end to end. `--no-grill` trades this for plan-on-stated-assumptions; `--grill` forces it.
+**2. Underspecified, but it still fits one session.** You would have to invent requirements to proceed, and different reasonable guesses produce different work. Call the Skill tool for `grilling` and let it run in rounds until its frontier is empty, then go to Step 1 with the answers. This is the default for a genuinely new idea, and it is what makes `/ship <new idea>` work end to end. `--no-grill` trades this for plan-on-stated-assumptions; `--grill` forces it.
 
 **3. Foggy, and bigger than one session.** Several decisions are unmade *and* depend on each other, or the work obviously spans many PRs before anything is shippable. **Stop and hand back**, with the exact line to run: `/wayfinder <the idea>`.
 
@@ -46,17 +47,21 @@ Say which shape you picked in the mode line. If it is shape 3, that sentence and
 
 ## Step 1: Plan (via the `improve` skill)
 
-Invoke the **`improve`** skill (Skill tool) with the task as its input to produce a scoped, self-contained implementation plan. `improve` is read-only, it surveys and plans, it doesn't edit.
+Invoke the **`improve`** skill (Skill tool) as `improve plan <task>` to produce a scoped, self-contained implementation plan. Bare `improve` runs a full audit and waits for the user to pick findings; the `plan` variant skips both. `improve` is read-only, it surveys and plans, it doesn't edit.
 
 **If the task names an existing plan file, read that file yourself before invoking `improve`, and read it whole.** A status cell in an index is a summary someone wrote at one moment; the plan body is where the executor notes live, and the two drift. Verify the plan's remaining work still exists in the code before building it: check for the artifacts it says it will create. A plan that turns out to be finished is a STOP, not a rebuild, and the index row that said otherwise is then the thing to fix (Step 6b). Also pass `improve` any wayfinder map the task names, per "Composing with wayfinder" below.
 
-**Gate (only with `--gated`):** show the plan as a short numbered list (steps + the verify check for each) and ask the user to approve, adjust, or cancel via `AskUserQuestion`. Don't touch code until approved. Without `--gated`, state the plan in a few lines and start building.
+**Sort every open question** the plan raises into one of four bins: the code answers it (go read), a safe default exists (take it and note it), a real fork (send it to `grilling`; unattended, record your recommendation in the plan), or a one-way door (ask the user, always, unattended included). `~/.claude/one-way-doors.md` says what counts as one.
+
+**Independent plan review.** Before approval, hand the plan and the original task text to a fresh subagent. It checks the plan against the task's stated requirements, never against the plan's own framing, and returns approve, approve-with-fixes, or revise. Apply fixes and redo a revise. A blocker stops the run.
+
+**Gate (only with `--gated`):** show the plan as a short numbered list (steps + the verify check for each, plus one "done when" line for the whole task) and ask the user to approve, adjust, or cancel via `AskUserQuestion`. Don't touch code until approved. Without `--gated`, state the plan in a few lines, including the "done when" line, and start building.
 
 ## Step 2: Implement
 
 1. **Branch + worktree.** Pick a feature branch name (`feat/<short-slug>` from the task, or the JIRA ticket if the task names one). **By default, create it in a fresh git worktree** (see the `stacked-prs` skill's Workflow step 2, "Create the stack", for the same pattern), e.g. `git worktree add ../<repo>-<slug> -b <branch>`, and do all implementation there so the user's current checkout stays untouched. Note the worktree path; every later step (review, tests, screenshots, PR) runs from it. With `--local`, skip the worktree and create the branch in place; never implement directly on `main`/`master`/`develop`. Leave the feature worktree in place when the run ends (the branch isn't merged yet), report its path in the summary and offer to remove it (`git worktree remove <path>`) once the PR merges.
-2. **Build it.** Execute the approved plan. Offload research/exploration to `Explore` and `Plan` subagents to keep your context clean; keep one focused task per subagent. Follow the user's coding rules from `~/.claude/CLAUDE.md` (simplicity-first, surgical changes, no speculative features).
-3. **Comments are rare and short.** Write a comment only where the code cannot say it itself: a non-obvious constraint, a workaround and what forces it, a unit or an invariant. Default to none. A comment that restates the line below it, narrates the change, or cites a plan number, a PR, a ticket or a date is noise, and a reviewer reading the diff has that context already. Never open a file or a function with a multi-paragraph banner explaining the feature. Where a decision genuinely needs recording, it goes in the commit message, the PR body or `decisions/`, all of which are searchable and none of which are re-read on every future edit. This applies to your own new comments and to any you touch while editing.
+2. **Build it.** Execute the approved plan. Offload research/exploration to `Explore` and `Plan` subagents to keep your context clean; keep one focused task per subagent. Parallel subagents only edit files; you make the commits yourself, one at a time. Follow the user's coding rules from `~/.claude/CLAUDE.md` (simplicity-first, surgical changes, no speculative features).
+3. **Comments are rare and short.** Write a comment only where the code cannot say it itself: a non-obvious constraint, a workaround and what forces it, a unit or an invariant. Default to none. A comment that restates the line below it, narrates the change, or cites a plan number, a PR, a ticket or a date is noise, and a reviewer reading the diff has that context already. Never open a file or a function with a multi-paragraph banner explaining the feature. Where a decision genuinely needs recording, it goes in the commit message, the PR body or an ADR (Step 7), all of which are searchable and none of which are re-read on every future edit. This applies to your own new comments and to any you touch while editing.
 4. **Frontend work.** When a step builds or changes UI, invoke the **`build-ui`** skill and follow its Phases 1 through 4: Design Context, direction, `ui-ux-pro-max` for style/palette/font, `frontend-design` for the component work, then `/impeccable critique`. **Stop at its Phase 4.** Phase 5 is the close-out (`/code-review`, `/polish-loop`), which is Steps 3 and 4 below, and running it here does that work twice. Reaching for `frontend-design` alone loses the direction step and the outside critique.
 5. **Verify as you go.** After each meaningful chunk, run the project's checks, tests, typecheck, lint/format (detect from `package.json` scripts, `Gemfile`, etc.). Treat the task's success criteria as the goal: changed behavior should have a test that passes. **Gate:** no green suite, no Step 3. A red or skipped suite is not a reason to keep going and mention it later; fix it, or stop and report what is failing. The same gate applies at Step 3 to Step 4: unapplied CRIT or HIGH findings block polish.
 6. **Every schema object the diff adds gets a test at the level the app uses it.** A migration spec asserting the index exists passes just as happily once you drop the index, so on its own it guards nothing. Cover each kind the diff introduces:
@@ -66,13 +71,14 @@ Invoke the **`improve`** skill (Skill tool) with the task as its input to produc
    - **Batch or chunk constant**: stub it small and assert the loop chunks. A constant of 1,000 is never reached by a fixture, so it ships unexercised.
 
    Each lands with an **inversion**: remove the object, watch the test fail, put it back. Done means every object the diff adds has been through that.
+7. **Keep a run log.** Maintain `.ship/<slug>/STATE.md` with one line per plan step and the commit sha once it lands. Add `.ship/` to `.gitignore` if it is missing. In a new session, resume from STATE.md plus `git log`, and trust both over what the chat remembers.
 
 ## Step 3: Code review + apply
 
 Run the full multi-agent review on the diff (the `/code-review` workflow, inlined here):
 
 1. Assemble the diff (`git diff <base>...HEAD`) and read project context (`CLAUDE.md`, `AGENTS.md`, manifests).
-2. **Triage, then fan out.** Read Step 3 of `~/.claude/commands/code-review.md` and apply its table to the changed paths. Its first column is the reviewer set, its second is what earns each one a run, so a docs-only branch comes out of it with one reviewer. Invoke the ones it selects **in parallel, in one message**, and name the ones you dropped and what dropped them.
+2. **Triage, then fan out.** Read Step 3 of `~/.claude/commands/code-review.md` and apply its table to the changed paths. Its "Skip when" column names what drops each reviewer. Invoke the ones it selects **in parallel, in one message**, and name the ones you dropped and what dropped them.
 3. **Vet** the findings, open the cited code and confirm each CRIT/HIGH and any finding resting on a factual claim before trusting it. Drop the ones whose premise doesn't hold. (Reviewers over-report.)
 4. Aggregate into the severity table + per-file format.
 
@@ -84,7 +90,11 @@ Apply the chosen fixes, then re-run the project checks to confirm still-green.
 
 Invoke the **`polish-loop`** skill (audit → fix → critique-loop until clean). Let it run to a clean pass. Re-run checks once more if it touched code.
 
-## Step 5: UI detection + screenshots
+## Step 5: Run it, then UI screenshots
+
+**Behaviour check, for any change in behaviour, backend included.** A green suite alone proves little here. Write down the result you expect to observe, run the real app (the `run` skill), and record PASS, FAIL, or COULDN'T-VERIFY next to it in STATE.md. FAIL goes back to Step 2; COULDN'T-VERIFY is reported as such in the PR.
+
+**Done-when check.** Give a fresh subagent the final diff and the plan's "done when" line. It names each clause the diff leaves unmet. Any unmet clause is a stop.
 
 Decide whether this is frontend work: `--ui` forces yes, `--no-ui` forces no; otherwise auto-detect, does the diff touch components/pages/styles/templates (`.tsx`, `.jsx`, `.vue`, `.svelte`, `.css`, view templates, Storybook)? If no UI, skip to Step 6.
 
@@ -107,7 +117,7 @@ the whole of it.
 Unless `--no-pr`:
 
 1. Commit anything uncommitted with a concise conventional-commit message (`feat:`/`fix:`/`refactor:`…). **Never mention Claude or Anthropic** in commits or PR text.
-2. Push the branch.
+2. Squash WIP and fixup commits before pushing, without `rebase -i`: `git reset --soft <base>` then recommit, or `GIT_SEQUENCE_EDITOR=: git rebase --autosquash <base>`. Then push the branch.
 3. **Publish screenshots to the `pr-assets` branch** (only if Step 5 captured any). This is how UpSpeech PRs embed images, they live on a dedicated orphan branch, so they get permanent GitHub-hosted URLs without polluting the feature-branch diff:
    - Derive `<owner>/<repo>` from `gh repo view --json nameWithOwner -q .nameWithOwner`.
    - Use a throwaway worktree so the working tree is untouched: `git worktree add --detach /tmp/<repo>-pr-assets`. Inside it, check out the branch if it exists (`git fetch origin pr-assets` then `git switch pr-assets`), else create it orphan (`git switch --orphan pr-assets` then `git rm -rf .` to empty the tree).
@@ -118,12 +128,15 @@ Unless `--no-pr`:
    - **What & why**: 2–4 sentences.
    - **Links**: when the run answers to a plan, a one-line row under What & why linking the plan file, any decision record it rests on, and **the plan's board issue**. Find the issue by its plan title with `gh issue list --repo <owner>/<plans-repo> --search "<plan title>" --state all`. Write a cross-repo issue reference in full (`UpSpeech/upspeech#187`), never a bare `#187`, which would point at the code repo. Do not write `Closes`/`Fixes` on it: GitHub does not auto-close across repositories, so the keyword reads as done and closes nothing. A plan whose issue you cannot find gets the plan link alone, plus one line in the summary saying the issue is missing, because a plan with no card is invisible on the board.
    - **Changes**: short bullets of the substantive changes.
+   - **Door**: one-way or two-way, judged by `~/.claude/one-way-doors.md`.
+   - **Blast radius**: what breaks, and for whom, if this is wrong.
    - **Review**: one line: findings applied / how many vetted-and-dropped.
-   - **Testing**: what you ran and that it's green.
-   - **Screenshots**: the embedded `pr-assets` images (omit the section for backend-only work).
+   - **Testing**: what you ran and that it's green, plus the Step 5 behaviour check result.
+   - **Evidence**: before → after for the behaviour that changed, with the `pr-assets` screenshots embedded for UI work. Where nothing was captured, write "Not captured" and describe no results.
 5. **Gate (only with `--gated`):** show the drafted title + body and confirm before creating via `AskUserQuestion`. Without it, go straight to creating the PR.
 6. Create the PR: `gh pr create` against `--base` (or the default branch) with that body. **Never mention Claude or Anthropic** in the PR text. Then open it (`gh pr view --web`) and show the screenshots inline in the chat summary.
-7. **Visual recap (only with `--recap`).** Invoke the `visual-recap` skill on the just-opened PR to produce an interactive recap (diagrams, file map, annotated diff). It defaults to **local-files mode**, never publish to a hosted shareable link, since these diffs can touch patient-data code. Skip silently if the skill isn't installed. Without `--recap`, don't run it.
+7. **Critique rounds (only when a pre-PR `critique-loop` ran in Step 4).** Post its saved `round-N/` comments on the new PR, one per round, in order, each as `critique-loop` step 9 defines it. Done when the PR shows every round.
+8. **Visual recap (only with `--recap`).** Invoke the `visual-recap` skill on the just-opened PR to produce an interactive recap (diagrams, file map, annotated diff). It defaults to **local-files mode**, never publish to a hosted shareable link, since these diffs can touch patient-data code. Skip silently if the skill isn't installed. Without `--recap`, don't run it.
 
 ## Step 6b: Record it in `plans/`
 
@@ -139,6 +152,8 @@ A plan whose status row still says TODO after it shipped costs someone a wasted 
 6. **The board issue is closed by hand, from the last PR that finishes the plan.** Cross-repo auto-close does not fire, and a plan spanning three repos is only done when the last of them merges. Until then leave the issue open with its PR links on it. When the plan has no issue, file one in the same sitting (`node plans/sync-board.mjs sync --only NNN` in this workspace) rather than leaving the row uncarded.
 
 ## Step 7: Summary
+
+**Decisions first.** When the run settled something hard to reverse, surprising without context, and a real trade-off, judged against what shipped and not what the plan intended, record an ADR through the `domain-modeling` skill.
 
 Close with a tight recap: branch, worktree path (and the `git worktree remove` one-liner for after merge), PR URL, the plan row you updated (Step 6b), what the review caught and what you applied, test status, and (for UI) the screenshots. No preamble, no filler.
 
@@ -158,7 +173,7 @@ Not part of the unattended run: `/ship` opens PRs and never merges them, so this
 
 **wayfinder decides what to do** (a map of decision tickets under `.scratch/<effort>/`), **`improve` specifies how to do it here** (a self-contained plan in `plans/`), **`/ship` builds and opens the PR.** Step 1 already calls `improve`, and `improve` already globs `.scratch/*/map.md`, so a run inherits the map without being told about it. The rules below are the parts that need saying out loud.
 
-- **`/ship` cannot invoke wayfinder, by design.** It is the one skill in this chain that sets `disable-model-invocation: true`, so it is user-invoked only. Everything else here (`grilling`, `prototype`, `research`, `domain-modeling`, `improve`) is model-invocable, which is why Step 0.5 can escalate a vague task to `grilling` on its own but has to hand a foggy one back to you.
+- **`/ship` cannot invoke wayfinder, by design.** `/ship` and `wayfinder` both set `disable-model-invocation: true`, so each runs only when you type it. The rest of the chain (`grilling`, `prototype`, `research`, `domain-modeling`, `improve`) is model-invocable, which is why Step 0.5 can escalate a vague task to `grilling` on its own but hands a foggy one back to you.
 - **Most new work never needs a map.** Wayfinder's own charting step says so: if breadth-first questioning surfaces no fog, and the journey fits one session, there is no map to draw. That is Step 0.5 shape 2, and `/ship` handles it start to finish.
 - **Never resolve a wayfinder ticket with `/ship`.** Wayfinder is plan-don't-do, one ticket per session, and most of its ticket types are HITL: the human answers for themselves. An unattended executor resolving a grilling ticket has answered its own question, which is the exact failure that skill warns about. If the task names a ticket rather than a plan, stop and point at `/wayfinder`.
 - **Pass the map through.** When the task names an effort or a map, hand `improve` the map path along with the task, so **Decisions so far** binds the plan instead of being rediscovered.

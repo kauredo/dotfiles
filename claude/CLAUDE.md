@@ -16,9 +16,9 @@ Which door:
 
 | Situation | Entry point |
 |---|---|
-| New project, or a full redesign | `build-ui`, all four steps, direction hunt included |
+| New project, or a full redesign | `build-ui`, Phases 0 to 5, direction hunt included (first block of Phase 2) |
 | New feature with UI | `/ship`, which invokes `build-ui` at its implement step |
-| Reworking a page whose identity is already settled | `build-ui` from step 2, skip the direction hunt |
+| Reworking a page whose identity is already settled | `build-ui` from "Then decide the look" in Phase 2, skipping the direction hunt above it |
 | Small tweak (spacing, one color, one component) | Just do it, then `/impeccable critique` if it is user-facing |
 | "Does this look AI-generated?" | `/impeccable critique` alone. It screenshots and asks an outside subagent |
 
@@ -54,7 +54,7 @@ Turn each task into a verifiable goal, then loop until it passes:
 
 ### 4. Read the Real Docs
 
-Third-party API, library, framework, CLI, cloud service, or SDK behavior: invoke `builder-skills:read-the-damn-docs` before answering or integrating from memory.
+Third-party API, library, framework, CLI, cloud service, or SDK behavior: invoke `read-the-damn-docs` before answering or integrating from memory.
 
 ### 5. Git Commits
 

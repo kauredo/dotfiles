@@ -4,7 +4,7 @@ sequence as frames, and the product interior behind the login, then one plan in
 `plans/` per fix, written by `improve`. Use when the ask is "critique this app
 properly", when a logo or brand needs judging on its own, or when
 `/portfolio-critique` has pointed at a product and the next step is the full
-treatment. `--pick` stops to choose which fixes get plans.
+treatment.
 
 **First**: read the impeccable skill's critique reference
 (`~/.claude/skills/impeccable/reference/critique.md`). The rubric and the
@@ -308,10 +308,9 @@ existing plans/ index rather than duplicating.
 ```
 
 `improve` keeps its own rules: it reads the code to specify each plan
-properly, it never edits source, and it writes only under `plans/`. It also
-stops to ask which findings to plan when it can; pass `--pick` to keep that
-gate, otherwise tell it to plan every row and record that default in
-`plans/README.md`, the way `/ship` runs unattended.
+properly, it never edits source, and it writes only under `plans/`. The
+`plan` variant skips the audit and the finding-selection question, so it
+writes one plan per row you hand it.
 
 **Done when** `plans/README.md` lists every row of the routing table with a
 plan file, numbered after whatever was already there.

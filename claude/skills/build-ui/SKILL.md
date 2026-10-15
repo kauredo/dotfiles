@@ -46,14 +46,13 @@ The context you need either way: target audience and use cases, brand personalit
 **Then decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options. Inside an existing identity the frozen list already is the look: this step only fills gaps the tokens leave, such as a chart palette or a missing state colour, and keeps every font. If the Design Context names a real product as a reference, run `ui-ux-pro-max`'s Step 1b (Refero Styles) first to get its actual DESIGN.md.
 
 ### Standalone Mode
-1. Use design tokens from `/tokens/` if present
-2. Follow composition patterns in `/patterns/composition.md`
-3. Follow theme architecture in `/patterns/theming.md`
+1. Define tokens (color, type, spacing, radius, shadow) as CSS custom properties, and record them in the `# Design System` section of `docs/design-system.md`
+2. Theme by swapping token values, so components never hold a raw color
 
 ### Enhancement Mode
-1. Use the library's existing token system
-2. Follow extension patterns in `/patterns/extension.md`
-3. Reference `/patterns/elevation.md` for transcending defaults
+1. Use the library's existing token system, as recorded in `docs/design-system.md`
+2. Wrap library components instead of copying their styles
+3. Override defaults through tokens and `className`; reach for new CSS only where the library has no slot
 
 ## Phase 3: Building
 
@@ -61,7 +60,7 @@ For every component:
 1. Consult the `frontend-design` skill for aesthetic direction
 2. Follow `interface-guidelines` skill for interaction patterns
 3. When the component moves with the user's hand (drag, swipe, sheet, carousel, pull-to-refresh), build its motion from the `apple-design` skill: springs, velocity handoff, momentum, rubber-banding. Its code targets `motion` on the web; on React Native, carry the same physics over to Reanimated and Gesture Handler.
-4. Reference `/docs/` for specific techniques
+4. Write the styles with the `good-css` skill, the source for CSS technique (layout, container queries, show-and-hide, motion)
 5. Use composition over duplication
 6. When a section needs visual weight, generate real imagery with the `genmedia` skill (fal.ai) rather than reaching for a CSS gradient or a blurred blob. Coding agents default to gradients and shapes because those are code, and that reflex is one of the clearest signs nobody art-directed the page.
 
@@ -87,8 +86,8 @@ After building:
 ## Phase 5: Quality Gate
 
 Before shipping, verify:
-- All checklist items from `ui-checklist.md`
-- No critical accessibility issues
+- Every item on the Polish Checklist in `design-polish` is ticked
+- `design-review` reports no critical accessibility issues
 - Passes the "AI slop test" (doesn't look generic)
 - **Every line of copy has been rewritten by hand.** Whatever the model wrote into the design is placeholder text, there to show the structure and the line lengths. Rewrite each string against `~/.claude/writing-style.md`, in one voice, and expect it to get shorter. Ask the user for the lines you cannot write yourself, like a product claim or a price
 
@@ -108,6 +107,7 @@ Then close out the feature:
 | Aesthetic direction | `frontend-design` skill |
 | Real imagery and motion | `genmedia` skill (fal.ai) |
 | Interaction patterns | `interface-guidelines` skill |
+| CSS technique | `good-css` skill |
 | Gesture-driven motion, springs, materials | `apple-design` skill |
 | Independent design judgment | `/impeccable critique` (its Step 0) |
 | Named AI tells and their alternatives | `/impeccable critique` (its AI tells table) |
@@ -115,9 +115,6 @@ Then close out the feature:
 | Final polish | `design-polish` skill |
 | Accessibility review | `design-review` skill |
 | Close-out review | `/code-review` (apply fixes) then `/polish-loop` |
-| Visual techniques | `/docs/` best practices |
-| Extension patterns | `/patterns/extension.md` |
-| DRY principles | `/patterns/composition.md` |
 
 ## Anti-Patterns to Avoid
 

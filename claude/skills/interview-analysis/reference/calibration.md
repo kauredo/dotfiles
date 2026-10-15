@@ -156,7 +156,7 @@ separate findings.
 
 ## A miss to avoid
 
-A first pass at this same transcript, scored without this calibration file, made three errors worth
+A first pass at this same transcript, scored without this calibration file, made four errors worth
 naming because they are the errors you will make:
 
 1. **It scored a 4 on two stages.** Under the real calibration both were 3s. The answers were fluent

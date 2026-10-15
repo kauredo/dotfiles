@@ -1,7 +1,6 @@
 ---
 name: critique-loop
-description: "Critique, fix and re-critique a screen across its states until every finding is resolved; a plateau escalates to a redesign fan-out, and two critics contradicting each other escalate to a blind ranking."
-disable-model-invocation: true
+description: "Critique a UI screen across its states, fix, re-critique until clean. Use for a critique-fix loop, a score plateau (redesign fan-out), or critics contradicting each other (blind ranking)."
 ---
 
 # Critique Loop
@@ -52,7 +51,7 @@ Build the list from the code first, then the data:
 
 ## Stop when
 
-- **Every finding from the last round is resolved** and the score reaches 9. Two gates, because they fail apart: a round that repairs three small things and breaks the central element scores higher and is further from done. The per-finding record from step 2 is the check.
+- **Every finding from the last round is resolved** and the score reaches 8 (the Plateau table's ship line). Two gates, because they fail apart: a round that repairs three small things and breaks the central element scores higher and is further from done. The per-finding record from step 2 is the check.
 - Only subjective taste is left.
 - Four rounds are spent. Report what remains.
 

@@ -128,3 +128,12 @@ Order findings by **leverage = impact ÷ effort, discounted by confidence and fi
 2. Security findings with HIGH confidence float above equivalent-leverage non-security findings.
 3. Prefer findings whose fix has a clean verification story, executor models succeed at those.
 4. "Not worth doing" is a valid verdict; record it with one line of reasoning so the user knows it was considered.
+
+### Priority tiers
+
+Sort the ordered list into four tiers. Place a finding by its leverage score after the confidence and fix-risk discount, so a high-impact finding with a shaky read or a dangerous fix drops a tier.
+
+- **P1**: high impact for low effort, HIGH confidence, a contained fix. Security holes and data-loss bugs land here. Do these first.
+- **P2**: high impact but real effort, or modest impact that is nearly free. Worth scheduling.
+- **P3**: modest impact for moderate effort, or a good finding whose fix carries MED or HIGH risk. Take it when touching the area anyway.
+- **P4**: low impact, LOW confidence, or large effort for small gain. Record it, plan it only on request.

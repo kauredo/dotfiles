@@ -12,7 +12,7 @@ you never wait for review round one before starting round two.
 Reference: <https://gh.io/stacks-overview>
 
 **Default to a stack whenever work splits into more than one reviewable change.**
-The alternative — one branch, one giant diff — is the thing this exists to avoid.
+The alternative, one branch with one giant diff, is what this exists to avoid.
 
 ## When not to stack
 
@@ -31,9 +31,11 @@ gh extension list | grep -q stack || gh extension install github/gh-stack
 gh stack --help
 ```
 
-If the extension will not install, fall back to plain `gh pr create --base
-<parent-branch>` per PR and say in each body which PR it stacks on. That gets
-the review ergonomics without the tooling.
+If the extension will not install, fall back to plain chained PRs: create each
+branch off the one below it, open it with `gh pr create --base <parent-branch>`
+(the trunk for the bottom one), and say in each body which PR it stacks on. That
+gets the review ergonomics without the tooling. Merging then follows
+[Merging by hand](#merging-by-hand-without-the-extension).
 
 ## The shape
 
@@ -52,7 +54,7 @@ main
 Prefix each branch with its position, zero-padded: `01-`, `02-`, `03-`. The
 prefix survives `git branch` output, `gh stack view` and the PR list, so the
 read order is visible without opening anything. After the prefix, use the repo's
-normal convention (`fix/`, `feat/`, `test/`) — e.g. `01-fix/tenant-scope`.
+normal convention (`fix/`, `feat/`, `test/`), for example `01-fix/tenant-scope`.
 
 Where the work comes from a numbered plan set, **order the stack by execution
 order, not by plan number**, and put the plan number in the PR title so the two
@@ -69,6 +71,15 @@ entries are separate, they are one PR.
 The split that reviews best is usually by **reason to change**, not by file.
 Tests that pin current behaviour, then the behaviour change that inverts them,
 is two PRs even though they touch the same file.
+
+Put the safest layers at the bottom (renames, tests, pure refactors) and the
+riskiest on top (behaviour changes, migrations). The lower half can then merge
+while the risky review is still going, and a revert of the top layer leaves the
+rest intact.
+
+When you are splitting an existing branch, leave it untouched as the reference.
+Cut the layers from a copy (`git branch <original>-reference <original>`) and
+keep the original until the split is proven in step 3.
 
 ### 2. Create the stack
 
@@ -94,12 +105,22 @@ add <branch>` with no flags.
 
 ### 3. Verify every layer, not just the top
 
+**After splitting an existing branch, the top layer must show an empty diff
+against the original:** `git diff <original> <top-branch>` prints nothing. Any
+output is a hunk that fell between layers or got added along the way. Fix it
+before submitting, then delete the reference copy.
+
 **Each branch must be green on its own.** A reviewer merging PR 3 gets 1, 2 and
 3 together, but CI runs on each branch separately, and a layer that only passes
 because of a fix in the layer above is a broken commit in the history.
 
 Run the project's checks after each `git commit` and before the next `gh stack
 add`. If a layer cannot be green alone, it belongs merged into its parent.
+
+The same holds for prose. A layer's changelog entry, docs and any measured
+number (bundle size, query count, benchmark) describe that layer alone, so
+re-measure per layer. A figure taken from the full branch is wrong on every
+layer below the top.
 
 ### 4. Submit
 
@@ -118,6 +139,17 @@ gh pr edit <n> --title "..." --body-file <path>
 `--auto` generates titles from commit subjects, which are terse. Write each body
 properly; the per-PR body is most of a stack's value.
 
+**PRs that already exist** can join a stack without local tracking. List them
+bottom to top:
+
+```bash
+gh stack link 41 42 43     # PR numbers, URLs or branch names; add --base <trunk> if not the default
+gh stack link 7 48         # 7 is a stack number: appends 48 to the top of that stack
+```
+
+`link` pushes branch arguments, opens PRs for branches that have none, and adds
+to a stack that already exists without removing its members.
+
 ### 5. Each body says where it sits
 
 Every PR in a stack opens with its position, because a reviewer landing on PR 4
@@ -126,7 +158,7 @@ navigation block; add a one-line human version too:
 
 ```markdown
 **Stack position 4 of 7.** Based on #42 (plan 003, characterization tests).
-Review #40 → #41 → #42 first — this diff assumes them.
+Review #40 → #41 → #42 first, since this diff assumes them.
 ```
 
 Then the usual What & why / Changes / Testing.
@@ -153,8 +185,13 @@ gh stack merge --squash --yes        # everything in the stack, atomically
 gh stack merge <pr-number> --squash  # everything up to and including that PR
 ```
 
+Land a stack with `gh stack merge` (or the GitHub stack button), never by
+merging one layer at a time. The tool merges the chosen PR and everything below
+it as one all-or-nothing operation; a layer merged alone skips that guarantee
+and strands the PRs above it on a stale base.
+
 The merge is all-or-nothing: if one PR cannot merge, none do. Merge bottom-up
-and only as far as review has actually reached — `gh stack merge` with no
+and only as far as review has actually reached. `gh stack merge` with no
 argument takes the whole stack, so pass the PR number when only the lower half
 is approved.
 
@@ -248,5 +285,5 @@ land the managed ones, then rebase and merge each hand-made branch by hand.
 ## Reporting back
 
 Give the user the stack as a list, bottom first, with each PR's number, title
-and one-line scope — plus the single `gh stack merge` line that lands it. A wall
+and one-line scope, plus the single `gh stack merge` line that lands it. A wall
 of seven PR URLs with no order is worse than one big PR.

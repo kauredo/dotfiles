@@ -45,6 +45,8 @@ Create files lazily: only when you have something to write. If no `GLOSSARY.md` 
 
 When the user uses a term that conflicts with the existing language in `GLOSSARY.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y. Which is it?"
 
+When a term is defined nowhere, in the glossary or in any spec, report it as undefined and leave it undefined until the user supplies the meaning.
+
 ### Sharpen fuzzy language
 
 When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account': do you mean the Customer or the User? Those are different things."

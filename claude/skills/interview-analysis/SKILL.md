@@ -12,7 +12,7 @@ The rubrics are not yours to invent. They live in `~/Notes/03_Resources/intervie
 
 > **Voice, read this first, it applies to every word of output.** The report goes to hiring managers and sometimes to the candidate. It must read like an engineer who sat in the room, not a model producing a rubric summary. Short declarative sentences. Plain words. State the judgment instead of dressing it up.
 >
-> **No em dashes in prose. Ever.** Not as an aside, not a "correct" one. If you are about to type ", " inside a sentence, split the sentence or use a comma. The only exception is the report's own title line and stage headings, which follow the format the team already files (`<Name>, Technical Interview (Part II)`). Inside a bullet or a sentence there is no exception.
+> **Punctuate with commas and full stops.** When a sentence reaches for a dash, split it in two or use a comma. That holds for every bullet, sentence and heading. The title line uses the format the team already files: `<Name>, Technical Interview (Part II)`.
 >
 > Banned outright: significance-inflation verbs ("demonstrates", "showcases", "underscores", "exemplifies"), "robust", "comprehensive", "crucial", "solid grasp of", rule-of-three padding, tidy summary closers, and "reads"/"holds up" as evaluation verbs. Do not write "he demonstrated strong understanding of X" when "he knows X, and he gave a real example" says it. Do not narrate your own process ("I traced every answer", "after reviewing the transcript").
 >
@@ -52,7 +52,7 @@ Read the whole transcript before scoring anything. Large files come back truncat
 
 Then read:
 
-- `~/Notes/03_Resources/interview-kits/Evaluation Grids.md`: the competency and stage rows for this role. These are the scoring surface.
+- `~/Notes/03_Resources/interview-kits/Evaluation Grids.md`: the competency and stage rows for this role. These are the scoring surface. **Design has no grid there, and the DevOps grid is an unedited copy of Back-End** (it scores Ruby and Rails). For those two roles, score against the stage BARS rubrics written inline in the role's kit, and say in the footer that no grid was used.
 - The role's answer key, per-question level 1 through 5.
 - The role's kit, when you need the interviewer guidelines or the intended stage order.
 
@@ -163,7 +163,7 @@ Verify any claim the later write-up makes about the earlier one first (Step 1). 
 Output in chat, in this shape. It mirrors the format the team already files.
 
 ```
-# <Candidate name>: Technical Interview <round, if any>
+# <Candidate name>, Technical Interview (<round>)
 
 **Note:** Overall Recommendation is a <recommendation>, leveled as <level and track> rather than
 <the level and track they interviewed for>.
@@ -208,6 +208,7 @@ than as apologies.>
 ## Footer
 - Scored against: <kit name>, <answer key name>, Evaluation Grids, calibration.md
 - Speakers: <label → name, role> (note any segment you could not attribute)
+- Grid: <"no grid, scored against the kit's inline stage rubrics" for design and devops> (omit otherwise)
 - Borrowed rubrics: <question> from <other key> (omit when none)
 - Downgraded in calibration: <rating> → <rating> on <question>, <why> (omit when none)
 - Cross-round: <competency> scored <n> in <round> and <n> in <round>; process rating <n>, decided by <which evidence> (omit when single-round)
@@ -237,7 +238,7 @@ Same ratings, same named gaps, same specificity. What changes:
 
 ## Step 9: Offer the file, do not write it uninvited
 
-Show the report in chat first. Then offer to save it as markdown, defaulting to `~/Downloads/<Candidate>, Technical Interview<round>.md`.
+Show the report in chat first. Then offer to save it as markdown, defaulting to `~/Downloads/<Candidate>, Technical Interview (<round>).md`. Drop the parenthesis when there is no round, in the title too.
 
 **Never write a candidate evaluation into `~/Notes/`.** That vault is a git repository that syncs, and named candidate evaluations were deliberately kept out of it (see `0_Interview_Kits_Index.md`). Downloads or a path the user names, nothing else. Same reason: do not publish one as an artifact unless the user explicitly asks.
 

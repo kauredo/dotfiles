@@ -1,24 +1,28 @@
 # ADR Format
 
-ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
+Default to `docs/adr/` with sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
+
+First look for what the repo already does: its ADR directory, numbering scheme, template, and any generator script. Read the two most recent ADRs for tone, and run the generator if one exists. If the location or numbering can't be determined, draft the ADR in chat and ask.
 
 Create the `docs/adr/` directory lazily: only when the first ADR is needed.
+
+One decision per ADR, and only settled decisions. Open questions stay out.
 
 ## Template
 
 ```md
-# {Short title of the decision}
+# {Short noun phrase naming the decision}
 
 {1-3 sentences: what's the context, what did we decide, and why.}
 ```
 
-That's it. An ADR can be a single paragraph. The value is in recording *that* a decision was made and *why*, not in filling out sections.
+State the decision in present tense ("We use REST"). An ADR can be a single paragraph, and its body names the rejected alternatives and at least one downside of the choice. The value is in recording *that* a decision was made and *why*, not in filling out sections.
 
 ## Optional sections
 
 Only include these when they add genuine value. Most ADRs won't need them.
 
-- **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`): useful when decisions are revisited
+- **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`): useful when decisions are revisited. To supersede, write a new ADR and link the two both ways (the old one reads `superseded by ADR-NNNN`, the new one names what it replaces). Leave the old ADR's text and number alone
 - **Considered Options**: only when the rejected alternatives are worth remembering
 - **Consequences**: only when non-obvious downstream effects need to be called out
 
