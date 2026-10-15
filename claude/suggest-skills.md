@@ -21,12 +21,11 @@ to run it.
 | Your last explanation lost me | `/wait-what` |
 | Writing or reviewing docs, an RFC, a README or a spec | `/technical-writing` |
 | A draft needs AI tells stripped, especially text I didn't write | `/unslop` |
-| Skills or commands were added or changed | `/audit-skills` |
 | A project has no scripted way to prove its UI or CLI works | `/create-verification-skill` |
 | That project's verification skill may be stale | `/maintain-verification-skill` |
 | Screens are being designed on a Claude Design canvas | `/design-loop` |
 | A running local app should be compared or edited visually in Design | `/visual-edit` |
-| A change needs a demo video for a PR or a post | `/record-demo` |
+| A change needs a demo video for a PR or a post | `/demo-video` |
 | A project site is done and worth a launch video | `/brag` |
 | A repo should end replies with a red, yellow or green status block | `/quick-recap` |
 | I refer to something I just said or saw on screen, and Clips Rewind runs | `/rewind` |

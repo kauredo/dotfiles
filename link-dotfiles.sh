@@ -115,15 +115,6 @@ for d in "$SRC/skills"/*/; do
   link "$SRC/skills/$name" "$DST/skills/$name"
 done
 
-# Private skills that can't live in this public repo. Linked only when the
-# private clone is present; its LIVE file lists which skills to link.
-PRIVATE_SKILLS="$HOME/code/personal/px-agent-skills"
-if [ -f "$PRIVATE_SKILLS/LIVE" ]; then
-  while IFS= read -r name; do
-    [ -n "$name" ] && link "$PRIVATE_SKILLS/skills/$name" "$DST/skills/$name"
-  done < "$PRIVATE_SKILLS/LIVE"
-fi
-
 # Second Claude account (the `claude-b` / `ccc` aliases). CLAUDE_CONFIG_DIR keeps
 # its own login, and everything else points back at ~/.claude so both accounts
 # share memories, transcripts, skills and settings. sessions/, session-env/,

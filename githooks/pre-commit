@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# Fails the commit on a dead `/skill` reference under claude/skills. The checker
-# ships with the audit-skills skill, which comes from a private clone, so a
-# machine without it skips this step.
+# Fails the commit on a dead `/skill` reference under claude/skills.
 REPO="$(git rev-parse --show-toplevel)"
-CHECKER="$HOME/.claude/skills/audit-skills/scripts/check-skill-references.mjs"
-if [ -f "$CHECKER" ] && command -v node >/dev/null 2>&1; then
-  node "$CHECKER" "$REPO/claude/skills" || exit 1
+if command -v node >/dev/null 2>&1; then
+  node "$REPO/claude/skills/audit/scripts/check-skill-references.mjs" "$REPO/claude/skills" || exit 1
 else
-  echo "pre-commit: skill reference check skipped (audit-skills or node missing)"
+  echo "pre-commit: skill reference check skipped (node missing)"
 fi
 
 # Fails when claude/suggest-skills.md and the user-invoked skills disagree.

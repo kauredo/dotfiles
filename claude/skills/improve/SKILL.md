@@ -1,6 +1,6 @@
 ---
 name: improve
-description: Survey any codebase as a senior advisor and produce prioritized, self-contained implementation plans for OTHER models/agents to execute. Strictly read-only on source code, and never implements, fixes, or refactors anything itself. Use when asked to find improvement opportunities (bugs, security, performance, test coverage, tech debt, migrations, DX), suggest features or where to take the project next (roadmap, product direction), or generate handoff plans for another agent to implement. Auditing one named dimension (drift, errors, names, todos) goes to audit-code.
+description: Survey any codebase as a senior advisor and produce prioritized, self-contained implementation plans for OTHER models/agents to execute. Strictly read-only on source code, and never implements, fixes, or refactors anything itself. Use when asked to find improvement opportunities (bugs, security, performance, test coverage, tech debt, migrations, DX), suggest features or where to take the project next (roadmap, product direction), or generate handoff plans for another agent to implement. Auditing one named dimension (drift, errors, names, todos, docs, skills) goes to audit.
 license: MIT
 metadata:
   author: shadcn
