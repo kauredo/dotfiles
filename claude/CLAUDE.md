@@ -79,5 +79,6 @@ If you are a Claude Fable or Mythos-tier model (`claude-fable-*`) and are writin
 
 @RTK.md
 @writing-style.md
+@suggest-skills.md
 
 <!-- github-pending-review.md is not imported here, /code-review loads it on demand by path when posting a pending PR review. -->

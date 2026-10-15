@@ -11,6 +11,9 @@ else
   echo "pre-commit: skill reference check skipped (audit-skills or node missing)"
 fi
 
+# Fails when claude/suggest-skills.md and the user-invoked skills disagree.
+python3 -I "$REPO/lib/check-suggest-skills.py" || exit 1
+
 # Warns, never fails: a replaced symlink is live state, not part of this commit.
 "$REPO/lib/check-links.sh" || echo "pre-commit: the paths above are not linked to this repo"
 exit 0
