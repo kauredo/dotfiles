@@ -9,6 +9,8 @@ disable-model-invocation: true
 Edit text to remove AI patterns and add human voice.
 
 > This skill does not replace `~/.claude/writing-style.md`. That file is the always-on gate and wins on any conflict, including its rule against spaced em dashes and its mandatory final pass. Use this skill for the deeper sweep: the pattern catalogue below is broader, and items 26-31 cover ground the standing rules do not.
+>
+> In a repo whose `CLAUDE.md` or `AGENTS.md` names its own writing standard (a house style or content directives file), read that file first. It wins over `writing-style.md` for that repo's copy.
 
 ## Process
 

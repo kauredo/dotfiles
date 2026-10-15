@@ -45,7 +45,7 @@ https://github.com/backnotprop/pstack
 | maintain-verification-skill | same path fix; em dashes replaced |
 | recall | Cursor transcript path → `~/.claude/projects/<slug>/<uuid>.jsonl` plus the `memory/` index; `session-pickup` → `claude --resume`; dropped the `automate-me` route (skill not vendored); `unslop` → `writing-style.md` tier 1 |
 | technical-writing | scope note added (this owns document shape, `writing-style.md` owns voice and wins on conflict); the two `unslop` references repointed at `writing-style.md` |
-| unslop | `disable-model-invocation: true` added; description rewritten to defer to `writing-style.md` |
+| unslop | `disable-model-invocation: true` added; description rewritten to defer to `writing-style.md`; a repo's own writing standard, when its `CLAUDE.md` or `AGENTS.md` names one, wins over `writing-style.md` for that repo |
 | why | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
 | how | `generalPurpose` → `general-purpose`; Cursor model slugs → `sonnet`/`opus` |
 
