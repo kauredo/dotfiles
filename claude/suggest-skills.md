@@ -30,6 +30,3 @@ to run it.
 | A project site is done and worth a launch video | `/brag` |
 | A repo should end replies with a red, yellow or green status block | `/quick-recap` |
 | I refer to something I just said or saw on screen, and Clips Rewind runs | `/rewind` |
-
-When a skill gains or loses `disable-model-invocation: true`, update this table
-in the same change. The dotfiles pre-commit hook fails until they match.
