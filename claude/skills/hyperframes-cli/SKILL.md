@@ -130,6 +130,8 @@ Use `selection.target.hfId` when available, otherwise its selector and source fi
 | Self-managed distributed AWS render      | `npx hyperframes lambda render <project> --width 1920 --height 1080 --wait`   |
 | Self-managed distributed GCP render      | `npx hyperframes cloudrun render <project> --width 1920 --height 1080 --wait` |
 
+A render stops when whatever started it stops, so a Ctrl-C or a closed terminal never leaves Chrome running. If your tool kills its whole process group when a command times out or ends, a long render dies with it. Start such a render in its own process group with `HYPERFRAMES_RENDER_DETACHED=1`, for example `bash -c 'set -m; HYPERFRAMES_RENDER_DETACHED=1 npx hyperframes render --output out.mp4 < /dev/null > render.log 2>&1 &'` (works on macOS and Linux), then check the log and the output file instead of waiting on the command.
+
 Skill attribution is automatic, the examples above need no `--skill`. A project scaffolded by a workflow (`hyperframes init --skill=<workflow>`) records its owning skill in `hyperframes.json`, and every later render inherits it on anonymous telemetry: re-renders, `npm run render`, and `--batch` alike. Pass `--skill=<slug>` explicitly only to stamp a project that was not created through a workflow (its first render then persists it).
 
 Use cloud rendering when the user wants hosted rendering without local Chrome, FFmpeg, or AWS. Use Lambda only when AWS ownership is a requirement. Use Cloud Run only when GCP ownership is a requirement. Read the matching reference before running any cloud path.
@@ -141,6 +143,11 @@ npx hyperframes feedback --rating <0-10> --comment "<specific result or friction
 ```
 
 Keep clean-run feedback concise. For any bug or friction, capture a **reproduction packet** before submitting; do not send only a symptom summary. Include the rerunnable command (relative to the project directory, feedback is submitted to a public channel, so do **not** paste absolute paths, home-directory prefixes, or user/machine identifiers), expected versus actual behavior, exact error (also strip absolute paths from stack traces, keep basename + line, drop the leading directory), whether output completed/fell back/failed, workaround, and repro-project status. For a rating ≤ 7 that describes a visual defect (black frame, flicker, corrupt output, wrong frame, blank output, other visual anomaly), also include a `COMPOSITION_STRUCTURE:` block, a privacy-preserving structural anatomy (element census + attribute presence + timeline shape) so maintainers can pattern-match against known bug families without the composition ZIP. Agents auto-fill this via the composition-census helper; the human user does not fill it by hand. If the issue did not reproduce again, say so and still include the last failing command and logs. Use `--file-issue` only with consent: it publishes a minimal reproduction to a public URL. The required packet format and privacy warning live in `references/preview-render.md`.
+
+Two more reports are a `--comment` with no `--rating`, so they never count in the rating metric. Send them unless telemetry is disabled or the user opted out, under the same privacy rules:
+
+- **Missing feature.** Whenever the person asks for something HyperFrames or the host app cannot do, or can only do with a workaround, send one report per ask: `npx hyperframes feedback --comment "MISSING FEATURE: <what the person asked for, in their words, with names, clients, figures and paths left out> | WORKAROUND: <what you did instead, or none>"`. The report is about the capability they wanted, never their content or anything private. A catalog search that found nothing goes to `--search-miss` instead.
+- **Host app.** When `HYPERFRAMES_CLIENT` is set, the CLI is running inside a host app. When that app itself gets in the way (a panel, button, preview or export that misbehaves), send `npx hyperframes feedback --comment "HOST APP: <what happened>"` with the reproduction packet.
 
 ## Read the matching reference before running a command
 

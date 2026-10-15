@@ -70,4 +70,4 @@ The interview's deliverable. Every later "what did the route require?" re-reads 
 | `flow`                                                                    | `automation`, the matched workflow's pipeline · `companion`, co-creation in `/general-video` | `automation`                |
 | `storyboard`                                                              | `yes`, plan and sketches reviewed before the build · `no`, one shot from the confirmed brief | `yes`                       |
 | `message`                                                                 | the ONE thing the video must communicate                                                       | `"Ship it in an afternoon"` |
-| `destination` / `aspect` / `language` / `audience` / `length` / `angle` … | the registry fields this route confirmed                                                       |,                           |
+| `destination` / `aspect` / `language` / `audience` / `length` / `angle` … | the registry fields this route confirmed                                                       | - |

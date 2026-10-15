@@ -133,7 +133,7 @@ slices.forEach((el, i) => {
 | SLICE_OFFSET_MIN / MAX                       | 12–60px                                | derive per-band values from `glitchHash(i)`, never uniform, equal offsets read mechanical    |
 | SLICE_STRETCH                                | 0–0.5                                  | 0 pure displacement; ~0.3 stretched-scanline read                                             |
 | SLICE_RESOLVE_DUR / SLICE_STEPS / JITTER_LAG | 0.2–0.4s / 3–6 / ≤0.08s per band       | the stepped ease keeps the settle digital                                                     |
-| {warmSplit} / {coolSplit}                    |,                                      | classic red/cyan; any opposing warm+cool brand pair survives                                  |
+| {warmSplit} / {coolSplit}                    | - | classic red/cyan; any opposing warm+cool brand pair survives                                  |
 
 ## Critical Constraints
 

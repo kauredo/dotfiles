@@ -283,8 +283,7 @@ heygen video create --headers "X-HeyGen-Client-Source: media-use" --wait -d '{
 Avatar videos are deterministic + script-driven (lip-sync from a script or a
 pre-recorded `audio_url`), distinct from the generative LTX clips. After a
 manual recipe renders, `resolve --from <downloaded.mp4> --type video` to
-ledger it (not needed when generating via `resolve --type video` directly , 
-that already ledgers the result).
+ledger it (not needed when generating via `resolve --type video` directly, that already ledgers the result).
 
 ### Image-to-video (animate any still into a talking clip)
 

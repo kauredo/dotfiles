@@ -24,13 +24,11 @@ colors:
   ink-on-orange-border: "rgba(17,17,17,0.20)"
 
 typography:
-  #, reading ramp , 
-  body:    { fontFamily: "Barlow", cqw: 1.2, weight: 400, lineHeight: 1.6 }
+  #, reading ramp,   body:    { fontFamily: "Barlow", cqw: 1.2, weight: 400, lineHeight: 1.6 }
   lead:    { fontFamily: "Barlow", cqw: 1.6, weight: 400, lineHeight: 1.5 }
   caption: { fontFamily: "Barlow", cqw: 0.9, weight: 400, lineHeight: 1.5 }
   label:   { fontFamily: "IBM Plex Mono", cqw: 0.72, weight: 500, tracking: "0.14em", upper: true }
-  #, display / hero ramp (Barlow, lowercase, negative tracking) , 
-  h3:      { fontFamily: "Barlow", cqw: 2.8, weight: 600, lineHeight: 1.2, lower: true }
+  #, display / hero ramp (Barlow, lowercase, negative tracking),   h3:      { fontFamily: "Barlow", cqw: 2.8, weight: 600, lineHeight: 1.2, lower: true }
   quote-text:{ fontFamily: "Barlow", cqw: 3.8, weight: 700, lineHeight: 1.15, tracking: "-0.02em", lower: true }
   h2:      { fontFamily: "Barlow", cqw: 4.5, weight: 700, lineHeight: 1.1, tracking: "-0.02em", lower: true }
   stat-value:{ fontFamily: "Barlow", cqw: 5.5, weight: 900, lineHeight: 1.0, tracking: "-0.04em" }
@@ -262,7 +260,7 @@ placeholder (the dashed `img-placeholder` at 55cqh). The system supplies type an
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, percentages, dates, or counts at frame scale. Render slots as `,  figure , `,
+Never invent figures, percentages, dates, or counts at frame scale. Render slots as `, figure, `,
 `{metric}`, `NN%`. Stat-card numerals and bar heights carry placeholders until the script supplies
 them. Catalogue numbers (No. 01) are decorative chrome and may be sequential.
 

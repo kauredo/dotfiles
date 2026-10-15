@@ -1,16 +1,6 @@
 ---
 name: hyperframes-audio
-description: >
-  Use when audio already placed in a HyperFrames composition needs to be mixed:
-  fade-in/fade-out, crossfade, track gain or volume, volume automation, ducking,
-  a music bed that fights a voiceover (voiceover carve), effects on a track
-  (EQ, compressor, limiter, gate, saturation, delay, reverb, chorus, phaser,
-  bitcrush), automation envelopes drawn on a track's volume or any effect
-  parameter, or one submix bus carrying a chain, a fader and an automation clock
-  for several tracks at once (`<hf-audio-group>`).
-  Don't use for sourcing or generating audio, finding BGM, SFX, or making a
-  voiceover is `/media-use`. Don't use for clip timing or track layout, which is
-  `/hyperframes-core`.
+description: "Mixing audio already placed in a HyperFrames composition: fades, gain, ducking, voiceover carve, track effects (EQ, compressor, reverb), automation envelopes, submix buses (<hf-audio-group>). Sourcing or generating audio: /media-use. Clip timing or track layout: /hyperframes-core."
 ---
 
 **Plugin installs:** Before setup or freshness commands, follow [plugin execution rules](../hyperframes/references/plugin-installation.md) when this skill is inside a HyperFrames plugin. Standalone installs keep the update instructions below.
@@ -52,7 +42,7 @@ the first two, on an `<hf-audio-group>` bus (see "One bus for many tracks"):
 | `data-fx-carve`   | the carve's own settings, so it can be re-derived         |
 
 The shipped effect families are gain, EQ (highpass, lowpass, peaking, shelves),
-compressor, limiter, gate, saturate, delay, reverb, chorus, phaser, and bitcrush.
+compressor, limiter, truepeak (lookahead true-peak limiter), gate, saturate, delay, reverb, chorus, phaser, and bitcrush.
 
 Exact JSON for each, and the rules a lane must satisfy: `references/attributes.md`.
 Every effect with its parameters, ranges and units: `references/fx-registry.md`.
@@ -195,10 +185,14 @@ want 1–3 kHz, and taking that from the bed costs the bed far less than turning
 the whole thing down costs the mix. A high-pass on a voice is the standard fix
 for rumble; a low-pass darkens or muffles deliberately.
 
-**Dynamics** (`gain`, `compressor`, `limiter`, `gate`) decide how a track's level
+**Dynamics** (`gain`, `compressor`, `limiter`, `truepeak`, `gate`) decide how a track's level
 behaves over time. Compression narrows the distance between loud and quiet so the
-quiet parts can come up. A limiter is a ceiling, it does not shape anything, it
-guarantees nothing gets past. A gate removes what is below a threshold, which is
+quiet parts can come up. A limiter pulls peaks down toward a ceiling and does not
+shape anything else. `limiter` follows the level and has no lookahead, so a fast
+or inter-sample peak can pass its ceiling; for a delivery ceiling use `truepeak`, which looks ahead and measures the inter-sample peak. It
+holds a 4x estimate at the ceiling, not the waveform itself, so full-band noise can
+end up to 1.7 dB over: under a hard delivery limit set the ceiling at least 2 dB
+below it. A gate removes what is below a threshold, which is
 how you silence room tone between phrases. `gain` is a plain level stage, and it
 is what an automation lane rides when a track has to move out of the way.
 
@@ -340,6 +334,13 @@ of, so only the filters survive, and a bus and its members are one signal path,
 so the bed then runs through the bus's filters AND its own. The
 `audio_group_carve_attr` lint rule catches it.
 
+**One effect across the whole mix: the master bus.** A clip names exactly one
+group, so a limiter or EQ over everything cannot be a group. Put it in
+`data-fx-chain` on the top-level composition root: it runs once over the sum of all clips and groups, after each
+group's chain and fader. A delivery ceiling is the usual use, `truepeak` last in
+the master chain. Only the top-level root is read as the master bus; a
+sub-composition root's `data-fx-chain` is not applied inside a parent composition. No master automation.
+
 **One clip is not a bus.** A group exists to give several tracks one chain, one
 fader and one clock. Wrapping a single clip in a bus buys nothing the clip's own
 `data-fx-chain` does not already do, and it doubles the places a later edit has
@@ -352,8 +353,7 @@ many bands, how wide, how far to favour intelligibility over raw voice energy,
 how far the level may drop, how far under the voice to aim. Those six move
 together in any real mix, a gentle carve is a shallow cut in few bands with
 little ducking, a hard one is deeper in more bands with more, so they are one
-relationship written once, in `carveProfile`. `carve.mjs` defaults to `0.8` , 
-six bands from 250 Hz to 2.5 kHz cut about 7 dB each and 15 dB at 1.6 kHz, with
+relationship written once, in `carveProfile`. `carve.mjs` defaults to `0.8`, six bands from 250 Hz to 2.5 kHz cut about 7 dB each and 15 dB at 1.6 kHz, with
 19 dB of level room, because a bed under narration has to get out of the way
 first and be music second; `0.25` (a 6 dB dip in three bands, 6 dB of room) kept
 the bed present but still let it fight the voice, and was judged too weak in
@@ -391,8 +391,7 @@ there whenever another track could be the voice, and a bed with exactly **one**
 candidate above it is carved by default, at the default strength:
 that is what a bed under narration wants, and the module is where you change or
 switch it off. Several candidates leaves the picker waiting rather than guessing.
-Headless , 
-which is the path when you are authoring a composition rather than editing one:
+Headless, which is the path when you are authoring a composition rather than editing one:
 
 ```bash
 node <SKILL_DIR>/scripts/carve.mjs --comp index.html
@@ -440,8 +439,8 @@ and the parameter's own units. Targets are `volume` for the track's level, or
 `fx.<nodeId>.<param>` for an effect's knob.
 
 **Only some parameters can be automated, and a lane on the others is silently
-inert.** A knob is automatable when a Web Audio `AudioParam` backs it. The four
-worklet-based effects, `compressor`, `limiter`, `gate`, `bitcrush`, expose
+inert.** A knob is automatable when a Web Audio `AudioParam` backs it. The
+worklet-based effects, `compressor`, `limiter`, `truepeak`, `gate`, `bitcrush`, expose
 none at all, so no lane on any of their parameters will ever move: to make a
 compressor's behaviour change over time, automate a `gain` stage before it
 instead. `references/fx-registry.md` marks every parameter.
@@ -471,5 +470,4 @@ longer ends exactly at its `data-duration`; that is expected, not a bug.
 Beyond that, a mix is verified by rendering and listening. For a carve: the voice
 should be legible without the bed sounding hollowed, and the bed
 should come back up between phrases rather than staying flat. If the bed sounds
-notched rather than simply quieter under the voice, the strength is too high , 
-that is the one failure mode with an obvious sound.
+notched rather than simply quieter under the voice, the strength is too high, that is the one failure mode with an obvious sound.

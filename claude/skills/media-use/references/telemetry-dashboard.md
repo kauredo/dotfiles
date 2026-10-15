@@ -10,15 +10,14 @@ from `.media/` + `~/.media`, no dashboard access needed).
 ## Identity (see `scripts/lib/telemetry.mjs`)
 
 Events attribute to the **same person as the hyperframes CLI and studio**
-,  the shared install id in `~/.hyperframes/config.json` (`anonymousId`), stitched
+, the shared install id in `~/.hyperframes/config.json` (`anonymousId`), stitched
 to the HeyGen account (`$identify`, `distinct_id` = email/username) on sign-in.
 Not fully anonymous by design; pseudonymous before sign-in, account-linked after.
 `$ip:null`. Opt-out: `HYPERFRAMES_NO_TELEMETRY=1` / `DO_NOT_TRACK=1` (also CI, dev).
 
 ## Event catalog (verified present in-project)
 
-Every event carries `surface: "media-use"`. Event **properties are coarse** , 
-never intent text, file names, or paths.
+Every event carries `surface: "media-use"`. Event **properties are coarse**, never intent text, file names, or paths.
 
 | Event                                                                  | Fires on                                  | Key properties                                                         |
 | ---------------------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------- |

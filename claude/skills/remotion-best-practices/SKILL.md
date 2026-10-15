@@ -1,6 +1,6 @@
 ---
 name: remotion-best-practices
-description: Best practices for Remotion - Video creation in React
+description: "Remotion video code in React. Use only when the project already uses Remotion (remotion in package.json, Remotion imports). New videos and HyperFrames work: /hyperframes."
 metadata:
   tags: remotion, video, react, animation, composition
 ---

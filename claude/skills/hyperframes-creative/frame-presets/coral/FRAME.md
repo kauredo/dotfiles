@@ -22,15 +22,13 @@ colors:
   white: "#FFFFFF"
 
 typography:
-  #, reading ramp (Inter) , 
-  body:          { fontFamily: "Inter", cqw: 1.0,  weight: 400, lineHeight: 1.7 }
+  #, reading ramp (Inter),   body:          { fontFamily: "Inter", cqw: 1.0,  weight: 400, lineHeight: 1.7 }
   body-light:    { fontFamily: "Inter", cqw: 1.5,  weight: 300, lineHeight: 1.5, note: "pull-quote voice" }
   section-label: { fontFamily: "Inter", px: 12, weight: 700, tracking: "4px", upper: true }
   item-label:    { fontFamily: "Inter", px: 11, weight: 700, tracking: "3px", upper: true }
   quote-attribution: { fontFamily: "Inter", px: 14, weight: 600, tracking: "3px", upper: true }
   quote-role:    { fontFamily: "Inter", px: 12, weight: 400, tracking: "1px" }
-  #, display / hero ramp (Bebas Neue, uppercase, tracked) , 
-  card-title:    { fontFamily: "Bebas Neue", cqw: 1.9, weight: 400, lineHeight: 1.1, tracking: "1px", upper: true }
+  #, display / hero ramp (Bebas Neue, uppercase, tracked),   card-title:    { fontFamily: "Bebas Neue", cqw: 1.9, weight: 400, lineHeight: 1.1, tracking: "1px", upper: true }
   sidebar-value: { fontFamily: "Bebas Neue", cqw: 2.3, weight: 400, lineHeight: 1.0, upper: true }
   bar-title:     { fontFamily: "Bebas Neue", cqw: 2.3, weight: 400, lineHeight: 1.0, tracking: "2px", upper: true }
   card-stat:     { fontFamily: "Bebas Neue", cqw: 2.5, weight: 400, lineHeight: 1.0, upper: true }
@@ -39,8 +37,7 @@ typography:
   stat-numeral:  { fontFamily: "Bebas Neue", cqw: 5.0, weight: 400, lineHeight: 1.0, upper: true }
   hero-title:    { fontFamily: "Bebas Neue", cqw: 6.5, weight: 400, lineHeight: 0.9, tracking: "4px", upper: true }
   jumbo-feature: { fontFamily: "Bebas Neue", cqw: 9.0, weight: 400, lineHeight: 1.0, tracking: "12px", upper: true }
-  #, decorative , 
-  background-numeral: { fontFamily: "Bebas Neue", cqw: 10.0, weight: 400, color: "rgba(0,0,0,0.12)", note: "wallpaper numeral inside a coral region" }
+  #, decorative,   background-numeral: { fontFamily: "Bebas Neue", cqw: 10.0, weight: 400, color: "rgba(0,0,0,0.12)", note: "wallpaper numeral inside a coral region" }
   giant-mark:    { fontFamily: "Bebas Neue", cqw: 14.0, weight: 400, color: "rgba(0,0,0,0.35)", note: "decorative quote mark inside a coral region" }
 
 spacing:
@@ -150,8 +147,7 @@ inflates whenever it isn't full-screen; `cqw` resolves against the frame at any 
 
 ## Colors
 
-Tokens identical to the source. At frame scale the three surfaces are intermixed by composition , 
-coral/cream, coral/ink, ink/cream, or single-surface. `{colors.coral}` is both accent (borders,
+Tokens identical to the source. At frame scale the three surfaces are intermixed by composition, coral/cream, coral/ink, ink/cream, or single-surface. `{colors.coral}` is both accent (borders,
 icon squares, timeline nodes, eyebrows on cream/ink) and environment (full regions). Headlines:
 ink on cream/coral, cream on ink, **never gray, never white-on-coral.** Eyebrows: coral on
 cream/ink, ink on coral, coral-on-coral does not exist. The only sanctioned gradient is the rare
@@ -291,7 +287,7 @@ placeholder. The system supplies surfaces and geometry, not brands.
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, stats, dates, or counts at frame scale. Render slots as `,  figure , `,
+Never invent figures, stats, dates, or counts at frame scale. Render slots as `, figure, `,
 `{metric}`, `N×`. Real numerals appear only when the script supplies them, the feature stat,
 catalog, and timeline especially carry placeholders, not fabricated values. Wallpaper numerals
 (01, 02…) are decorative and may be ordinal.

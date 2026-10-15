@@ -23,14 +23,12 @@ colors:
   yellow: "#F5C518"
 
 typography:
-  #, reading ramp (px @ 1920, with cqw) , 
-  body-lg:    { fontFamily: "Space Grotesk", px: 28, cqw: 1.46, weight: 400, lineHeight: 1.4 }
+  #, reading ramp (px @ 1920, with cqw),   body-lg:    { fontFamily: "Space Grotesk", px: 28, cqw: 1.46, weight: 400, lineHeight: 1.4 }
   body-md:    { fontFamily: "Space Grotesk", px: 24, cqw: 1.25, weight: 400, lineHeight: 1.3 }
   mono-label: { fontFamily: "JetBrains Mono", px: 24, cqw: 1.25, weight: 400, tracking: "0.06em", upper: true }
   mono-kicker:{ fontFamily: "JetBrains Mono", px: 24, cqw: 1.25, weight: 400, tracking: "0.14em", upper: true }
   table-head: { fontFamily: "Archivo Black", px: 28, cqw: 1.46, weight: 400, upper: true }
-  #, display / hero ramp (frame-native, cqw-first) , 
-  step-title: { fontFamily: "Archivo Black", px: 34,  cqw: 1.77, weight: 400, lineHeight: 1.0, upper: true }
+  #, display / hero ramp (frame-native, cqw-first),   step-title: { fontFamily: "Archivo Black", px: 34,  cqw: 1.77, weight: 400, lineHeight: 1.0, upper: true }
   badge-label:{ fontFamily: "Archivo Black", px: 28,  cqw: 1.46, weight: 400, upper: true }
   marker:     { fontFamily: "Archivo Black", cqw: 2.4, weight: 400, lineHeight: 1.0, upper: true }
   stamp-num:  { fontFamily: "Archivo Black", cqw: 2.2, weight: 400, lineHeight: 0.9 }
@@ -311,7 +309,7 @@ placeholder. Products/sections are content-agnostic; the system supplies geometr
 ## Numerals & Claims (hard rule)
 
 Never invent figures, percentages, counts, or dates at frame scale. Render data slots as
-`,  figure , `, `{metric}`, `N×`. Real numerals appear only when the script supplies them, the stat
+`, figure, `, `{metric}`, `N×`. Real numerals appear only when the script supplies them, the stat
 grid and ledger especially carry placeholders, not fabricated values.
 
 ## Pre-Render Self-Audit

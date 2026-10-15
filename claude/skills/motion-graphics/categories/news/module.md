@@ -31,7 +31,7 @@ The keyword highlight is a marker band grown L→R via `background-size` (NOT a 
 
 `box-decoration-break:clone` makes the band **wrap across line breaks** seamlessly, a multi-word keyword spanning 2–3 lines still highlights continuously (the old `scaleX` bar could not). GSAP tweens the CSS var `--hlw` 0%→100%, **swept on AFTER the text settles, never pre-applied**. Optionally scale the duration with keyword length ~0.5–1.5s.
 
-## Layout A: centered-emphasis (9:16, text-only): Builder
+## Layout A: centered-emphasis (9:16, text-only), Builder
 
 1. **Lay out the key SENTENCE at a readable size, do NOT zoom.** Paper-light stage; an outlet `#kicker` (e.g. "BBC NEWS · TECHNOLOGY", brand accent) at top; the key sentence centered, serif, **~70–76px / 700 / line-height ~1.4**, `max-width ≈ 900`. The whole sentence stays legible; the keyword is emphasized _within_ it.
 2. Wrap the keyword inline: `… raised <span class="hl" id="kw">$750M</span> at …`.
@@ -39,7 +39,7 @@ The keyword highlight is a marker band grown L→R via `background-size` (NOT a 
 
 **Reference:** `samples/news/_ref-centered-emphasis.html` (+ `news/v2-*`).
 
-## Layout B: full article (16:9, logo + person): Builder
+## Layout B: full article (16:9, logo + person), Builder
 
 The editorial article-card layout (logo top-left + date + big serif headline with a multi-line keyword highlight + dek + outlet bottom-left + a background-removed **person cutout** bottom-right). 1920×1080, paper-light gradient stage, Georgia serif.
 

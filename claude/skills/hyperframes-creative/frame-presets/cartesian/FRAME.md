@@ -20,15 +20,13 @@ colors:
   white-overlay: "rgba(255,255,255,0.3)"
 
 typography:
-  #, reading ramp (Inter) , 
-  body:        { fontFamily: "Inter", cqw: 1.0,  weight: 400, lineHeight: 1.6, color: "text-secondary" }
+  #, reading ramp (Inter),   body:        { fontFamily: "Inter", cqw: 1.0,  weight: 400, lineHeight: 1.6, color: "text-secondary" }
   body-sm:     { fontFamily: "Inter", cqw: 0.85, weight: 400, lineHeight: 1.6 }
   subtitle:    { fontFamily: "Inter", cqw: 1.3,  weight: 400, lineHeight: 1.5 }
   label:       { fontFamily: "Inter", px: 14, weight: 500, tracking: "3px", upper: true, color: "accent" }
   attribution: { fontFamily: "Inter", px: 15, weight: 400, tracking: "2px", upper: true, color: "accent" }
   micro:       { fontFamily: "Inter", px: 12, weight: 400, tracking: "2px", upper: true, color: "accent" }
-  #, display / hero ramp (Playfair Display 400, sentence case) , 
-  h3:          { fontFamily: "Playfair Display", cqw: 1.8, weight: 400, lineHeight: 1.1 }
+  #, display / hero ramp (Playfair Display 400, sentence case),   h3:          { fontFamily: "Playfair Display", cqw: 1.8, weight: 400, lineHeight: 1.1 }
   timeline-headline:{ fontFamily: "Playfair Display", cqw: 1.9, weight: 400, lineHeight: 1.1 }
   card-headline:{ fontFamily: "Playfair Display", cqw: 2.0, weight: 400, lineHeight: 1.15 }
   stat-figure: { fontFamily: "Playfair Display", cqw: 3.0, weight: 400, lineHeight: 1.0 }
@@ -255,7 +253,7 @@ placeholder (the crossed-X image-placeholder, or a ringed initial for portraits)
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, dates, or counts at frame scale. Render slots as `,  figure , `, `{metric}`.
+Never invent figures, dates, or counts at frame scale. Render slots as `, figure, `, `{metric}`.
 Stats and timeline years carry placeholders until the script supplies them. Agenda ordinals
 (01, 02…) are decorative and may be sequential.
 

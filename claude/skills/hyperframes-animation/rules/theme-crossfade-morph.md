@@ -75,8 +75,7 @@ The only animated property is `opacity`, which is why this rule is seek-safe wit
 ```js
 const skins = gsap.utils.toArray(".skin");
 
-// Boundary k→k+1 at T_k: outgoing fades down as incoming fades up , 
-// ONE simultaneous crossfade, everything blends at once.
+// Boundary k→k+1 at T_k: outgoing fades down as incoming fades up, // ONE simultaneous crossfade, everything blends at once.
 skins.forEach((skin, k) => {
   if (k === 0) return; // skin-0 is the opening state
   const at = CYCLE_START + k * (SKIN_HOLD + MORPH_DUR);
@@ -106,9 +105,9 @@ skins.forEach((skin, k) => {
 | SKIN_HOLD       | 0.8–1.5s                                    | long enough to register the logo/footer identity, short enough to keep the churn rhetorical          |
 | MORPH_DUR       | 0.25–0.4s, ~0.3s canonical                  | faster reads as a hard cut; slower reads as a mushy dissolve with lingering double-exposure          |
 | CYCLE_START     | ≥ anchor settle + a beat                    | after the anchor and skin-0 have fully registered                                                    |
-| SHELL geometry  |,                                           | shell / toolbar / footer coordinates identical across skins; contents inside the slots differ freely |
-| ANCHOR position |,                                           | identical to the pixel across the scene (per-layer form: identical in every skin)                    |
-| washout / brake | shell ~0.2–0.3 opacity; hold 2–3× SKIN_HOLD |,                                                                                                    |
+| SHELL geometry  | - | shell / toolbar / footer coordinates identical across skins; contents inside the slots differ freely |
+| ANCHOR position | - | identical to the pixel across the scene (per-layer form: identical in every skin)                    |
+| washout / brake | shell ~0.2–0.3 opacity; hold 2–3× SKIN_HOLD | - |
 
 ## Critical Constraints
 

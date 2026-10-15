@@ -28,12 +28,10 @@ borders: { primary: "3px solid text-dark", thin: "2px solid text-dark" }
 shadows: { default: "6px 6px 0 text-dark", small: "4px 4px 0 text-dark", text-headline: "3px 3px 0 text-dark", text-headline-soft: "3px 3px 0 rgba(0,0,0,0.2)" }
 
 typography:
-  #, reading ramp (Quicksand) , 
-  body:    { fontFamily: "Quicksand", cqw: 0.95, weight: 500, lineHeight: 1.6 }
+  #, reading ramp (Quicksand),   body:    { fontFamily: "Quicksand", cqw: 0.95, weight: 500, lineHeight: 1.6 }
   body-strong:{ fontFamily: "Quicksand", cqw: 0.95, weight: 600, lineHeight: 1.5 }
   meta:    { fontFamily: "Quicksand", cqw: 0.78, weight: 600, lineHeight: 1.45 }
-  #, display ramp (Fredoka One / Fredoka 600, single weight, never italic) , 
-  badge:   { fontFamily: "Fredoka One", cqw: 0.9, tracking: "0.02em" }
+  #, display ramp (Fredoka One / Fredoka 600, single weight, never italic),   badge:   { fontFamily: "Fredoka One", cqw: 0.9, tracking: "0.02em" }
   label-display:{ fontFamily: "Fredoka One", cqw: 1.3, lineHeight: 1.3, tracking: "0.02em" }
   subtitle:{ fontFamily: "Fredoka One", cqw: 1.8, lineHeight: 1.2, tracking: "0.02em" }
   quote:   { fontFamily: "Fredoka One", cqw: 2.6, lineHeight: 1.35 }
@@ -251,7 +249,7 @@ placeholder. Ornaments and pastels are content-agnostic; counters/badges carry p
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, dates, or counts at frame scale. Render slots as `,  figure , `, `{metric}`,
+Never invent figures, dates, or counts at frame scale. Render slots as `, figure, `, `{metric}`,
 `N`. Step numbers and any chart values carry placeholders until the script supplies them; the slide
 counter is decorative chrome.
 

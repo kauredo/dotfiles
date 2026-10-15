@@ -19,15 +19,13 @@ colors:
   ink-faint: "rgba(31,43,224,0.18)"
 
 typography:
-  #, reading ramp , 
-  body:        { fontFamily: "Hanken Grotesk", cqw: 0.83, weight: 400, lineHeight: 1.5 }
+  #, reading ramp,   body:        { fontFamily: "Hanken Grotesk", cqw: 0.83, weight: 400, lineHeight: 1.5 }
   body-lede:   { fontFamily: "Hanken Grotesk", cqw: 0.95, weight: 400, lineHeight: 1.5 }
   micro:       { fontFamily: "Hanken Grotesk", px: 13, weight: 600, tracking: "0.16em", upper: true }
   micro-strong:{ fontFamily: "Hanken Grotesk", px: 16, weight: 600, tracking: "0.18em", upper: true }
   mono-tag:    { fontFamily: "DM Mono", cqw: 0.78, weight: 400, tracking: "0.05em" }
   mono-chrome: { fontFamily: "DM Mono", px: 13, weight: 400, tracking: "0.06em" }
-  #, display / hero ramp (Newsreader 400, negative tracking) , 
-  table-name:  { fontFamily: "Newsreader", cqw: 1.5, weight: 400, lineHeight: 1.15 }
+  #, display / hero ramp (Newsreader 400, negative tracking),   table-name:  { fontFamily: "Newsreader", cqw: 1.5, weight: 400, lineHeight: 1.15 }
   row-headline:{ fontFamily: "Newsreader", cqw: 2.1, weight: 400, lineHeight: 1.05 }
   ed-callout:  { fontFamily: "Newsreader", cqw: 2.6, weight: 400, lineHeight: 1.1, italic: true }
   headline:    { fontFamily: "Newsreader", cqw: 4.6, weight: 400, lineHeight: 0.95 }
@@ -78,7 +76,7 @@ components:
     layout: "grid: mono num · Newsreader name · Hanken desc · mono delta"
     borderBottom: "0.06cqw solid {colors.ink-faint} (header 0.12cqw solid {colors.ink})"
     typography: "{typography.mono-tag} + {typography.table-name} + {typography.body}"
-    description: "Dense matrix row with ↑/↓/,  delta."
+    description: "Dense matrix row with ↑/↓/, delta."
   pixel-stack-bar:
     cells: "column-reverse, {colors.grid} off / {colors.ink} on"
     baseline: "0.12cqw solid {colors.ink} + {typography.mono-tick} ticks"
@@ -241,8 +239,8 @@ placeholder. Trend names, signals, and figures are content; the system supplies 
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, deltas, dates, or signal counts at frame scale. Render slots as `,  figure , `,
-`{metric}`, `↑ , `. Pixel-stack bar heights and ledger deltas especially carry placeholders until the
+Never invent figures, deltas, dates, or signal counts at frame scale. Render slots as `, figure, `,
+`{metric}`, `↑, `. Pixel-stack bar heights and ledger deltas especially carry placeholders until the
 script supplies values. Mono catalogue ordinals (001, 002…) are decorative and may be sequential.
 
 ## Pre-Render Self-Audit

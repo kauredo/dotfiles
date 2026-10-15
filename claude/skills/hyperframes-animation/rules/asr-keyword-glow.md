@@ -45,7 +45,7 @@ A single linear driver tween (`ease: "none"`, any other ease distorts the per-wo
 ```js
 // Per-word spoken windows, one entry per span; brand word 1.5-2× a normal word's window.
 const TIMINGS = {
-  // {w1Key}: { start: …, end: … }, , seconds, local to the scene
+  // {w1Key}: { start: …, end: … },, seconds, local to the scene
 };
 
 function envelope(time, start, end) {
@@ -109,8 +109,8 @@ function colorAt(env, isBrand) {
 | REST_LEVEL      | 0.15–0.4             | 0.05–0.2      | > 0 (breadcrumb), < 1                                      |
 | MAX_BLUR        | 15–25px              | 30–45px       | bigger = "shouting"                                        |
 | MAX_SCALE_BOOST | 0.03–0.10            | 0.15–0.25     | additive at peak (0.08 ⇒ scale 1.08)                       |
-| PULSE_HZ / AMP  | 4–10 rad/s / 0.1–0.3 |,             | multi-octave variation                                     |
-| MAX_POP_Z       | 20–60px              |,             | 3D variation                                               |
+| PULSE_HZ / AMP  | 4–10 rad/s / 0.1–0.3 | - | multi-octave variation                                     |
+| MAX_POP_Z       | 20–60px              | - | 3D variation                                               |
 | SCENE_DURATION  | = `data-duration`    | same          | driver must end in sync with the scene's seek window       |
 
 ## Critical Constraints

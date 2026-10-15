@@ -171,8 +171,7 @@ turn the track up or down. Those figures were solved by measurement, not chosen:
 the compressor originally left a track 2.5 dB _quieter_ at full evenness, and
 saturation's trim ran the wrong way entirely.
 
-Tightness and Crush are not level-matched, because neither has a trim to move , 
-a gate only removes, and Crush's `mix` is the effect itself rather than a
+Tightness and Crush are not level-matched, because neither has a trim to move, a gate only removes, and Crush's `mix` is the effect itself rather than a
 make-up.
 
 The chain stores the mechanism values, not the knob position; the knob is read

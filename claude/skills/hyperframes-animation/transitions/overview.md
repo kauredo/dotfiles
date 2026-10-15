@@ -103,10 +103,10 @@ Read `catalog.md` in this directory for GSAP code and hard rules for every trans
 | Scale/zoom  | Zoom through, zoom out, gravity drop, 3D flip                  | Cinematic zoom, gravitational lens                                        |
 | Reveal/mask | Circle iris, diamond iris, diagonal split, clock wipe, shutter | SDF iris                                                                  |
 | Dissolve    | Crossfade, blur crossfade, focus pull, color dip               | Cross-warp morph, domain warp                                             |
-| Cover       | Staggered blocks, horizontal blinds, vertical blinds           |,                                                                         |
+| Cover       | Staggered blocks, horizontal blinds, vertical blinds           | - |
 | Light       | Light leak, overexposure burn, film burn                       | Light leak (shader), thermal distortion                                   |
 | Distortion  | Glitch, chromatic aberration, ripple, VHS tape                 | Glitch (shader), chromatic split, ridged burn, ripple waves, swirl vortex |
-| Pattern     | Grid dissolve, morph circle                                    |,                                                                         |
+| Pattern     | Grid dissolve, morph circle                                    | - |
 
 ## Transitions That Don't Work in CSS
 

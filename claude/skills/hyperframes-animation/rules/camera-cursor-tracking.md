@@ -57,8 +57,7 @@ finalWorldX = Math.min(INITIAL_OFFSET, trackingOffset)
   vertical-align: bottom;
 }
 .search-bar .cursor {
-  display: inline-block; /* inline sibling of the text, NOT absolutely positioned , 
-     absolute positioning misaligns with the camera math */
+  display: inline-block; /* inline sibling of the text, NOT absolutely positioned,      absolute positioning misaligns with the camera math */
   width: CURSOR_WIDTH;
   margin-left: CURSOR_GAP;
   background: {accentColor};

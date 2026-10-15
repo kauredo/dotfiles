@@ -32,13 +32,11 @@ radii:
   circle: "50%"
 
 typography:
-  #, reading ramp (Inter body + Space Grotesk chrome) , 
-  body:    { fontFamily: "Inter", cqw: 0.85, weight: 400, lineHeight: 1.6, color: "text-muted" }
+  #, reading ramp (Inter body + Space Grotesk chrome),   body:    { fontFamily: "Inter", cqw: 0.85, weight: 400, lineHeight: 1.6, color: "text-muted" }
   h4-eyebrow:{ fontFamily: "Space Grotesk", cqw: 0.8, weight: 600, tracking: "0.08em", upper: true, color: "primary" }
   tag:     { fontFamily: "Space Grotesk", px: 12, weight: 500, color: "primary" }
   counter: { fontFamily: "Space Grotesk", px: 13, weight: 500, tracking: "0.05em", color: "text-muted" }
-  #, display / numerical ramp (Space Grotesk, near-black headings / cobalt numerals) , 
-  h3:      { fontFamily: "Space Grotesk", cqw: 1.25, weight: 500, lineHeight: 1.3, tracking: "-0.02em", color: "text" }
+  #, display / numerical ramp (Space Grotesk, near-black headings / cobalt numerals),   h3:      { fontFamily: "Space Grotesk", cqw: 1.25, weight: 500, lineHeight: 1.3, tracking: "-0.02em", color: "text" }
   stat-num:{ fontFamily: "Space Grotesk", cqw: 1.9, weight: 700, lineHeight: 1.0, color: "primary" }
   blockquote:{ fontFamily: "Space Grotesk", cqw: 2.4, weight: 500, lineHeight: 1.35, color: "text" }
   h2:      { fontFamily: "Space Grotesk", cqw: 2.6, weight: 600, lineHeight: 1.1, tracking: "-0.02em", color: "text" }
@@ -115,13 +113,11 @@ components:
 ## Overview
 
 Blue Professional at frame scale is a **consulting-grade system: restraint with one strong
-commitment.** A warm cream canvas and a single saturated cobalt that carries every accent , 
-eyebrow, metric, CTA, chart fill, progress bar. No secondary brand color, no pastels, just cream,
+commitment.** A warm cream canvas and a single saturated cobalt that carries every accent, eyebrow, metric, CTA, chart fill, progress bar. No secondary brand color, no pastels, just cream,
 cobalt, and a tight ladder of grays. The register is investment-research / McKinsey briefing:
 measured, data-dense without crowding, executive-readable at distance.
 
-The voice is two faces in fixed roles: **Space Grotesk** (display, every numeral, all chrome , 
-eyebrows uppercase 0.08em) and **Inter** (body, muted gray, line 1.6). Headlines are near-black;
+The voice is two faces in fixed roles: **Space Grotesk** (display, every numeral, all chrome, eyebrows uppercase 0.08em) and **Inter** (body, muted gray, line 1.6). Headlines are near-black;
 cobalt is reserved for accent moments. Depth is **soft and tinted**, 4% cobalt card fills with 20%
 cobalt borders and 10–14px radii, never shadowed. The lack of harsh shadows is the premium signal.
 
@@ -285,8 +281,8 @@ placeholder. Figures, metrics, and quotes are content; the system supplies cream
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, financials, percentages, or dates at frame scale. Render slots as `,  figure , `,
-`{metric}`, `+NN%`, `↑ , `. Metric cards, bar values, and stat cells especially carry placeholders
+Never invent figures, financials, percentages, or dates at frame scale. Render slots as `, figure, `,
+`{metric}`, `+NN%`, `↑, `. Metric cards, bar values, and stat cells especially carry placeholders
 until the script supplies them. Directional chips require a real comparison from the script.
 
 ## Pre-Render Self-Audit

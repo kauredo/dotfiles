@@ -26,13 +26,11 @@ colors:
   shadow: "rgba(26,26,26,0.08)"
 
 typography:
-  #, reading ramp (Space Grotesk) , 
-  body:      { fontFamily: "Space Grotesk", cqw: 0.85, weight: 400, lineHeight: 1.6 }
+  #, reading ramp (Space Grotesk),   body:      { fontFamily: "Space Grotesk", cqw: 0.85, weight: 400, lineHeight: 1.6 }
   subtitle:  { fontFamily: "Space Grotesk", cqw: 0.95, weight: 400, tracking: "0.18em", upper: true }
   pill-text: { fontFamily: "Space Grotesk", cqw: 0.75, weight: 600, tracking: "0.12em", upper: true }
   label:     { fontFamily: "Space Grotesk", px: 14, weight: 500, tracking: "0.1em", upper: true }
-  #, display / hero ramp (Bodoni Moda, ink, sentence case) , 
-  card-headline:{ fontFamily: "Bodoni Moda", cqw: 1.9, weight: 700, lineHeight: 1.1 }
+  #, display / hero ramp (Bodoni Moda, ink, sentence case),   card-headline:{ fontFamily: "Bodoni Moda", cqw: 1.9, weight: 700, lineHeight: 1.1 }
   orbit-numeral:{ fontFamily: "Bodoni Moda", cqw: 2.6, weight: 700, lineHeight: 1.0 }
   quote-display:{ fontFamily: "Bodoni Moda", cqw: 4.2, weight: 600, lineHeight: 1.3, tracking: "-0.01em" }
   stat-number: { fontFamily: "Bodoni Moda", cqw: 3.6, weight: 800, lineHeight: 1.0, tracking: "-0.03em" }
@@ -156,9 +154,8 @@ the radial-glow + grain atmosphere; ALL frame-relative units are `cqw`/`cqh` aga
 
 Tokens identical to the source. `{colors.cream}` is the ground; `{colors.ink}`/`{colors.outline}`
 is type + the universal 2px stroke; the nine candy accents fill pills with **no semantic mapping**
-,  pair a warm (coral/yellow/peach) with a cool (sky/lavender/violet/mint) with a neutral-bright
-(lime); never two same-family adjacent. Color appears on **stat numerals and pill fills only** , 
-never on a Bodoni headline. Shadow is always `{colors.shadow}` (8% ink). No tenth color.
+, pair a warm (coral/yellow/peach) with a cool (sky/lavender/violet/mint) with a neutral-bright
+(lime); never two same-family adjacent. Color appears on **stat numerals and pill fills only**, never on a Bodoni headline. Shadow is always `{colors.shadow}` (8% ink). No tenth color.
 
 ## Typography
 
@@ -262,7 +259,7 @@ placeholder. Floating-pill words are neutral atmospheres ("VISION", "FUTURE", "N
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, stats, or counts at frame scale. Render slots as `,  figure , `, `{metric}`,
+Never invent figures, stats, or counts at frame scale. Render slots as `, figure, `, `{metric}`,
 `N%`. Stat-pill numbers and bar-track widths carry placeholders until the script supplies values.
 
 ## Pre-Render Self-Audit

@@ -100,8 +100,7 @@ A target filling 97%+ of the frame reads as cut-off the instant its center is sl
 const counterX = -TARGET_OFFSET_X;
 const counterY = -TARGET_OFFSET_Y;
 
-// Scale and counter-translate MUST share position, duration, AND ease , 
-// otherwise the target visibly wanders mid-zoom.
+// Scale and counter-translate MUST share position, duration, AND ease, // otherwise the target visibly wanders mid-zoom.
 tl.to("#zoom-outer", { scale: ZOOM_SCALE, duration: ZOOM_DUR, ease: "power3.inOut" }, ZOOM_AT);
 tl.to(
   "#zoom-inner",

@@ -18,13 +18,11 @@ colors:
   light: "#F5F2EF"
 
 typography:
-  #, reading + chrome ramp , 
-  body:    { fontFamily: "Libre Baskerville", cqw: 0.85, weight: 400, lineHeight: 1.75, color: "dark" }
+  #, reading + chrome ramp,   body:    { fontFamily: "Libre Baskerville", cqw: 0.85, weight: 400, lineHeight: 1.75, color: "dark" }
   body-cell:{ fontFamily: "Libre Baskerville", cqw: 0.7, weight: 400, lineHeight: 1.55 }
   label:   { fontFamily: "Space Grotesk", px: 10, weight: 600, tracking: "2px", upper: true, color: "red" }
   bullet-body:{ fontFamily: "Space Grotesk", cqw: 0.62, weight: 400, lineHeight: 1.45 }
-  #, display / hero ramp (Shrikhand 400, tilted) , 
-  card-title:{ fontFamily: "Shrikhand", cqw: 1.9, weight: 400, lineHeight: 1.1, color: "dark" }
+  #, display / hero ramp (Shrikhand 400, tilted),   card-title:{ fontFamily: "Shrikhand", cqw: 1.9, weight: 400, lineHeight: 1.1, color: "dark" }
   cell-number:{ fontFamily: "Shrikhand", cqw: 2.7, weight: 400, lineHeight: 1.0, color: "red" }
   section-header:{ fontFamily: "Shrikhand", cqw: 3.3, weight: 400, lineHeight: 1.0, color: "dark" }
   red-quote:{ fontFamily: "Shrikhand", cqw: 4.7, weight: 400, lineHeight: 1.15, color: "bg", shadow: "stacked" }
@@ -253,7 +251,7 @@ placeholder. The system supplies type, one red, and ink rules, not brands.
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, financials, percentages, or dates at frame scale. Render slots as `,  figure , `,
+Never invent figures, financials, percentages, or dates at frame scale. Render slots as `, figure, `,
 `{metric}`, `+NN%`. Fin-grid cells and stat-big especially carry placeholders until the script
 supplies them. Catalogue numbers / progress are decorative.
 

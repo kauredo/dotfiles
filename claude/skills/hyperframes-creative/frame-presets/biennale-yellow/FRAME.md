@@ -20,15 +20,13 @@ colors:
   ember: "#E26B4A"
 
 typography:
-  #, reading + data ramp , 
-  body:    { fontFamily: "Archivo", cqw: 0.85, weight: 400, lineHeight: 1.5, color: "ink" }
+  #, reading + data ramp,   body:    { fontFamily: "Archivo", cqw: 0.85, weight: 400, lineHeight: 1.5, color: "ink" }
   body-lede:{ fontFamily: "Archivo", cqw: 0.95, weight: 400, lineHeight: 1.55 }
   micro-label:{ fontFamily: "Archivo", px: 13, weight: 600, tracking: "0.18em", upper: true }
   rail-label:{ fontFamily: "Archivo", px: 13, weight: 600, tracking: "0.32em", upper: true }
   mono-data:{ fontFamily: "JetBrains Mono", cqw: 0.73, weight: 400, tracking: "0.04em" }
   pagenum: { fontFamily: "JetBrains Mono", px: 13, weight: 400, tracking: "0.08em", opacity: 0.75 }
-  #, display ramp (Instrument Serif 400, tight, negative tracking) , 
-  ledger-title:{ fontFamily: "Instrument Serif", cqw: 1.55, weight: 400, lineHeight: 1.15 }
+  #, display ramp (Instrument Serif 400, tight, negative tracking),   ledger-title:{ fontFamily: "Instrument Serif", cqw: 1.55, weight: 400, lineHeight: 1.15 }
   strand-title:{ fontFamily: "Instrument Serif", cqw: 1.7, weight: 400, lineHeight: 1.1 }
   headline-sm:{ fontFamily: "Instrument Serif", cqw: 2.9, weight: 400, lineHeight: 1.0 }
   headline:{ fontFamily: "Instrument Serif", cqw: 4.6, weight: 400, lineHeight: 1.06, tracking: "-0.005em" }
@@ -199,9 +197,7 @@ the bloom behind the numeral. **Silence** ~60%. **Fixed** serif 400, jumbo numer
 ### 3 · Ledger (catalog · move: hairline tabular rows · the dense frame)
 
 **Ground** paper (bloom optional, subtle). **Composes** headline-sm + micro-label topbar, ledger-rows.
-**Focal** a 4-column tabular calendar, mono date · serif title · sans venue · mono duration , 
-separated by hairline-soft rules under a 1px ink header rule. **Chrome** pagenum. **Accent** none , 
-density through quiet repetition, not color. **Silence** tight, the density exception (achieved by
+**Focal** a 4-column tabular calendar, mono date · serif title · sans venue · mono duration, separated by hairline-soft rules under a 1px ink header rule. **Chrome** pagenum. **Accent** none, density through quiet repetition, not color. **Silence** tight, the density exception (achieved by
 repetition, not richness). **Fixed** hairline rules, mono dates, serif titles. **Free** rows, venues.
 **Density** dense-exception.
 
@@ -267,7 +263,7 @@ placeholder. Programme titles, venues, and dates are content; the system supplie
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, dates, durations, or counts at frame scale. Render slots as `,  figure , `,
+Never invent figures, dates, durations, or counts at frame scale. Render slots as `, figure, `,
 `{metric}`, `NN JUN`, `N m`. Ledger dates/durations and chart values especially carry placeholders
 until the script supplies them. Chapter ordinals (01, 02…) are decorative.
 

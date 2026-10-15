@@ -108,8 +108,7 @@ HOLDS[CONTENT.length - 1] = HOLD_FINAL;
 
 let cumulative = 0;
 const TIMELINE = CONTENT.map((entry, i) => {
-  // Past ~0.5s states are glanced as motion texture, not read , 
-  // drop the per-char term or you never reach flurry speed.
+  // Past ~0.5s states are glanced as motion texture, not read,   // drop the per-char term or you never reach flurry speed.
   const readable = HOLDS[i] >= READ_THRESHOLD;
   const dur = HOLDS[i] + (readable ? entry.body.length * SEC_PER_CHAR : 0);
   const start = cumulative;

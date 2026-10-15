@@ -20,8 +20,7 @@
 - **Scene 3 (~3.0–4.6s), the morph (signature move).** The CENTER mockup MORPHS: its content fades out, the container reshapes, and the viewer's `[avatar]` is revealed **underneath**, a literal swap of subject, product → person.
 - **Scene 4 (~4.6–end), close-in.** `[task bubbles / demands]` close in from ALL sides toward the avatar (radial staggered entry). The avatar **stays put** while the bubbles invade, the claustrophobia comes from being surrounded, never from a camera push. Holds on the crowded state.
 - **Variant, clutter-shove-to-question** (replaces Scenes 3–4 and
-  inverts the camera contract, see modifier): accumulation runs under a **slow steady zoom-out** , 
-  `[sticky notes]` bounce in springy, `[dashboard / editor windows]` pop and slide up, a stack of
+  inverts the camera contract, see modifier): accumulation runs under a **slow steady zoom-out**,   `[sticky notes]` bounce in springy, `[dashboard / editor windows]` pop and slide up, a stack of
   `[alert toasts]` slides in at one edge, inner content keeps typing / log-scrolling as live density,
   windows overlap until the frame is chaotically full. The camera then REVERSES into a quick
   push-in that **shoves the clutter to the frame edges**, opening central negative space where a

@@ -45,8 +45,7 @@ The text is authored as a SEQUENCE of `{ t, text, segment, color }` entries; a l
 ```
 
 ```js
-// Adjacent entries usually share a text prefix but may differ in `segment` , 
-// that's what shifts the cursor color mid-line.
+// Adjacent entries usually share a text prefix but may differ in `segment`, // that's what shifts the cursor color mid-line.
 const SEQUENCE = [
   { t: 0, text: "", segment: "main", color: "{mainColor}" },
   { t: T_LEADIN_END, text: "{leadInChunk}", segment: "main", color: "{mainColor}" },

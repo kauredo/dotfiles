@@ -29,8 +29,7 @@ injector:
 4. Stamps the `gsap_template` into `window.__timelines["main"]` at `T = overlap-start`.
 
 Verified by prototype render (2026-05-31): the master-timeline wrapper tween is
-seeked and rendered (no double-seek with the sub-comp's own paused timeline , 
-the runtime drives them independently), the extended wrapper holds scene _i_'s
+seeked and rendered (no double-seek with the sub-comp's own paused timeline, the runtime drives them independently), the extended wrapper holds scene _i_'s
 final frame, and the higher-track incoming wrapper composites over + blends with
 the outgoing one.
 

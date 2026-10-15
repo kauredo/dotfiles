@@ -268,8 +268,7 @@ choice to somebody who can hear it.
 ## Then, and only then, the symptom table
 
 Measurement gives you the band and the kind. `SKILL.md`'s table and
-`presets.md`'s fuller one turn that into a fix. Going the other way round , 
-picking a plausible fix and finding evidence for it, is how both wrong answers
+`presets.md`'s fuller one turn that into a fix. Going the other way round, picking a plausible fix and finding evidence for it, is how both wrong answers
 in the evaluation happened, and both were long, careful and confident.
 
 One habit that catches it: before applying anything, state what you would expect

@@ -21,13 +21,11 @@ colors:
   ink: "#1a1a17"
 
 typography:
-  #, reading + chrome ramp , 
-  body:    { fontFamily: "Source Serif 4", cqw: 1.56, weight: 400, lineHeight: 1.38 }
+  #, reading + chrome ramp,   body:    { fontFamily: "Source Serif 4", cqw: 1.56, weight: 400, lineHeight: 1.38 }
   body-card:{ fontFamily: "Source Serif 4", cqw: 1.35, weight: 400, lineHeight: 1.34 }
   label:   { fontFamily: "JetBrains Mono", px: 26, cqw: 1.35, weight: 500, tracking: "0.18em", upper: true }
   caption-mono:{ fontFamily: "JetBrains Mono", px: 24, cqw: 1.25, weight: 500, tracking: "0.14em", upper: true }
-  #, display ramp (Source Serif 4 weight 500, opsz, negative tracking) , 
-  title-card-sm:{ fontFamily: "Source Serif 4", cqw: 2.9, weight: 500, lineHeight: 0.98, tracking: "-0.01em" }
+  #, display ramp (Source Serif 4 weight 500, opsz, negative tracking),   title-card-sm:{ fontFamily: "Source Serif 4", cqw: 2.9, weight: 500, lineHeight: 0.98, tracking: "-0.01em" }
   title-card:{ fontFamily: "Source Serif 4", cqw: 3.5, weight: 500, lineHeight: 0.96, tracking: "-0.01em" }
   headline:{ fontFamily: "Source Serif 4", cqw: 4.4, weight: 500, lineHeight: 1.0, tracking: "-0.02em" }
   headline-xl:{ fontFamily: "Source Serif 4", cqw: 5.0, weight: 500, lineHeight: 0.96, tracking: "-0.02em" }
@@ -242,8 +240,8 @@ placeholder. The monogram, footline strings, and tile counters carry per-deck id
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, KPIs, dates, or counts at frame scale. Render slots as `,  figure , `,
-`{metric}`, `,  %`. KPI blocks, bars, and meta values especially carry placeholders until the script
+Never invent figures, KPIs, dates, or counts at frame scale. Render slots as `, figure, `,
+`{metric}`, `, %`. KPI blocks, bars, and meta values especially carry placeholders until the script
 supplies them. Issue numbers / counters are decorative chrome.
 
 ## Pre-Render Self-Audit

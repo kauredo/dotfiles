@@ -117,7 +117,7 @@ tl.to(
 | HOT_RISE / HOT_FALL | 0.15–0.3s / 0.25–0.45s | fall slightly longer, the highlight "trails"                                        |
 | HUE_RANGE / HUE_DUR | 40–180° / 0.8–1.6s     | past ~180° the palette dissociates from itself mid-sweep                             |
 | SETTLE_SNAP_DUR     | 0.1–0.35s              | the goldens snap (~0.15s)                                                            |
-| {settleColor}       |,                      | one of the gradient's own stops (or the brand ink) so the settle reads as resolution |
+| {settleColor}       | - | one of the gradient's own stops (or the brand ink) so the settle reads as resolution |
 
 ## Critical Constraints
 

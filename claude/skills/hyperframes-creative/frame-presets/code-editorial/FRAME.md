@@ -25,8 +25,7 @@ borders: { hairline: "1px solid ink@12%", hairline-strong: "1px solid ink@20%", 
 shadows: { card: "0 1px 3px ink@8%, 0 4px 16px ink@4%", none: "none" }
 
 typography:
-  #, reading + chrome ramp , 
-  body:    { fontFamily: "Inter", cqw: 1.5, weight: 400, lineHeight: 1.5 }
+  #, reading + chrome ramp,   body:    { fontFamily: "Inter", cqw: 1.5, weight: 400, lineHeight: 1.5 }
   lead:    { fontFamily: "Inter", cqw: 2.08, weight: 400, lineHeight: 1.5 }
   card-title:{ fontFamily: "Inter", cqw: 2.3, weight: 500, lineHeight: 1.25, tracking: "-0.005em" }
   button:  { fontFamily: "Inter", cqw: 1.46, weight: 500, lineHeight: 1.0 }
@@ -34,8 +33,7 @@ typography:
   kicker:  { fontFamily: "JetBrains Mono", px: 28, cqw: 1.46, weight: 500, tracking: "0.16em", upper: true }
   mono-label:{ fontFamily: "JetBrains Mono", px: 26, cqw: 1.35, weight: 500, tracking: "0.02em" }
   code:    { fontFamily: "JetBrains Mono", cqw: 1.67, weight: 400, lineHeight: 1.6 }
-  #, display ramp (EB Garamond 400, sentence case, negative tracking. Renderer embeds only 400/700, author at 400; italic is the synthesized slant) , 
-  headline:{ fontFamily: "EB Garamond", cqw: 4.6, weight: 400, lineHeight: 1.06, tracking: "-0.018em" }
+  #, display ramp (EB Garamond 400, sentence case, negative tracking. Renderer embeds only 400/700, author at 400; italic is the synthesized slant),   headline:{ fontFamily: "EB Garamond", cqw: 4.6, weight: 400, lineHeight: 1.06, tracking: "-0.018em" }
   quote-pull:{ fontFamily: "EB Garamond", cqw: 5.0, weight: 400, lineHeight: 1.12, tracking: "-0.012em", italic: true }
   display-italic:{ fontFamily: "EB Garamond", cqw: 6.7, weight: 400, lineHeight: 1.05, tracking: "-0.012em", italic: true }
   display:{ fontFamily: "EB Garamond", cqw: 7.3, weight: 400, lineHeight: 1.02, tracking: "-0.022em" }
@@ -254,7 +252,7 @@ people graph); the ✱ spike, hairlines, and the code surface are CSS-only and n
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, stats, diffs, or counts at frame scale. Render slots as `,  figure , `,
+Never invent figures, stats, diffs, or counts at frame scale. Render slots as `, figure, `,
 `{metric}`, `+N / −M`. Number-lockups, code panels, and impact stats carry placeholders until the
 script (from the PR ingest) supplies real values. Branch names, file counts, and `+/−` totals trace
 to the diff; commit/issue numbers are chrome.

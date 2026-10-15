@@ -27,9 +27,7 @@
   `[pill / chip lockup]` sits centered on a flat `[field]`; optionally the `[cursor]` glides in, a
   hover pill-background appears behind the chip, and the click lands with the same lockstep press.
   **(2) the morph**: the widget transforms IN PLACE, expands downward anchored at its top edge
-  into a `[menu]`, or spring-morphs outward into a `[prompt card]` with a small overshoot settle , 
-  new content fades/slides into place. **(3) payload**: the transformed state performs , 
-  `[placeholder]` types with a blinking caret, `[user text]` types while a control flips from
+  into a `[menu]`, or spring-morphs outward into a `[prompt card]` with a small overshoot settle,   new content fades/slides into place. **(3) payload**: the transformed state performs,   `[placeholder]` types with a blinking caret, `[user text]` types while a control flips from
   muted to its vibrant active color, or the menu snap-collapses back to the pill carrying the
   `[new value]` + a checkmark pop; the background may snap to a new color under the persistent
   foreground card. **(4) resolve**: the widget VANISHES; a plain frame closes the beat, a
