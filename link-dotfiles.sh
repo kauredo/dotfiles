@@ -17,8 +17,10 @@ link() {
   if [ -L "$dest" ]; then
     rm "$dest"
   elif [ -e "$dest" ]; then
-    mv "$dest" "$dest.bak.$(date +%s)"
-    echo "backed up existing $dest"
+    local bak="$dest.bak.$(date +%s)"
+    mv "$dest" "$bak"
+    echo "WARNING: $dest was a real file, not a link. Moved to $bak." >&2
+    echo "  A tool may have rewritten it with newer content; diff it against $target before deleting." >&2
   fi
   ln -s "$target" "$dest"
   echo "linked $dest -> $target"
@@ -62,6 +64,9 @@ verify_hook_integrity() {
   echo "  (cd $dir && $sha_cmd rtk-rewrite.sh > .rtk-hook.sha256)" >&2
   return 1
 }
+
+# This repo's own git hooks (githooks/pre-commit checks skill references).
+git -C "$SCRIPT_DIR" config core.hooksPath githooks
 
 # Shell and git dotfiles (repo name -> ~/.name)
 link "$SCRIPT_DIR/zshrc"            "$HOME/.zshrc"
@@ -109,6 +114,15 @@ for d in "$SRC/skills"/*/; do
   name="$(basename "$d")"
   link "$SRC/skills/$name" "$DST/skills/$name"
 done
+
+# Private skills that can't live in this public repo. Linked only when the
+# private clone is present; its LIVE file lists which skills to link.
+PRIVATE_SKILLS="$HOME/code/personal/px-agent-skills"
+if [ -f "$PRIVATE_SKILLS/LIVE" ]; then
+  while IFS= read -r name; do
+    [ -n "$name" ] && link "$PRIVATE_SKILLS/skills/$name" "$DST/skills/$name"
+  done < "$PRIVATE_SKILLS/LIVE"
+fi
 
 # Second Claude account (the `claude-b` / `ccc` aliases). CLAUDE_CONFIG_DIR keeps
 # its own login, and everything else points back at ~/.claude so both accounts
