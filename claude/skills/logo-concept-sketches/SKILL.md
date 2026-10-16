@@ -1,21 +1,21 @@
 ---
 name: logo-concept-sketches
-description: Generate a divergent batch of logo concept sketches as SVG using Allan Peters' brand-noun-to-design-move method. Use when starting logo or brand-mark design, or exploring directions before committing to one concept.
+description: Generate logo concepts for a brand through letterform/monogram play and negative-space shape discovery, looping batches until 4 original concepts land. Use when starting logo or brand-mark design, or exploring directions before committing to one concept.
 metadata: { "openclaw": { "emoji": "✏️" } }
 ---
 
 # Logo Concept Sketches
 
-Produce many fast, disposable SVG concepts before any gets refined. Read `references/design-moves.md` once per project; it holds the SVG construction patterns for step 2.
+Find marks, don't assemble them. The generator is shape play around the brand's own letters, not a checklist of techniques applied to a word list. Read `references/construction-techniques.md` once you've found something worth building precisely — it's for execution, not ideation.
 
 ## Workflow
 
-1. **Brand nouns.** Brainstorm 40-70 words/objects/shapes tied to the brand (industry, name, values, literal products). Write them as a flat list, no sketching yet. Ask the user to cut anything off-limits (competitor's territory, overused clichés for their category) before moving on. **Done when:** a shortlist of 10-15 "keeper" nouns is confirmed with the user, or the user explicitly delegates the cut to you.
+1. **Letterform seeds.** Pull 3-5 seeds straight from the brand name: its initials/monogram, any word or meaning hiding inside it (UpSpeech → "US", which reads as a monogram and as the word "us" — family, group, together), and the 1-2 letters with the most distinctive shape (an ascender, a bowl, a counter). **Done when:** every seed is grounded in the actual name, not an invented icon for what the brand "represents."
 
-2. **Combine with design moves.** Pair each keeper noun with one or two of the five moves in `references/design-moves.md` (negative space, overlapping geometry, visual rhythm, unexpected twist, visual flow). Favor combinations over a noun alone — "bird" is a cliché, "bird + talk bubble via negative space" is a concept. Generate one SVG per concept: 240x240 viewBox, single `currentColor` fill (or two flat colors max), no gradients, no photorealism, no polish. These are sketches. **Done when:** at least 8 distinct concept SVGs exist, covering at least 3 different moves, no duplicate noun+move pair.
+2. **Shape play.** For each seed, sketch fast: overlap it with 2-4 simple primitives (a circle, a bar, the other initial, a shape literally pulled from the product) in many raw arrangements — rotate, nest, mirror, crop. Don't aim at an idea yet. Build first, look second: after each arrangement, scan the whole composition, including every gap and counter, for a form that wasn't drawn on purpose. That found form is the concept, not the primitives that made it. **Done when:** at least 15 raw arrangements exist and you have a running list of every found form spotted in them, however rough.
 
-3. **Contact sheet.** Run `node scripts/contact-sheet.mjs <dir-of-svgs> <output.html>` to lay every concept into one gridded, numbered sheet. Render it to PNG: navigate Playwright to the `file://` path of the HTML, then take a screenshot. **Done when:** one PNG contact sheet exists showing every concept with its number and one-line rationale underneath.
+3. **Loop to 4.** Round 1: turn the 6-10 strongest found-forms from step 2 into clean single-color SVGs (240x240, no polish). Self-critique each against two tests: would this work for any company, or only this one's name (cliche test)? does the found shape read on its own, or only once labeled (aha test)? Keep what passes both. Log every rejected one in a **found-shape ledger** — one line: what it was, why it was cut — so a later round doesn't rebuild it. If fewer than 4 survive, run another round of step 2, seeded away from the ledger's rejects, and repeat. **Done when:** 4 concepts pass both tests, or 4 rounds are spent — report what's short and why if you stop early.
 
-4. **Iterate on picks.** Get the user's picks (or an explicit "pick for me"). For each picked direction, repeat step 2 at higher fidelity: 2-3 refined variants per pick, same construction discipline. **Done when:** every pick has its refined variants, and the user has either chosen a direction to finalize or asked for another divergent round.
+4. **Contact sheet.** Run `node scripts/contact-sheet.mjs <dir-of-svgs> <output.html>` on the 4 finalists (plus any strong runner-up worth showing). Render to PNG: navigate Playwright to a `data:` URL of the HTML (`file://` is blocked), then screenshot. **Done when:** one PNG shows every finalist, each labeled with its letterform seed and the found form.
 
 When a direction is finalized, hand off to the `logo-brand-package` skill for lockups, pattern, mockups, and the style guide.
