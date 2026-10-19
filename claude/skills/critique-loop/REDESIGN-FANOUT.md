@@ -1,6 +1,6 @@
 # Redesign fan-out
 
-Reached from the plateau table in [`SKILL.md`](SKILL.md): the score sits below 6 after two rounds of fixes, or a re-ask round failed to move it. You are buying a direction here, not four finished screens.
+Reached from the plateau table in [`SKILL.md`](SKILL.md): the median sits below 6 after two rounds with no A/B wins, or a re-ask round failed to move it. You are buying a direction here, not four finished screens.
 
 Scope it to one screen, the worst-scoring one. The winning direction reaches the rest of the surface through the normal loop, which is cheap again once the ceiling has moved.
 
@@ -34,6 +34,6 @@ Render everything at the same fidelity. An incumbent carrying real content again
 
 ## 4. Resume and record
 
-Take the winner back into [`SKILL.md`](SKILL.md) at round one. Delete the scratch routes and the losing candidates.
+Take the winner back into [`SKILL.md`](SKILL.md) at round one. Its direction enters the ledger's **settled** list, and the losing premises enter **rejected**, each with the reason it lost. Delete the scratch routes and the losing candidates.
 
 A direction outlasts the task that produced it, so write it down where the project keeps design decisions: what won, what else was on the table, why, and what it cost.
