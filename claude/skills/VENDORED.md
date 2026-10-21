@@ -222,6 +222,21 @@ https://github.com/joaopmarques/barbeque, `b795fe3`, 2026-10-15
 The `.claude-plugin/` manifest is dropped. Barbeque calls `grilling` for its
 slow cook when it is installed, and `grilling` is vendored above.
 
+## joaopmarques/dial-in: MIT
+https://github.com/joaopmarques/dial-in, `f6f987c`, 2026-10-21
+
+| Skill | Local changes |
+|---|---|
+| dial-in | the one em dash replaced (an empty table cell in `references/manifest.md`) |
+
+The skill folder only (`skills/dial-in/`), plus the repo licence beside
+`SKILL.md`. The plugin manifest, demo page, Playwright tests and promo video
+stay upstream. `assets/vendor/` holds tweakpane 4.0.5 and
+`@tweakpane/plugin-essentials` 0.2.1, which matched the npm builds byte for byte
+on 2026-10-21. It stays model-invoked: the `CLAUDE.md` design-stack table names
+it for values judged by eye, and its description only fires on asks for sliders,
+knobs or tuning by feel.
+
 ## cathrynlavery/diagram-design: MIT
 https://github.com/cathrynlavery/diagram-design, `d97c5c7`, 2026-10-15
 

@@ -20,6 +20,7 @@ Which door:
 | New feature with UI | `/ship`, which invokes `build-ui` at its implement step |
 | Reworking a page whose identity is already settled | `build-ui` from "Then decide the look" in Phase 2, skipping the direction hunt above it |
 | Small tweak (spacing, one color, one component) | Just do it, then `/impeccable critique` if it is user-facing |
+| A value I can only judge by eye (radius, shadow, easing, spring) | `dial-in`: live sliders in the running app, written back to source |
 | "Does this look AI-generated?" | `/impeccable critique` alone. It screenshots and asks an outside subagent |
 
 Full detail lives in the `build-ui` skill.
