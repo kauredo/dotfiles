@@ -1,6 +1,7 @@
 ---
 name: logo-concept-sketches
 description: Generate logo concepts for a brand through high-volume shape play combining brand-word imagery and letterform/negative-space discovery, looping batches until 4 original concepts land. Use when starting logo or brand-mark design, or exploring directions before committing to one concept.
+model: opus
 metadata: { "openclaw": { "emoji": "✏️" } }
 ---
 

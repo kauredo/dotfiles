@@ -1,6 +1,7 @@
 ---
 name: logo-brand-package
 description: Build the final logo deliverable package Allan Peters-style — lockup variations, a logo-derived seamless pattern, mockups, and a one-page brand style guide. Use once a final logo SVG is chosen and ready to hand off.
+model: opus
 metadata: { "openclaw": { "emoji": "📦" } }
 ---
 
