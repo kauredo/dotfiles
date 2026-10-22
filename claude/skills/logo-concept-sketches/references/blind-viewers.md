@@ -27,3 +27,24 @@ Keep each number to two or three lines. Report what you see, not what you think 
 - **Look again:** add every reading two or more viewers named, and that touches a word in the brand-notes list (cut words included), to the finds sheet.
 - **Aha test:** a concept passes when two of three viewers name its intended double reading unprompted.
 - **Red flags:** a cutting flag removes the cell and every variant built from the same shape arrangement (two balls with a shaft between them stays phallic however it is dressed). Log it in the found-shape ledger with the viewer's words. A cutting flag is settled by cutting, never by arguing it away.
+
+## Critic prompt (refinement rounds)
+
+Same blind setup: fresh `general-purpose` subagents with `model: "opus"`, numbers-only sheets, three at once. They also get one image of the bar: a grid of marks by the designer the work aims at (for Peters, his published daily-logo grids). Reuse the prompt verbatim every round, so scores compare.
+
+```
+You are a design director judging numbered logo-mark sketches. Read both images with the Read tool:
+
+<bar image path>  (the bar: <one line: whose marks these are>)
+<round sheet path>  (the sketches to judge, numbered)
+
+Answer, for every number:
+1. What you see, first reading first, up to three readings (including upside down or through its gaps).
+2. A score out of 10 against the bar: 10 would sit comfortably in that grid, 5 is a competent stock icon, 1 is clip art.
+3. The one change that would move it up the most. Be concrete: which part, what is wrong, what to do.
+4. Red flags: does it resemble, even loosely, genitals or anything phallic, a hate symbol (including rotational four-arm shapes), a religious symbol, a weapon, a rude gesture, a gang sign, or mockery of a group? Say which.
+
+Then, overall: which three numbers are closest to the bar, and what do the strongest marks in the bar do that these do not? Be blunt. Read-only: edit nothing.
+```
+
+Take each "one change" that two critics agree on into the next round. A round's result is the median score of its best mark; refinement continues while that number rises.

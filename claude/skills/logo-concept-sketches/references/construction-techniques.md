@@ -26,3 +26,14 @@ Draw the found form as a centerline first, then dress it. Peters' marks rarely s
 - **Weave.** Where strokes cross, one passes over and the other gets a gap: `weave(under, overD, { width })`. Compute each crossing point from the line equations before cutting, alternate over and under along every stroke, and keep crossings at least two stroke widths apart or the gaps merge.
 - **Container with interior.** A circle, shield, drop or leaf holding the subject plus one interior texture: `rays()` for a sun or burst, `hatch()` for sky or shade, stacked waves for water. One texture per mark.
 - **One system per mark.** One stroke weight, one corner treatment, one way of ending a stroke, carried through every part including the double meaning.
+
+## What the critics keep catching
+
+From blind critics scoring Dois Agentes against Peters' grid. Build every refined mark to pass these:
+
+- **Fused, not nested.** The second idea lives inside the first silhouette, usually in its negative space: the nib's shoulders are the roof. A bird inside a circle inside a pin is three stickers.
+- **One ink first.** The mark works in black alone before any accent colour is added. If the idea disappears in black, it was carried by the colour.
+- **One construction.** Same stroke weight, same corner radius, same terminal everywhere; a monoline hook on a solid mass reads as two kits.
+- **Built from arcs.** Organic subjects (a bird, a leaf) are drawn from a few circular arcs on a grid, then repeated by exact rotation or reflection, never traced.
+- **Holds at 32px.** Big counters, no hairlines, no illustration-level detail.
+- **Stripes draw something.** A line system has to build a form (a G, a sunrise); as an outline effect it is decoration, and three parallel stripes read as Adidas.
