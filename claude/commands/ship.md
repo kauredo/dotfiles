@@ -57,6 +57,18 @@ Invoke the **`improve`** skill (Skill tool) as `improve plan <task>` to produce 
 
 **Gate (only with `--gated`):** show the plan as a short numbered list (steps + the verify check for each, plus one "done when" line for the whole task) and ask the user to approve, adjust, or cancel via `AskUserQuestion`. Don't touch code until approved. Without `--gated`, state the plan in a few lines, including the "done when" line, and start building.
 
+## Step 1.5: Load the target repo's own shipping rules
+
+Claude Code loaded the `CLAUDE.md` and `AGENTS.md` of the directory you started in. It did not load the rules of the repo the plan changes, and it does not know whether that repo has a shipping skill of its own. Do this once for every repo the plan touches, before building in it.
+
+1. **Walk up from the repo root to `$HOME`.** In every directory on the way, read `AGENTS.md`, `CLAUDE.md`, the `AGENTS-*.md` files those two link to, and any `.claude/skills/*/SKILL.md` or `.agents/skills/*/SKILL.md` whose name or description covers shipping, PRs, review or release. Most of these live in a monorepo umbrella above the service repo.
+2. **Check the skills this session already has.** A plugin skill whose description says it ships or opens PRs for this codebase (for example `upspeech:upship`) is the repo's own `/ship`. Read its `SKILL.md`, and the skills it delegates to, from the plugin's install path.
+3. **Pull out every prerequisite and write it into `STATE.md`** as an unticked checklist under `## Repo rules: <repo>`, each with the file it came from. A prerequisite is anything the repo requires before or around opening a PR: base branch, branch naming, a question to ask before building (a feature flag, say), gates to run, a command or status that must pass after the push, PR body lines, screenshot hosting, linked issues, docs or parity records to update, labels, reviewers.
+4. **The repo's rule wins** wherever it and this command disagree about the repo: base branch, gates, PR format, where screenshots go, who reviews. This command still owns the pipeline: plan, review, polish, behaviour check. Treat the local skill as a source of prerequisites and run this pipeline, so review and PR steps happen once.
+5. **Questions the rules say to ask before building** go through `AskUserQuestion` now, unattended included, with your recommendation first.
+
+Done when every repo the plan touches has a `## Repo rules` section in `STATE.md`, an empty one included, and every pre-build question is answered.
+
 ## Step 2: Implement
 
 1. **Branch + worktree.** Pick a feature branch name (`feat/<short-slug>` from the task, or the JIRA ticket if the task names one). **By default, create it in a fresh git worktree** (see the `stacked-prs` skill's Workflow step 2, "Create the stack", for the same pattern), e.g. `git worktree add ../<repo>-<slug> -b <branch>`, and do all implementation there so the user's current checkout stays untouched. Note the worktree path; every later step (review, tests, screenshots, PR) runs from it. With `--local`, skip the worktree and create the branch in place; never implement directly on `main`/`master`/`develop`. Leave the feature worktree in place when the run ends (the branch isn't merged yet), report its path in the summary and offer to remove it (`git worktree remove <path>`) once the PR merges.
@@ -116,6 +128,7 @@ the whole of it.
 
 Unless `--no-pr`:
 
+0. **Tick the Step 1.5 checklist.** Every item in `STATE.md` is done, or marked as not applying with a reason. An open item means no PR. Items that need a pushed branch or an open PR, such as a command that posts a commit status, run right after `gh pr create` in item 6, and the summary reports their result.
 1. Commit anything uncommitted with a concise conventional-commit message (`feat:`/`fix:`/`refactor:`…). **Never mention Claude or Anthropic** in commits or PR text.
 2. Squash WIP and fixup commits before pushing, without `rebase -i`: `git reset --soft <base>` then recommit, or `GIT_SEQUENCE_EDITOR=: git rebase --autosquash <base>`. Then push the branch.
 3. **Publish screenshots to the `pr-assets` branch** (only if Step 5 captured any). This is how UpSpeech PRs embed images, they live on a dedicated orphan branch, so they get permanent GitHub-hosted URLs without polluting the feature-branch diff:
