@@ -49,6 +49,8 @@ Then, overall: which three numbers are closest to the bar, and what do the stron
 
 Take each "one change" that two critics agree on into the next round. A round's result is the median score of its best mark; refinement continues while that number rises.
 
+Scores drift with the sheet: the same mark scored a median of 7 on one sheet and 6 on a harsher one. Once a mark has passed, put it on every later sheet unlabelled as the **anchor**, and judge the rest against it: a concept passes when its median is 7 or more, or at least the anchor's median on the same sheet.
+
 ## Keep-the-winner A/B (every refinement round)
 
 A revised variant replaces the one before it only when it wins blind. Build the pairs with `node scripts/ab.mjs pairs.json <dir>`: it shuffles before and after into `pairN-a.png` / `pairN-b.png` and writes `<dir>.mapping.json` beside the folder, which never goes to the critic. Send this to three fresh critics:
