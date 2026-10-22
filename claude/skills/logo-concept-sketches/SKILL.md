@@ -7,7 +7,9 @@ metadata: { "openclaw": { "emoji": "✏️" } }
 
 # Logo Concept Sketches
 
-Allan Peters' funnel: a wide brand-notes list, the client cuts it, many rough sketches from what survived, a hard look at those sketches, the client picks, refinement, three concepts. The user is the client at both cuts, so the workflow stops twice and waits for them.
+Allan Peters' funnel: a wide brand-notes list, the client cuts it, many rough sketches from what survived, a hard look at those sketches, the client picks, refinement, three concepts. The user is the client at both cuts, so the first loop stops twice and waits for them.
+
+The funnel is a **loop**, not a line. Most ideas fail in refinement; when they do, the workflow goes back for more ideas, carrying everything it learned, until three concepts score highly or the loop budget runs out.
 
 A logo idea is a **found form**: one shape that reads two ways (a "da" that is also a key, an A that is also a pen nib). A container with an icon inside is two shapes, not a found form. Found forms come from **looking again**: sketching fast, letting parts land wrong, then studying the sketches inverted, upside down and through their gaps until something reads that nobody drew on purpose.
 
@@ -26,6 +28,8 @@ All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs t
 - `lookagain.mjs`: every cell four ways: as drawn, its enclosed negative space in black, both upside down.
 - `--blind` on `sheet.mjs` and `lookagain.mjs`: numbers only, for **blind viewers**, context-free subagents that report what a sketch shows and screen it for red flags. Their prompt and rules are in `references/blind-viewers.md`; read it before step 3.
 - `render.mjs`: SVG to PNG with no system tools (`node render.mjs in.svg out.png`).
+
+Construction serves the drawing: when a constructed version loses its blind A/B to the freehand one, fit arcs to the freehand shape instead of redrawing it from circles.
 
 Write each round as one generator script (a `.mjs` emitting `cells.json`, each cell SVG markup in a 0-100 box), so one fix re-renders the whole sheet.
 
@@ -50,12 +54,15 @@ Where the Artifact tool offers the Design type, run the whole job on one design 
    - Render the same pages with `--blind` and send them to three blind viewers. Add the readings they share to your own, and cut every red-flagged cell.
    - Sketch each find as its own small family on a finds sheet: where it came from, the view it showed up in, a cleaned-up version.
    Send the sketch sheet and the finds sheet, and ask the user to pick 5-8 by number, with your own picks and one line on each. Wait for the answer.
-   **Done when:** every look-again row has been read by you and by the viewers, every find is on the finds sheet, no red-flagged cell remains, and the user has picked.
+   **Done when:** every look-again row has been read by you and by the viewers, every find is on the finds sheet, no red-flagged cell remains, and the picks are made (by the user in the first loop).
 
 4. **Refine to 3.** Build each pick as a family of 3-6 variants, the way one letter gets fifteen sketches: typeface, weight, line count, weave, container, accent. **Construct** every variant: declare its circles and lines with `construct.mjs` first, take every curve from one of them, and assemble the final shape with `shapes.mjs` into one outline. From the second round, a revised variant replaces its predecessor only if it wins the blind A/B in `references/blind-viewers.md`. Run `lookagain.mjs` on each round sheet too; finds keep arriving while refining. Judge each variant against two tests: does it belong only to this name and these words (cliché test), and do two of three blind viewers name its double reading unprompted (aha test)? Red flags cut by the rule in `references/blind-viewers.md`. Score each round with the three critics in the same file, against a grid of the target designer's marks, and carry every change two critics agree on into the next round. Keep a **found-shape ledger**, one line per cut variant with why, so later rounds skip it. Refine the survivors until three stand: one stroke system each, clean at 24px.
-   **Done when:** 3 concepts pass both tests and the critics' median for each is 7 or more, or the best mark's median has not risen for two rounds and you report what's short and why.
+   **Done when:** 3 concepts pass both tests and the critics' median for each is 7 or more (go to step 6), or the best mark's median has not risen for two rounds (go to step 5).
 
-5. **Present 3.** Save each concept as its own SVG (viewBox 0 0 100 100, painted with `currentColor`, knockouts done with masks), run `present.mjs` and render the board: each mark large on light, large on dark, and at 96, 48 and 24px. Fix any mark that breaks on dark or blurs at 24px. Run the board past three fresh blind viewers once more, because refinement changes shapes.
-   **Done when:** one PNG shows the 3 concepts in every condition, each with one line on its found form and where it was found, and the last viewer pass raised no red flag.
+5. **Go back.** Fewer than three concepts reached 7. Write the loop brief, run the idea fan-out in `references/idea-fanout.md` (four agents, four moves, each blind to the others), and continue from step 3 with the merged sheet. Concepts at 7 or above stay standing and join the picks. From the second loop on, make the step 3 pick yourself from the viewers' and critics' readings unless the user asked to keep cutting; show each loop's sheet and picks on the canvas as you go. Budget: four loops in total. A cut idea never comes back in a later loop unless a viewer finds it again in a new form.
+   **Done when:** the fan-out's sheet is merged and step 3 has run on it.
+
+6. **Present 3.** Save each concept as its own SVG (viewBox 0 0 100 100, painted with `currentColor`, knockouts done with masks), run `present.mjs` and render the board: each mark large on light, large on dark, and at 96, 48 and 24px. Fix any mark that breaks on dark or blurs at 24px. Run the board past three fresh blind viewers once more, because refinement changes shapes.
+   **Done when:** one PNG shows the 3 concepts in every condition, each with one line on its found form and where it was found, and the last viewer pass raised no red flag. If the loop budget ran out first, present the three best with their medians and the critics' agreed gap for each.
 
 When a direction is chosen, hand off to `logo-brand-package`.
