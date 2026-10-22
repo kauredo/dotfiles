@@ -24,7 +24,9 @@ All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs t
 - `--blind` on `sheet.mjs` and `lookagain.mjs`: numbers only, for **blind viewers**, context-free subagents that report what a sketch shows and screen it for red flags. Their prompt and rules are in `references/blind-viewers.md`; read it before step 3.
 - `render.mjs`: SVG to PNG with no system tools (`node render.mjs in.svg out.png`).
 
-Write each round as one generator script (a `.mjs` emitting `cells.json`, each cell SVG markup in a 0-100 box), so one fix re-renders the whole sheet. Read `references/construction-techniques.md` before the first combine pass.
+Write each round as one generator script (a `.mjs` emitting `cells.json`, each cell SVG markup in a 0-100 box), so one fix re-renders the whole sheet.
+
+From step 4 on, where the Artifact tool offers the Design type, lay each round on a design canvas: one board per idea family, its variants in a row, revised in place each round. The user compares side by side and comments on a board instead of reading numbered PNGs. Read `references/construction-techniques.md` before the first combine pass.
 
 ## Workflow
 
@@ -33,7 +35,8 @@ Write each round as one generator script (a `.mjs` emitting `cells.json`, each c
 
 2. **Rough sketches.** Sketch only from what the user kept: 50-80 cells in three sections. Rough is fine; legible is required.
    - **Letterforms:** each kept seed across the typefaces, turned, mirrored, overlapped, nested, reversed out of a disc, letters sharing a stroke.
-   - **Words:** each kept word as a bold icon, filled or with strokes no thinner than ~8% of the box.
+   - **Words:** each kept word drawn as a **reduction ladder**: detailed (anatomy, texture, the features that make it that thing), medium, silhouette, mark. The mark is the simplest step that still reads as the thing, unlabelled. Draw a subject in the pose people know it by: a swallow in profile with raised wings, as on Bordallo's andorinhas. A frontal or top view of an animal tends to read as a person.
+   - **Letterforms across type:** each seed in at least six typefaces from `glyphs.mjs`, overlapped and joined, next to its drawn monoline version.
    - **Combine:** kept words crossed with each other and with the seeds (word + word, word + letter). Place every cut and swap from the glyph's own geometry (`parts[i].box`).
    Render the sheet and look at the PNG; fix every cell that does not render as intended.
    **Done when:** every cell renders as intended in the PNG you looked at.

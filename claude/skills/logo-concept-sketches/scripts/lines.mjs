@@ -25,7 +25,7 @@ export function lines(d, { n = 3, w = 3, gap = 2.5, cap = "butt", join = "round"
   const total = n * w + (n - 1) * gap;
   const bands = [];
   let width = total;
-  for (let i = 0; i < 2 * n - 1; i++) {
+  for (let i = 0; i < n; i++) {
     bands.push(`<path d="${d}" fill="none" stroke="${i % 2 ? "#000" : "#fff"}" stroke-width="${width.toFixed(2)}" stroke-linecap="${cap}" stroke-linejoin="${join}"/>`);
     width -= 2 * (i % 2 ? gap : w);
   }
