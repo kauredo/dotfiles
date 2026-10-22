@@ -10,8 +10,7 @@
 // offset: "column" drops alternate columns half a step, "row" shifts alternate rows half a
 // step, "none" is a plain grid. color: a fill, or (col, row) => fill for an accent copy.
 // skip(x, y, w, h): return true to leave a copy out, to clear whole copies around a logo.
-// Copies are never mirrored or turned: a letter beside its mirror or turn spells a pair
-// (a d made "dp" and "db"), and blind viewers cut both.
+// Copies stay upright: references/patterns.md has why, and the moves that beat a plain repeat.
 const layout = ({ ink, gapX = 12, gapY = 12 }) => ({ pw: ink.w + gapX, ph: ink.h + gapY });
 
 export function repeat({ mark, ink, W, H, color, scale = 1, gapX, gapY, offset = "column", skip = () => false, x0 = 0, y0 = 0 }) {

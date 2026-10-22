@@ -6,7 +6,7 @@ A wordmark set in a stock face shares nothing with the mark; critics scored Popp
 2. **The mark's ends**: square ends give butt caps and mitred joins; round ends give round caps and joins.
 3. **The mark's corner rule**: where the mark turns, the letters turn the same way. The d-casa mark slopes only at its roof, so its letters cut their top corners at 45 degrees and keep the bottom ones square.
 
-Square monoline letters with cut corners read as a techno display face (Eurostile, Orbitron) to every critic on both runs, at every weight, and fight a warm palette. That is why step 2 sets the drawn name against a well-chosen typeface in a blind A/B before anything carries it.
+Square monoline letters with cut corners read as a techno display face (Eurostile, Orbitron, "LCD, crypto") to every critic on both runs, at every weight, and fight a warm palette. On d-casa the drawn name lost its blind ranking 3-0 to Space Grotesk Light (7 against 5.5), a grotesk whose light stroke matched the mark's line and whose flat-tailed g echoed its floor. That is why step 2 ranks the drawn name against three or four typefaces chosen for stroke weight and terminals before anything carries it.
 
 ## Letters and spacing
 
