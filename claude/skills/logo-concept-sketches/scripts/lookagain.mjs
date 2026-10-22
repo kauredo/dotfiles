@@ -5,7 +5,8 @@
 // the open background is white. Small openings are closed first (--close, in px at
 // 160px cells), so a gap that is almost sealed, like the space between four birds
 // in a ring, still counts as a shape.
-// Usage: node lookagain.mjs <cells.json> <out-prefix> [--close=4] [--per-page=36]
+// Usage: node lookagain.mjs <cells.json> <out-prefix> [--close=4] [--per-page=36] [--blind]
+// --blind prints numbers only, for context-free viewers.
 // Writes <out-prefix>-1.png, -2.png ... with cells numbered as in cells.json.
 import { readFileSync, writeFileSync } from "node:fs";
 import { rasterize, encodePng, svgToPng } from "./render.mjs";
@@ -19,6 +20,7 @@ const opt = (k, d) => Number((rest.find((a) => a.startsWith(`--${k}=`)) || `=${d
 const S = 160;
 const R = opt("close", 4);
 const PER = opt("per-page", 36);
+const blind = rest.includes("--blind");
 const cells = JSON.parse(readFileSync(inPath, "utf8"));
 
 function morph(mask, r, grow) {
@@ -81,7 +83,7 @@ for (let p = 0; p * PER < cells.length; p++) {
     const n = p * PER + k + 1;
     const x = 16 + (k % cols) * colW, y = 16 + Math.floor(k / cols) * rowH;
     const imgs = views(c.svg).map((src, j) => `<image x="${x + j * (S + 6)}" y="${y + 18}" width="${S}" height="${S}" href="${src}"/>`).join("");
-    const label = `<text x="${x}" y="${y + 13}" font-size="13" font-family="Helvetica, Arial, DejaVu Sans, sans-serif"><tspan font-weight="700">${n}</tspan> ${String(c.label).replace(/&/g, "&amp;").replace(/</g, "&lt;")}</text>`;
+    const label = `<text x="${x}" y="${y + 13}" font-size="13" font-family="Helvetica, Arial, DejaVu Sans, sans-serif"><tspan font-weight="700">${n}</tspan> ${blind ? "" : String(c.label).replace(/&/g, "&amp;").replace(/</g, "&lt;")}</text>`;
     return label + imgs;
   });
   const W = 32 + cols * colW, H = 32 + Math.ceil(page.length / cols) * rowH;

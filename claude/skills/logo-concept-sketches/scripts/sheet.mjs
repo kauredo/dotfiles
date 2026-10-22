@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Lays sketch cells out as one numbered SVG sheet, grouped by section.
-// Usage: node sheet.mjs <cells.json> <out.svg> [--cols=8] [--cell=160]
+// Usage: node sheet.mjs <cells.json> <out.svg> [--cols=8] [--cell=160] [--blind]
+// --blind drops section titles, labels and flags, leaving only numbers: the sheet
+// a context-free viewer gets (see references/blind-viewers.md).
 // cells.json: [{ "section": "Monograms", "label": "DA shared stem", "flag": true,
 //               "svg": "<path d='...'/>" }, ...]
 // Each cell's svg is inner markup drawn in a 0 0 100 100 box. A flagged cell
@@ -19,7 +21,8 @@ const cell = opt("cell", 160);
 const gap = 12;
 const pad = 24;
 const labelH = 26;
-const cells = JSON.parse(readFileSync(inPath, "utf8"));
+const blind = rest.includes("--blind");
+const cells = JSON.parse(readFileSync(inPath, "utf8")).map((c) => (blind ? { ...c, section: "", label: "", flag: false } : c));
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
 let y = pad;
@@ -27,8 +30,10 @@ let n = 0;
 const out = [];
 const sections = [...new Set(cells.map((c) => c.section))];
 for (const section of sections) {
-  out.push(`<text x="${pad}" y="${y + 20}" font-size="20" font-weight="700">${esc(section)}</text>`);
-  y += 36;
+  if (section) {
+    out.push(`<text x="${pad}" y="${y + 20}" font-size="20" font-weight="700">${esc(section)}</text>`);
+    y += 36;
+  }
   const group = cells.filter((c) => c.section === section);
   group.forEach((c, i) => {
     n += 1;

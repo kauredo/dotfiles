@@ -21,6 +21,7 @@ All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs t
 - `mutate.mjs`: seeded variants of a sketch built from parts (nudged, turned, scaled, mirrored, overlaps cut out of each other).
 - `sheet.mjs`: the numbered sketch sheet as one SVG. `present.mjs`: the finalist board.
 - `lookagain.mjs`: every cell four ways: as drawn, its enclosed negative space in black, both upside down.
+- `--blind` on `sheet.mjs` and `lookagain.mjs`: numbers only, for **blind viewers**, context-free subagents that report what a sketch shows and screen it for red flags. Their prompt and rules are in `references/blind-viewers.md`; read it before step 3.
 - `render.mjs`: SVG to PNG with no system tools (`node render.mjs in.svg out.png`).
 
 Write each round as one generator script (a `.mjs` emitting `cells.json`, each cell SVG markup in a 0-100 box), so one fix re-renders the whole sheet. Read `references/construction-techniques.md` before the first combine pass.
@@ -40,14 +41,15 @@ Write each round as one generator script (a `.mjs` emitting `cells.json`, each c
 3. **Look again, then the second cut.**
    - Build every promising sketch from parts and run `mutate()` on it, 10-25 variants each: the accidents a pencil makes.
    - Run `lookagain.mjs` on the sketch sheet and on the mutations. Read every row: for each cell, name what the black gaps and the upside-down views look like, checking against the **whole** brand-notes list, cut words included. A discarded word that shows up in a gap comes back.
+   - Render the same pages with `--blind` and send them to three blind viewers. Add the readings they share to your own, and cut every red-flagged cell.
    - Sketch each find as its own small family on a finds sheet: where it came from, the view it showed up in, a cleaned-up version.
    Send the sketch sheet and the finds sheet, and ask the user to pick 5-8 by number, with your own picks and one line on each. Wait for the answer.
-   **Done when:** every look-again row has been read, every find is on the finds sheet, and the user has picked.
+   **Done when:** every look-again row has been read by you and by the viewers, every find is on the finds sheet, no red-flagged cell remains, and the user has picked.
 
-4. **Refine to 3.** Build each pick as a family of 3-6 variants, the way one letter gets fifteen sketches: typeface, weight, line count, weave, container, accent. Run `lookagain.mjs` on each round sheet too; finds keep arriving while refining. Judge each variant against two tests: does it belong only to this name and these words (cliché test), and does the found form read before anyone labels it (aha test)? Keep a **found-shape ledger**, one line per cut variant with why, so later rounds skip it. Refine the survivors until three stand: one stroke system each, clean at 24px.
+4. **Refine to 3.** Build each pick as a family of 3-6 variants, the way one letter gets fifteen sketches: typeface, weight, line count, weave, container, accent. Run `lookagain.mjs` on each round sheet too; finds keep arriving while refining. Judge each variant against two tests: does it belong only to this name and these words (cliché test), and do two of three blind viewers name its double reading unprompted (aha test)? A red flag from any viewer cuts it. Keep a **found-shape ledger**, one line per cut variant with why, so later rounds skip it. Refine the survivors until three stand: one stroke system each, clean at 24px.
    **Done when:** 3 concepts pass both tests, or 4 rounds are spent and you report what's short and why.
 
-5. **Present 3.** Save each concept as its own SVG (viewBox 0 0 100 100, painted with `currentColor`, knockouts done with masks), run `present.mjs` and render the board: each mark large on light, large on dark, and at 96, 48 and 24px. Fix any mark that breaks on dark or blurs at 24px.
-   **Done when:** one PNG shows the 3 concepts in every condition, each with one line on its found form and where it was found.
+5. **Present 3.** Save each concept as its own SVG (viewBox 0 0 100 100, painted with `currentColor`, knockouts done with masks), run `present.mjs` and render the board: each mark large on light, large on dark, and at 96, 48 and 24px. Fix any mark that breaks on dark or blurs at 24px. Run the board past three fresh blind viewers once more, because refinement changes shapes.
+   **Done when:** one PNG shows the 3 concepts in every condition, each with one line on its found form and where it was found, and the last viewer pass raised no red flag.
 
 When a direction is chosen, hand off to `logo-brand-package`.
