@@ -48,3 +48,17 @@ Then, overall: which three numbers are closest to the bar, and what do the stron
 ```
 
 Take each "one change" that two critics agree on into the next round. A round's result is the median score of its best mark; refinement continues while that number rises.
+
+## Keep-the-winner A/B (every refinement round)
+
+A revised variant replaces the one before it only when it wins blind. Build the pairs with `node scripts/ab.mjs pairs.json <dir>`: it shuffles before and after into `pairN-a.png` / `pairN-b.png` and writes `<dir>.mapping.json` beside the folder, which never goes to the critic. Send this to three fresh critics:
+
+```
+You are a design director. <N> pairs, each two versions of ONE logo mark. Read every image in <dir> (pairN-a.png and pairN-b.png). Judge them against the bar: <bar image path> (<whose marks>).
+
+<one line per pair: "Pair N: it should read as <the pair's says line>">
+
+For each pair: the winner, a score out of 10 for each, and one line on why. If they are within half a point, say "tie". Then any red flag in either version (phallic, hate symbol, religious symbol, weapon, rude gesture, gang sign, mockery). Read-only: edit nothing.
+```
+
+The after version stays when two of three critics pick it. A tie or a loss keeps the before version, and the change goes in the found-shape ledger with the critics' reasons.

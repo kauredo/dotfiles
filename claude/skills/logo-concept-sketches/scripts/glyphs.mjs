@@ -5,7 +5,7 @@
 // letter study from one of these, then cut, merge and swap parts by hand.
 //
 // Setup, once per machine:
-//   node glyphs.mjs --setup        installs opentype.js and resvg, downloads the fonts
+//   node glyphs.mjs --setup        installs opentype.js, resvg, paper and paperjs-offset, downloads the fonts
 // Use from a script:
 //   import { glyph, fonts } from "./glyphs.mjs";
 //   const { d, box } = glyph("DA", "ArchivoBlack", { x: 10, y: 10, h: 80 });
@@ -40,7 +40,7 @@ export const FONT_SOURCES = {
 
 function setup() {
   mkdirSync(FONT_DIR, { recursive: true });
-  execFileSync("npm", ["install", "--silent", "--prefix", CACHE, "opentype.js@1.3.4", "@resvg/resvg-js@2.6.2"], { stdio: "inherit" });
+  execFileSync("npm", ["install", "--silent", "--prefix", CACHE, "opentype.js@1.3.4", "@resvg/resvg-js@2.6.2", "paper@0.12.18", "paperjs-offset@1.0.8"], { stdio: "inherit" });
   for (const [name, src] of Object.entries(FONT_SOURCES)) {
     const out = join(FONT_DIR, `${name}.ttf`);
     if (existsSync(out)) continue;

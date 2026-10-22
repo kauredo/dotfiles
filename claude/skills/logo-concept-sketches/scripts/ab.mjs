@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+// Blind A/B pairs for keep-the-winner: a revised variant replaces the one before it
+// only if critics pick it without knowing which is which.
+// Usage: node ab.mjs <pairs.json> <out-dir>
+// pairs.json: [{ "id": "nib", "before": "round2/nib-3.svg", "after": "round3/nib-3.svg", "says": "a pen nib that is a house" }]
+// Writes <out-dir>/pairN-a.png and pairN-b.png in shuffled order, and <out-dir>.mapping.json beside the folder.
+// Show the critic the PNGs and each pair's "says" line; never the mapping.
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { svgToPng } from "./render.mjs";
+
+const [, , inPath, out] = process.argv;
+if (!inPath || !out) {
+  console.error("Usage: node ab.mjs <pairs.json> <out-dir>");
+  process.exit(1);
+}
+mkdirSync(out, { recursive: true });
+const tile = (file) => {
+  const svg = readFileSync(file, "utf8").replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+  return svgToPng(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="600" height="600" color="#111"><rect width="100" height="100" fill="#fff"/><g transform="translate(8 8) scale(.84)" fill="currentColor">${svg}</g></svg>`, 600);
+};
+const mapping = JSON.parse(readFileSync(inPath, "utf8")).map((p, i) => {
+  const flip = Math.random() < 0.5;
+  const [a, b] = flip ? [p.after, p.before] : [p.before, p.after];
+  writeFileSync(join(out, `pair${i + 1}-a.png`), tile(a));
+  writeFileSync(join(out, `pair${i + 1}-b.png`), tile(b));
+  return { pair: i + 1, id: p.id, says: p.says, a: flip ? "after" : "before", b: flip ? "before" : "after" };
+});
+writeFileSync(`${out.replace(/\/$/, "")}.mapping.json`, JSON.stringify(mapping, null, 2));
+console.log(`Wrote ${mapping.length} pairs to ${out}; the mapping is ${out.replace(/\/$/, "")}.mapping.json, outside the folder the critic reads.`);

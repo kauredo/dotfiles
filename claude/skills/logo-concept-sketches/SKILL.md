@@ -18,6 +18,9 @@ All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs t
 - `glyphs.mjs`: outlines of any text in ten typefaces, plus each contour (`parts[0]` the silhouette, the rest counters). Every letter starts here.
 - `letterforms.mjs`: `ringSegment` for true arcs in drawn monoline letters no typeface has.
 - `lines.mjs`: parallel-line systems, weaves, rays and hatching, to dress a centerline.
+- `shapes.mjs`: union, subtract, intersect, transform, and `outline()` to turn a stroke into a filled outline. Letter surgery happens here (remove an A's left leg, fuse the rest onto a 2's diagonal), and every refined mark ends as one outline a designer can open, never a stack of masks.
+- `construct.mjs`: the circles and lines a mark is built on, saved beside it as `<name>.construction.svg`; `present.mjs` shows it.
+- `ab.mjs`: shuffled blind before/after pairs for keep-the-winner.
 - `mutate.mjs`: seeded variants of a sketch built from parts (nudged, turned, scaled, mirrored, overlaps cut out of each other).
 - `sheet.mjs`: the numbered sketch sheet as one SVG. `present.mjs`: the finalist board.
 - `lookagain.mjs`: every cell four ways: as drawn, its enclosed negative space in black, both upside down.
@@ -26,7 +29,7 @@ All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs t
 
 Write each round as one generator script (a `.mjs` emitting `cells.json`, each cell SVG markup in a 0-100 box), so one fix re-renders the whole sheet.
 
-From step 4 on, where the Artifact tool offers the Design type, lay each round on a design canvas: one board per idea family, its variants in a row, revised in place each round. The user compares side by side and comments on a board instead of reading numbered PNGs. Read `references/construction-techniques.md` before the first combine pass.
+Where the Artifact tool offers the Design type, run the whole job on one design canvas. Steps 1 to 3: each list or sheet is a board holding its rendered PNG (uploaded as an asset) and the user cuts by commenting. Step 4 on: one board per idea family, its variants in a row, revised in place each round. Without the Design type, send the PNGs. Read `references/construction-techniques.md` before the first combine pass.
 
 ## Workflow
 
@@ -49,7 +52,7 @@ From step 4 on, where the Artifact tool offers the Design type, lay each round o
    Send the sketch sheet and the finds sheet, and ask the user to pick 5-8 by number, with your own picks and one line on each. Wait for the answer.
    **Done when:** every look-again row has been read by you and by the viewers, every find is on the finds sheet, no red-flagged cell remains, and the user has picked.
 
-4. **Refine to 3.** Build each pick as a family of 3-6 variants, the way one letter gets fifteen sketches: typeface, weight, line count, weave, container, accent. Run `lookagain.mjs` on each round sheet too; finds keep arriving while refining. Judge each variant against two tests: does it belong only to this name and these words (cliché test), and do two of three blind viewers name its double reading unprompted (aha test)? Red flags cut by the rule in `references/blind-viewers.md`. Score each round with the three critics in the same file, against a grid of the target designer's marks, and carry every change two critics agree on into the next round. Keep a **found-shape ledger**, one line per cut variant with why, so later rounds skip it. Refine the survivors until three stand: one stroke system each, clean at 24px.
+4. **Refine to 3.** Build each pick as a family of 3-6 variants, the way one letter gets fifteen sketches: typeface, weight, line count, weave, container, accent. **Construct** every variant: declare its circles and lines with `construct.mjs` first, take every curve from one of them, and assemble the final shape with `shapes.mjs` into one outline. From the second round, a revised variant replaces its predecessor only if it wins the blind A/B in `references/blind-viewers.md`. Run `lookagain.mjs` on each round sheet too; finds keep arriving while refining. Judge each variant against two tests: does it belong only to this name and these words (cliché test), and do two of three blind viewers name its double reading unprompted (aha test)? Red flags cut by the rule in `references/blind-viewers.md`. Score each round with the three critics in the same file, against a grid of the target designer's marks, and carry every change two critics agree on into the next round. Keep a **found-shape ledger**, one line per cut variant with why, so later rounds skip it. Refine the survivors until three stand: one stroke system each, clean at 24px.
    **Done when:** 3 concepts pass both tests and the critics' median for each is 7 or more, or the best mark's median has not risen for two rounds and you report what's short and why.
 
 5. **Present 3.** Save each concept as its own SVG (viewBox 0 0 100 100, painted with `currentColor`, knockouts done with masks), run `present.mjs` and render the board: each mark large on light, large on dark, and at 96, 48 and 24px. Fix any mark that breaks on dark or blurs at 24px. Run the board past three fresh blind viewers once more, because refinement changes shapes.
