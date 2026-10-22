@@ -2,7 +2,7 @@
 
 Shape play (step 2) finds the idea; these are the concrete ways to build whatever you found, with real craft. Reach for whichever matches what's actually there — never pick a technique first and go looking for a shape to justify it. Letters come from `scripts/glyphs.mjs` outlines; hand-build only shapes no typeface has.
 
-**It reads through the gap** — the found form lives in the space between two overlapped shapes, not in either shape itself. Build the two source shapes first (real letterform paths, not approximations), then cut the found form out with a `<mask>` (white = visible, black = the found shape silhouette) or a path using `fill-rule="evenodd"` with opposing winding. The cut must read instantly at thumbnail size — check by imagining the viewBox shrunk to 32px, and verify the mask actually renders before calling the concept done; an invisible cut is a failed concept, not a subtle one.
+**It reads through the gap** — the found form lives in the space between two overlapped shapes, not in either shape itself. Build the two source shapes first (real letterform paths, not approximations), then cut the found form out with `subtract()` from `shapes.mjs`, so the result stays one outline. The cut must read instantly at thumbnail size — check by imagining the viewBox shrunk to 32px, and verify the cut actually renders before calling the concept done; an invisible cut is a failed concept, not a subtle one.
 
 **It reads through overlap** — the found form is the intersection itself, where two shapes cross. Draw each source shape as its own path in one `<g>`, then fill the intersection region as a third path with a distinct treatment (a different tone, or the background color cutting through the top shape). Keep it to 2-3 source shapes; past that the intersection stops reading as one thing.
 
@@ -16,7 +16,7 @@ Shape play (step 2) finds the idea; these are the concrete ways to build whateve
 
 A letter in a final concept is a typeface glyph, or a hand construction with the same discipline: circular arcs with a true centre and radius (`ringSegment` in `letterforms.mjs`), one stroke weight carried through the mark, bezier spines with real control points.
 
-Knock out with a `<mask>` or `fill-rule="evenodd"`, so the cut is empty space on any background. Paint with `currentColor` so the same file works on light and dark. One accent colour is allowed from round 2 on, when it is what makes a hidden form legible (the 2 inside an A).
+Knock out with `shapes.mjs`, so the cut is empty space on any background and the mark is one outline. Paint with `currentColor` so the same file works on light and dark. Sketches may use an accent colour; a refined mark works in one ink.
 
 ## Dressing a construction (`scripts/lines.mjs`)
 
@@ -34,9 +34,10 @@ From blind critics scoring Dois Agentes against Peters' grid. Build every refine
 - **Fused, not nested.** The second idea lives inside the first silhouette, usually in its negative space: the nib's shoulders are the roof. A bird inside a circle inside a pin is three stickers.
 - **One ink first.** The mark works in black alone before any accent colour is added. If the idea disappears in black, it was carried by the colour.
 - **One construction.** Same stroke weight, same corner radius, same terminal everywhere; a monoline hook on a solid mass reads as two kits.
-- **Built from arcs.** Organic subjects (a bird, a leaf) are drawn from a few circular arcs on a grid, then repeated by exact rotation or reflection, never traced.
-- **Holds at 32px.** Big counters, no hairlines, no illustration-level detail.
-- **Stripes draw something.** A line system has to build a form (a G, a sunrise); as an outline effect it is decoration, and three parallel stripes read as Adidas.
+- **Arcs fitted to the drawing.** Critics want curves with a visible logic, but a bird rebuilt stiffly from circles lost every blind A/B to the drawn one. Draw the shape that reads, then fit true arcs to it.
+- **Holds at 24px.** Big counters, no hairlines, no illustration-level detail, gaps as thick as strokes.
+- **Stripes draw something.** A line system has to build a form (a d whose two strokes also draw a house); as an outline effect it is decoration, and three parallel stripes read as Adidas.
+- **Discovered, not announced.** The strongest second readings arrive late, on a second look. A house placed inside a letter is understood in half a second and nothing is left to find.
 
 ## Readings a shape brings with it
 
