@@ -3,10 +3,11 @@
 // only if critics pick it without knowing which is which.
 // Usage: node ab.mjs <pairs.json> <out-dir>
 // pairs.json: [{ "id": "nib", "before": "round2/nib-3.svg", "after": "round3/nib-3.svg", "says": "a pen nib that is a house" }]
+// A .svg is a mark in a 100 box, rendered on white. A .png (a finished page or mockup) is used as is.
 // Writes <out-dir>/pairN-a.png and pairN-b.png in shuffled order, and <out-dir>.mapping.json beside the folder.
 // Show the critic the PNGs and each pair's "says" line; never the mapping.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { svgToPng } from "./render.mjs";
 
 const [, , inPath, out] = process.argv;
@@ -16,12 +17,15 @@ if (!inPath || !out) {
 }
 mkdirSync(out, { recursive: true });
 const tile = (file) => {
+  if (file.endsWith(".png")) return readFileSync(file);
   const svg = readFileSync(file, "utf8").replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
   return svgToPng(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="600" height="600" color="#111"><rect width="100" height="100" fill="#fff"/><g transform="translate(8 8) scale(.84)" fill="currentColor">${svg}</g></svg>`, 600);
 };
+// Pair paths resolve against the JSON file, not the working directory.
+const at = (p) => resolve(dirname(inPath), p);
 const mapping = JSON.parse(readFileSync(inPath, "utf8")).map((p, i) => {
   const flip = Math.random() < 0.5;
-  const [a, b] = flip ? [p.after, p.before] : [p.before, p.after];
+  const [a, b] = flip ? [at(p.after), at(p.before)] : [at(p.before), at(p.after)];
   writeFileSync(join(out, `pair${i + 1}-a.png`), tile(a));
   writeFileSync(join(out, `pair${i + 1}-b.png`), tile(b));
   return { pair: i + 1, id: p.id, says: p.says, a: flip ? "after" : "before", b: flip ? "before" : "after" };
