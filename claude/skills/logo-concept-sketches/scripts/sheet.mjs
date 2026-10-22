@@ -5,7 +5,7 @@
 //               "svg": "<path d='...'/>" }, ...]
 // Each cell's svg is inner markup drawn in a 0 0 100 100 box. A flagged cell
 // (a found form worth building) gets a red number. Render the result with
-// `rsvg-convert out.svg -o out.png`, or open it in Playwright and screenshot.
+// `node render.mjs out.svg out.png`.
 import { readFileSync, writeFileSync } from "node:fs";
 
 const [, , inPath, outPath, ...rest] = process.argv;
