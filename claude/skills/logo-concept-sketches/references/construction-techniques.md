@@ -37,3 +37,14 @@ From blind critics scoring Dois Agentes against Peters' grid. Build every refine
 - **Built from arcs.** Organic subjects (a bird, a leaf) are drawn from a few circular arcs on a grid, then repeated by exact rotation or reflection, never traced.
 - **Holds at 32px.** Big counters, no hairlines, no illustration-level detail.
 - **Stripes draw something.** A line system has to build a form (a G, a sunrise); as an outline effect it is decoration, and three parallel stripes read as Adidas.
+
+## Readings a shape brings with it
+
+Some shapes carry a reading wherever they go. Know them before sketching, because blind viewers will find them every time:
+
+- A numeral 2 turned upside down is a Z, read today as the Russian invasion mark. A standalone 2 cannot be a mark; a 2 inside a word can.
+- Rays around a disc or a half disc read as the Rising Sun flag.
+- A shaft ending in a dome or ball reads phallic; a vertical slit in an oval or a downward triangle reads genital; two rounded humps read as buttocks.
+- A post crossed by a bar reads as a cross; two round-topped slabs side by side read as the tablets of the law; a loop on two legs reads as an ankh.
+- Four identical shapes turning around a centre read as a swastika; two chasing in a circle read as yin-yang.
+- A lone crescent reads as a religious crescent to some viewers; give a moon a face, a star or a house to belong to.
