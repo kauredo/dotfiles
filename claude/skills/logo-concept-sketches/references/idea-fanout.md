@@ -7,7 +7,9 @@ One sketcher repeats itself. When the workflow goes back for more ideas, it send
 3. **Container interlock:** a circle, square or shield that the subject breaks, shares an edge with, or is cut from.
 4. **A new subject:** a word from the brand notes nobody has drawn yet, cut words included, taken down its reduction ladder.
 
-Write the loop brief once to `loop-N/brief.md`: the brand in three lines, the kept words and seeds, the found-shape ledger (every cut idea with its reason, every red flag), the critics' recurring gaps, and the concepts still standing. Each agent gets the prompt below and writes only inside its own folder.
+From the second fan-out on, retune the moves to the gap the critics keep naming, and keep the move that produced the best mark so far. On Dois Agentes the third loop ran line systems, negative space, the pair (two shapes whose union or gap is the third reading) and the shared edge.
+
+Write the loop brief once to `loop-N/brief.md`: the brand in three lines, the kept words and seeds, the found-shape ledger (every cut idea with its reason, every red flag), the critics' recurring gaps, and the concepts still standing, and any mark that already passed, as the standard every idea is held to. Each agent gets the prompt below and writes only inside its own folder.
 
 ## Idea agent prompt
 
