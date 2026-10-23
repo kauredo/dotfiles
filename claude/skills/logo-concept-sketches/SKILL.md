@@ -17,6 +17,8 @@ You are the worst judge of what a sketch shows, because you know what it is mean
 
 The bar rewards cleverness, so critics alone drift away from what the brand should feel like: on one run they scored a face-with-teeth highest and pulled a cute chick, one winning A/B at a time, into a smug letter. The brand's **temperature** (the feel it must have, in two or three words: cute and warm, sober, playful) anchors the other side. Critics score fit to it beside the bar, and the user judges it by eye on the standing board every round.
 
+Craft and fit still miss **identity**: whether a stranger told nothing about the field guesses what the mark is for. On a 14-mark rescore the order by craft barely predicted the order by the wider rubric (rank correlation 0.22), the marks critics rated highest drew guesses like "freelance platform" and "parking sign", and none of the 14 cleared the finalist bar. `references/rubric.md` holds the rubric (identity viewers, four scores, two gates, the finalist bar); read it before step 4.
+
 ## Tools
 
 All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs the npm dependencies and the fonts.
@@ -56,16 +58,16 @@ Where the Artifact tool offers the Design type, keep the job on one design canva
    - Build each pick as a family of 3-6 variants: typeface, weight, line count, weave, container. Construct every variant (declare its circles and lines with `construct.mjs`, take curves from them, assemble one outline with `shapes.mjs`). Construction serves the drawing: fit arcs to the shape that reads; a version rebuilt stiffly from circles lost its blind A/B every time. Every variant passes the balance check in `references/construction-techniques.md` before it goes on a sheet.
    - With more than four picks, split them across refine agents by kind (letters, creatures, objects), three or four families each, each given this step, the readings list and the current winners.
    - Run `lookagain.mjs` on the round sheet; finds keep arriving while refining.
-   - Score the merged sheet with three critics, with any concept that already passed on it unlabelled as the **anchor**. From the second round, a revised variant replaces its predecessor only if it wins the blind A/B on both scores: a gain on the bar that costs fit is a loss.
+   - Score the merged sheet with three critics, with the brand's current mark (if it has one) and any concept that already passed on it unlabelled as the **anchors**. From the second round, a revised variant replaces its predecessor only if it wins the blind A/B on both scores: a gain on the bar that costs fit is a loss.
    - Send the user one board of the standing concepts (`present.mjs`), with each concept's first sketch beside its current version. A concept the user calls off-temperature leaves, whatever it scored.
-   - Judge each concept: it belongs only to this name and stays clear of the bar designer's own marks (cliché test; a keyhole in a letter echoes Peters' keyhole G), and two of three viewers name its double reading unprompted (aha test).
-   - Carry every change two critics agree on into the next round. Log every cut variant and why in the **found-shape ledger**.
-   **Done when:** three concepts pass: both tests, a critics' median of 7 or at least the anchor's median on the same sheet, and the user has seen them on the latest board (go to step 6). Go to step 5 instead when the best median has not risen for two rounds, or when two of three critics name the same gap a refinement cannot close (two pictures overlaid instead of one shape).
+   - Judge each concept: it belongs only to this name and stays clear of the bar designer's own marks (cliché test; a keyhole in a letter echoes Peters' keyhole G), and two of three viewers name its double reading unprompted (aha test). Then run the identity viewers and the gates in `references/rubric.md` on the standing concepts.
+   - Carry every change two critics agree on into the next round. Log every cut variant and why in the **found-shape ledger**: one file that every agent in the next loop reads first.
+   **Done when:** three concepts pass: both tests, the finalist bar in `references/rubric.md`, a critics' median of 7 or at least the anchor's median on the same sheet, and the user has seen them on the latest board (go to step 6). Go to step 5 instead when the best median has not risen for two rounds, or when two of three critics name the same gap a refinement cannot close (two pictures overlaid instead of one shape).
 
 5. **Go back.** Write the loop brief and run the idea fan-out in `references/idea-fanout.md`, then continue from step 3 with the merged sheet. Concepts that passed stay standing, and the brief shows them as the standard. Budget: four loops in total. A cut idea never returns unless a viewer finds it again in a new form.
    **Done when:** the fan-out's sheet is merged and step 3 has run on it.
 
-6. **Present 3.** Save each concept as its own one-outline SVG (viewBox 0 0 100 100, `currentColor`) with its construction file, run `present.mjs` and render the board: large on light, large on dark, on its construction, and at 96, 48 and 24px. Run it past three fresh viewers once more.
-   **Done when:** one PNG shows the 3 concepts in every condition, each with one line on its found form and its last median, and the last viewer pass raised no red flag. If the budget ran out first, present the three best with their medians and the critics' agreed gap for each.
+6. **Present 3.** Save each concept as its own one-outline SVG (viewBox 0 0 100 100, `currentColor`) with its construction file, run `present.mjs` and render the board: large on light, large on dark, on its construction, and at 96, 48 and 24px. Run the red-flag viewers and the identity viewers once more on the final marks.
+   **Done when:** one PNG shows the 3 concepts in every condition, each with one line on its found form, its last median, what strangers guessed it is for and any lookalike they named, and the last viewer pass raised no red flag. If the budget ran out first, present the three best with their medians and the critics' agreed gap for each.
 
 When a direction is chosen, hand off to `logo-brand-package`.
