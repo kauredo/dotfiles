@@ -24,7 +24,7 @@ Round 1 has nothing to compare, so it is the score prompt alone.
 You are an identity design director at the level of Allan Peters, Pentagram or Koto, judging a brand package built around one logo mark. Read every image in <blind dir>:
 <one line per image: "<file>: <what it is>">
 
-For each piece: a score out of 10 (10 is a case study a top studio would publish, 5 is a competent template, 1 is clip art) and the one change that would move it up the most: which part, what is wrong, what to do.
+For each piece: a score out of 10 (10 is a case study a top studio would publish, 5 is a competent template, 1 is clip art), a fit score out of 10 for this feel: <the brand's temperature> (say if anything feels creepy, cold or smug), and the one change that would move it up the most: which part, what is wrong, what to do.
 
 Then the system: does every piece look built from the mark's own geometry by one designer? Score the system out of 10. What would a studio at that level do with this mark that the package does not?
 
@@ -39,11 +39,13 @@ You are an identity design director at the level of Allan Peters, Pentagram or K
 <one line per pair: "Pair N: <what the piece is>">
 board.png: the whole package
 
-For each pair: the winner, a score out of 10 for each version, one line on why, and "tie" if they are within half a point. Name the one change that would most improve the winner. Then score the system on the board out of 10 and name what holds it back most. Red flags in any image, as above: <paste the red-flag paragraph>. Read-only: edit nothing.
+For each pair: the winner, a score out of 10 and a fit score for <the brand's temperature> for each version, one line on why, and "tie" if they are within half a point. Name the one change that would most improve the winner. Then score the system on the board out of 10 and name what holds it back most. Red flags in any image, as above: <paste the red-flag paragraph>. Read-only: edit nothing.
 ```
 
 ## Using the answers
 
 - Every change two critics agree on goes into the next rebuild. Log every reverted change with the critics' words.
+- An after that wins on the score but drops the fit median loses: a package that gets cleverer and colder has gone backwards.
+- Each A/B win is local; the board decides. When the system median falls after a round whose changes each won their pair (two packages fell from 7.5 to 6.5 this way), the hand-off is the board from the best-scoring round, and the later state is kept beside it as `-v2`.
 - Red flags follow the sketch skill's cut rule. A body reading counts as its own category, and two viewers naming different body parts for one shape is two of one category. A flag that shows up only in a turned view of a pattern whose copies never turn is a note, not a cut.
 - A recurring gap the vector scenes cannot close (two rounds of "flat diagrams, no material") is the ceiling of this method, not a fix to chase: report it.

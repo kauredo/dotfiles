@@ -1,6 +1,6 @@
 # Patterns and graphic devices
 
-A package needs two things from the mark: a **hero device** for card backs, totes, signage and posts, and a **texture** that tiles behind a website or a run of social posts. Build several candidates for each and let blind critics rank them (`critics.md`), with the plain repeat as the anchor. Every candidate goes through the red-flag screen in every orientation, because a tote is seen upside down.
+A package needs three things from the mark: a **hero device** for card backs, totes, signage and posts, a **texture** that tiles behind a website or a run of social posts, and a **second voice** (below). Build several candidates for each and let blind critics rank them (`critics.md`), with the plain repeat as the anchor. Every candidate goes through the red-flag screen in every orientation, because a tote is seen upside down.
 
 ## Moves, with what they scored on d-casa
 
@@ -13,3 +13,12 @@ Out of 10, three blind critics each.
 - **Turns (3.5-4).** Turning the d 90 degrees made it an arrow, a play button, an iron; "a toppled house means the opposite of home". A letter beside its mirror or its 180-degree turn spells a pair (d made "dp" and "db"; viewers cut both). Four quarter-turns around a point make a pinwheel. Turn a mark only when it is not a letter and has no up, and screen the result.
 
 Peters' published patterns (FM, Synergy) show line systems, overlaps, crops and a knocked-out logo; no turned or mirrored copies were found in them.
+
+## Second voice
+
+Four packages built with the mark alone stalled at 7 to 7.5 on one agreed gap: "the system has one move", the mark on a flat colour, repeated. The second voice is a device built from the mark's own geometry that **holds content**, so pieces carry something other than the mark.
+
+- **A frame that holds content (8 on two packages).** The mark's line drawn wide as an open frame holding the client's key facts on a website hero band; a nest from the mark holding the facts, the contact block and the sign panel. Build it in from step 3, not as a late round: the package that started with it scored best for fit.
+- **The bare frame everywhere (6.5).** The mark's `c` without its child, on every large surface, dropped a package from 7.5: "a bare c belongs to no one". The frame works where it holds something, and the mark keeps its whole idea at full size elsewhere.
+- **The client's illustrations inside the frame (3 to 3.5, lost 3/3 on four packages).** Read as "stock clip art next to a drawn mark", and a portrait resting in a cradle shape read as "a head on a platter". Illustrations and photographs sit beside the frame, never inside it.
+- **The mark's parts as texture (beat the whole-logo repeat 3-0).** Nests and tufts scattered on a ground, never the whole logo.
