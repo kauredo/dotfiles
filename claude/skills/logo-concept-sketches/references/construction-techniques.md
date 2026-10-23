@@ -36,6 +36,7 @@ From blind critics scoring Dois Agentes against Peters' grid. Build every refine
 - **One construction.** Same stroke weight, same corner radius, same terminal everywhere; a monoline hook on a solid mass reads as two kits.
 - **Arcs fitted to the drawing.** Critics want curves with a visible logic, but a bird rebuilt stiffly from circles lost every blind A/B to the drawn one. Draw the shape that reads, then fit true arcs to it.
 - **Holds at 24px.** Big counters, no hairlines, no illustration-level detail, gaps as thick as strokes.
+- **Balanced negative space.** Gaps that do the same job are one width (above the head, under the body, round the eye), counters sit even in their letter, and the mark is centred by its visual mass, not its bounding box. Check the gap view from `lookagain.mjs` before the critics see it; the client spotted a lopsided `e` that no critic named.
 - **Stripes draw something.** A line system has to build a form (a d whose two strokes also draw a house); as an outline effect it is decoration, and three parallel stripes read as Adidas.
 - **Discovered, not announced.** The strongest second readings arrive late, on a second look. A house placed inside a letter is understood in half a second and nothing is left to find.
 

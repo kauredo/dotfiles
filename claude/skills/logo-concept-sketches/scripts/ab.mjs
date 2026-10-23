@@ -18,8 +18,11 @@ if (!inPath || !out) {
 mkdirSync(out, { recursive: true });
 const tile = (file) => {
   if (file.endsWith(".png")) return readFileSync(file);
-  const svg = readFileSync(file, "utf8").replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
-  return svgToPng(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="600" height="600" color="#111"><rect width="100" height="100" fill="#fff"/><g transform="translate(8 8) scale(.84)" fill="currentColor">${svg}</g></svg>`, 600);
+  const src = readFileSync(file, "utf8");
+  const svg = src.replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+  // Keep the source's own viewBox: a mark drawn in another box (0 244 750 768) renders blank in a 100 box.
+  const vb = (src.match(/<svg[^>]*viewBox="([^"]+)"/) || [, "0 0 100 100"])[1];
+  return svgToPng(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="600" height="600" color="#111"><rect width="100" height="100" fill="#fff"/><svg x="8" y="8" width="84" height="84" viewBox="${vb}" fill="currentColor">${svg}</svg></svg>`, 600);
 };
 // Pair paths resolve against the JSON file, not the working directory.
 const at = (p) => resolve(dirname(inPath), p);

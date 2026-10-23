@@ -15,6 +15,8 @@ A logo idea is a **found form**: one shape that reads two ways. Two gabled house
 
 You are the worst judge of what a sketch shows, because you know what it is meant to be. Blind subagents read every sheet: **viewers** say what they see and screen for red flags, **critics** score against the bar. Their prompts and rules are in `references/blind-viewers.md`; read it before step 3.
 
+The bar rewards cleverness, so critics alone drift away from what the brand should feel like: on one run they scored a face-with-teeth highest and pulled a cute chick, one winning A/B at a time, into a smug letter. The brand's **temperature** (the feel it must have, in two or three words: cute and warm, sober, playful) anchors the other side. Critics score fit to it beside the bar, and the user judges it by eye on the standing board every round.
+
 ## Tools
 
 All in `scripts/`. Run `node glyphs.mjs --setup` once per machine; it installs the npm dependencies and the fonts.
@@ -33,8 +35,8 @@ Where the Artifact tool offers the Design type, keep the job on one design canva
 
 ## Workflow
 
-1. **Brand notes, then the first cut.** Read what the brand is (README, site, the user's words). Write 70-100 words, objects and concepts tied to it, grouped (product, people, place, values, objects), each with the one or two shapes it looks like. Add 3-5 letterform seeds from the name itself: initials, monograms, words hiding inside it ("Dois Agentes" → DA, "da"), the letters with the most distinctive shape. Number everything, save the list, and send it to the user, asking them to keep 10-15 words plus the seeds they like. Wait for the answer.
-   **Done when:** the user has replied with their cut.
+1. **Brand notes, then the first cut.** Read what the brand is (README, site, the user's words). Write 70-100 words, objects and concepts tied to it, grouped (product, people, place, values, objects), each with the one or two shapes it looks like. Add 3-5 letterform seeds from the name itself: initials, monograms, words hiding inside it ("Dois Agentes" → DA, "da"), the letters with the most distinctive shape. Number everything, save the list, and send it to the user, asking them to keep 10-15 words plus the seeds they like, and to name the brand's temperature. Write the temperature at the top of the list. Wait for the answer.
+   **Done when:** the user has replied with their cut and the temperature.
 
 2. **Rough sketches.** Sketch only from what the user kept: 50-80 cells in three sections. Rough is fine; legible is required.
    - **Letterforms:** each kept seed in at least six typefaces, turned, mirrored, overlapped, nested, reversed out of a disc, letters sharing a stroke, next to a drawn monoline version.
@@ -51,13 +53,14 @@ Where the Artifact tool offers the Design type, keep the job on one design canva
    **Done when:** every look-again row has been read by you and by the viewers, no red-flagged cell remains, and the picks are made.
 
 4. **Refine to 3.** Each round:
-   - Build each pick as a family of 3-6 variants: typeface, weight, line count, weave, container. Construct every variant (declare its circles and lines with `construct.mjs`, take curves from them, assemble one outline with `shapes.mjs`). Construction serves the drawing: fit arcs to the shape that reads; a version rebuilt stiffly from circles lost its blind A/B every time.
+   - Build each pick as a family of 3-6 variants: typeface, weight, line count, weave, container. Construct every variant (declare its circles and lines with `construct.mjs`, take curves from them, assemble one outline with `shapes.mjs`). Construction serves the drawing: fit arcs to the shape that reads; a version rebuilt stiffly from circles lost its blind A/B every time. Every variant passes the balance check in `references/construction-techniques.md` before it goes on a sheet.
    - With more than four picks, split them across refine agents by kind (letters, creatures, objects), three or four families each, each given this step, the readings list and the current winners.
    - Run `lookagain.mjs` on the round sheet; finds keep arriving while refining.
-   - Score the merged sheet with three critics, with any concept that already passed on it unlabelled as the **anchor**. From the second round, a revised variant replaces its predecessor only if it wins the blind A/B.
+   - Score the merged sheet with three critics, with any concept that already passed on it unlabelled as the **anchor**. From the second round, a revised variant replaces its predecessor only if it wins the blind A/B on both scores: a gain on the bar that costs fit is a loss.
+   - Send the user one board of the standing concepts (`present.mjs`), with each concept's first sketch beside its current version. A concept the user calls off-temperature leaves, whatever it scored.
    - Judge each concept: it belongs only to this name and stays clear of the bar designer's own marks (cliché test; a keyhole in a letter echoes Peters' keyhole G), and two of three viewers name its double reading unprompted (aha test).
    - Carry every change two critics agree on into the next round. Log every cut variant and why in the **found-shape ledger**.
-   **Done when:** three concepts pass: both tests, and a critics' median of 7, or at least the anchor's median on the same sheet (go to step 6). Go to step 5 instead when the best median has not risen for two rounds, or when two of three critics name the same gap a refinement cannot close (two pictures overlaid instead of one shape).
+   **Done when:** three concepts pass: both tests, a critics' median of 7 or at least the anchor's median on the same sheet, and the user has seen them on the latest board (go to step 6). Go to step 5 instead when the best median has not risen for two rounds, or when two of three critics name the same gap a refinement cannot close (two pictures overlaid instead of one shape).
 
 5. **Go back.** Write the loop brief and run the idea fan-out in `references/idea-fanout.md`, then continue from step 3 with the merged sheet. Concepts that passed stay standing, and the brief shows them as the standard. Budget: four loops in total. A cut idea never returns unless a viewer finds it again in a new form.
    **Done when:** the fan-out's sheet is merged and step 3 has run on it.
