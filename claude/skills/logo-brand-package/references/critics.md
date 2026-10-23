@@ -48,4 +48,5 @@ For each pair: the winner, a score out of 10 and a fit score for <the brand's te
 - An after that wins on the score but drops the fit median loses: a package that gets cleverer and colder has gone backwards.
 - Each A/B win is local; the board decides. When the system median falls after a round whose changes each won their pair (two packages fell from 7.5 to 6.5 this way), the hand-off is the board from the best-scoring round, and the later state is kept beside it as `-v2`.
 - Red flags follow the sketch skill's cut rule. A body reading counts as its own category, and two viewers naming different body parts for one shape is two of one category. A flag that shows up only in a turned view of a pattern whose copies never turn is a note, not a cut.
+- Run the identity viewers (`../logo-concept-sketches/references/rubric.md`) once on the primary lockup in round 1: a package cannot add what the mark does not say, and the result goes in the report beside the scores.
 - A recurring gap the vector scenes cannot close (two rounds of "flat diagrams, no material") is the ceiling of this method, not a fix to chase: report it.

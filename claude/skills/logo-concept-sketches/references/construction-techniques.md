@@ -50,3 +50,9 @@ Some shapes carry a reading wherever they go. Know them before sketching, becaus
 - A post crossed by a bar reads as a cross; two round-topped slabs side by side read as the tablets of the law; a loop on two legs reads as an ankh.
 - Four identical shapes turning around a centre read as a swastika; two chasing in a circle read as yin-yang.
 - A lone crescent reads as a religious crescent to some viewers; give a moon a face, a star or a house to belong to.
+- A round bite out of a head or disc, with a dot beside it, reads as Pac-Man (every viewer on several marks). A wedge-shaped mouth in a comma reads the same way; a slit with a round inner end does not.
+- A speech bubble with a tail, or two bubbles, reads as the stock comment icon; a stroke crossing a bubble's wall reads as Quora's Q.
+- Two forms flush left with a gap read as a capital B; a small dot high at the right reads as a notification badge.
+- A staircase or single zigzag reads as a lightning bolt and, turned, loosely as the Sig rune; a container around it weakens that.
+- A cupped arc holding dots reads as a smiley; a domed arch as a tombstone or the Arc browser; two split bubbles as thumbs up and down.
+- A round-ended post beside a round bowl (a p, a stem with a ball) reads phallic or as a pipe; a "u" fused to a p reads as Upwork's mark.

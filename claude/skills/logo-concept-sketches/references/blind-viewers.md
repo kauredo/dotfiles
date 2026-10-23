@@ -32,7 +32,7 @@ Keep each number to two or three lines. Report what you see, not what you think 
 
 ## Critic prompt (refinement rounds)
 
-Same blind setup: fresh `general-purpose` subagents with `model: "opus"`, numbers-only sheets, three at once. They also get one image of the bar: a grid of marks by the designer the work aims at (for Peters, his published daily-logo grids). Reuse the prompt verbatim every round, so scores compare.
+Same blind setup: fresh `general-purpose` subagents with `model: "opus"`, numbers-only sheets, three at once. They also get one image of the bar: a grid of marks by the designer the work aims at (for Peters, his published daily-logo grids). Reuse the prompt verbatim every round, so scores compare. When no image of the bar exists, describe the bar in the same words every round: scores then compare within the run only. The wider scores (readability, distinctiveness, simplicity) and the identity viewers are in `rubric.md`.
 
 ```
 You are a design director judging numbered logo-mark sketches. Read both images with the Read tool:
@@ -67,3 +67,10 @@ For each pair: the winner, a score out of 10 against the bar and a fit score for
 ```
 
 The after version stays when two of three critics pick it and its fit median holds. A tie or a loss keeps the before version, and the change goes in the found-shape ledger with the critics' reasons.
+
+## Running blind agents
+
+- **Images** sit in a folder inside the workspace with a neutral name (`blind-<hex>`), not the project path: the Read tool refuses `/tmp`, and a path naming the brand tells viewers the answer.
+- **Replies** cut off near 4,000 characters are lost. Ask for two or three lines per number, and write each batch's answers to files before the next batch starts: one run lost a whole critic round this way.
+- **Calls** carry three agents each and finish inside about eight minutes; the runs that died were the ones blocked longest. Append a line to a `STATE.md` after every stage, so a killed run resumes from disk and no completed round is repeated.
+- **Claims** about a file or a fix are checked on disk: two helper agents reported fixes that never touched the file.
