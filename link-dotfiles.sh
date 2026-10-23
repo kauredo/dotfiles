@@ -17,7 +17,8 @@ link() {
   if [ -L "$dest" ]; then
     rm "$dest"
   elif [ -e "$dest" ]; then
-    local bak="$dest.bak.$(date +%s)"
+    local bak
+    bak="$dest.bak.$(date +%s)"
     mv "$dest" "$bak"
     echo "WARNING: $dest was a real file, not a link. Moved to $bak." >&2
     echo "  A tool may have rewritten it with newer content; diff it against $target before deleting." >&2
