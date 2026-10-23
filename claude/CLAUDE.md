@@ -72,6 +72,7 @@ Run every shell command as a program with plain arguments, so the permission che
 
 - Longer than one command: write a script file and run the file.
 - Pipes, filters and redirects go outside any wrapper, on its output.
+- Copy with `/bin/cp -f`. Plain `cp` is aliased to ask before overwriting, and a command waiting on that answer hangs with no error.
 - Every subagent brief that involves shell commands carries this rule.
 
 ### 7. Fable-Tier Security Phrasing
