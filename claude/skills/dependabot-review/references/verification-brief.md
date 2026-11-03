@@ -10,6 +10,8 @@ Include this in every verification subagent's brief, next to the unit facts from
 
 **C. Generated suite.** Create it in the scratchpad, outside the repo, scaled to how far the change can reach. Scrub the env before anything: unset credentials, then use a fake storage endpoint, a local mail catcher and a throwaway local database. Real email, real bucket writes, and paid or production APIs are forbidden. A probe that would need a real service is listed as "not covered".
 
+Browser probes stay local-only. Before the first navigation, install an init script that turns calls to any non-localhost host into no-ops: `navigator.sendBeacon`, `fetch`, `XMLHttpRequest.open`, and the `src` setters on `HTMLImageElement` and `HTMLScriptElement`. That covers the beacon, fetch and pixel paths analytics tags use. The probe is local-only once the network log shows no request to an analytics collect endpoint (for Google Analytics, `*.google-analytics.com/g/collect`); fonts and CDN assets may still load. If the browser tool can't run an init script, check the page with plain HTTP requests instead and list hydration as "not covered".
+
 - Build: scan the entire log for errors, since the exit code alone misses some.
 - Boot: run the production server on any free port. Request the main routes, the login or admin page and the health endpoints, logging status codes.
 - Probes matched to the package:

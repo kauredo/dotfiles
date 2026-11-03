@@ -2,6 +2,8 @@
 
 Choose by lockfile. Yarn Berry ships `.yarnrc.yml` next to `yarn.lock`; yarn classic has only `yarn.lock`. Override syntax differs between majors, so read the installed version first.
 
+When the manager is missing from PATH, run a pinned copy through npx (`npx -y yarn@1.22.22 <args>` for yarn classic) and pass that same prefix into every subagent brief.
+
 ## pnpm
 
 - Lockfile: `pnpm-lock.yaml`
@@ -47,5 +49,6 @@ Choose by lockfile. Yarn Berry ships `.yarnrc.yml` next to `yarn.lock`; yarn cla
 - Install without scripts: `--ignore-scripts`
 - Repo scripts: `yarn run`
 - Dependency scripts, once reviewed: `yarn install --force`
-- Refresh in range: `yarn upgrade <pkg>`
+- Refresh in range, direct dependency: raise its floor in `package.json`, then `yarn install`
+- Refresh in range, transitive dependency: delete that package's entry block from `yarn.lock`, then `yarn install`. `yarn upgrade <pkg>` leaves transitive entries untouched.
 - Patching: `patch-package`

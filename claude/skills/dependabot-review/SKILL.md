@@ -21,7 +21,7 @@ Related skills: `read-the-source` (a dependency's actual code), `read-the-damn-d
 ## Ground rules
 
 - Until the approval gate, the repo is read-only. Phases 1 to 5 write nothing.
-- Probes never reach a live external service, in any phase. Point them at local or stubbed targets, and unset any real credentials.
+- Probes never reach a live external service, in any phase. Point them at local or stubbed targets, and unset any real credentials. A page loaded in a browser counts: its analytics and tag-manager scripts send real hits, so keep browser probes local-only (see the verification brief).
 - The PR carries manifests, lockfiles, overrides and patches. If the app code needs a change, put it in the report as a proposal or a separate task.
 - Closing a Dependabot PR or dismissing an alert each need a yes that names the exact PR or alert.
 
