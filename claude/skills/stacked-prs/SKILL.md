@@ -83,11 +83,21 @@ keep the original until the split is proven in step 3.
 
 ### 2. Create the stack
 
+Every `gh stack` command acts on the worktree it runs in: it checks out
+branches there and writes the stack metadata there. Agent shells reset the
+working directory after each command, so pin every call to the stack worktree:
+`git -C ../<repo>-stack ...` for git, and for `gh stack` a scratchpad script
+that runs `cd ../<repo>-stack && exec "$@"` (called `instack.sh` below).
+
 ```bash
 git worktree add ../<repo>-stack -b 01-<slug>   # keep the user's checkout clean
-cd ../<repo>-stack
-gh stack init 01-<slug>                          # trunk defaults to the default branch
+sh instack.sh gh stack init 01-<slug>           # trunk defaults to the default branch
 ```
+
+To adopt branches that already have PRs, pass them bottom to top
+(`sh instack.sh gh stack init branch-a branch-b`), then
+`sh instack.sh gh stack rebase --no-trunk` so each one sits on the branch below
+it.
 
 Then, for each subsequent PR:
 
@@ -114,8 +124,20 @@ before submitting, then delete the reference copy.
 3 together, but CI runs on each branch separately, and a layer that only passes
 because of a fix in the layer above is a broken commit in the history.
 
-Run the project's checks after each `git commit` and before the next `gh stack
-add`. If a layer cannot be green alone, it belongs merged into its parent.
+**Run budget.** Spend full runs where they find things:
+
+- **Inside a layer:** run the affected test files and the typecheck.
+- **Closing a layer:** run the full checks once, before the next `gh stack add`.
+  A layer that cannot be green alone belongs merged into its parent.
+- **After a cascade** (`gh stack rebase`): run the full checks on the changed
+  layer and the top branch. Typecheck the layers between only when the rebase
+  hit conflicts.
+- **Before `gh stack submit`, sweep:** full checks on every layer, bottom to
+  top. The sweep is what makes the cascade shortcut safe; a middle layer that
+  broke in a rebase is fixed on its own branch here.
+
+Wrap anything that can hang in `timeout` (`timeout 900 npm test`) and report a
+timed-out command with where it stopped.
 
 The same holds for prose. A layer's changelog entry, docs and any measured
 number (bundle size, query count, benchmark) describe that layer alone, so
@@ -153,8 +175,9 @@ to a stack that already exists without removing its members.
 ### 5. Each body says where it sits
 
 Every PR in a stack opens with its position, because a reviewer landing on PR 4
-from a notification has no idea what is below it. `gh stack submit` adds its own
-navigation block; add a one-line human version too:
+from a notification has no idea what is below it. GitHub shows the stack in its
+own PR UI, but `gh stack submit` writes only a footer into the body, so the
+position line is the body's only navigation:
 
 ```markdown
 **Stack position 4 of 7.** Based on #42 (plan 003, characterization tests).
@@ -222,6 +245,12 @@ git worktree remove ../<repo>-stack  # once the whole stack has landed
 
 Prune first: `gh stack` only runs from the worktree that created the stack, so
 once that worktree is removed, the merged branches have to be deleted by hand.
+
+Prune always leaves one branch behind: the one the stack worktree has checked
+out. It cannot switch that worktree to the trunk while the user's checkout holds
+the trunk. Remove the worktree, then `git branch -D` that last branch. The
+merged branches also stay on the remote; delete the ones the stack created with
+`git push origin --delete <branch>...`, listing each by name.
 
 #### Merging by hand, without the extension
 
