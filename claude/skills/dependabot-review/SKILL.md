@@ -30,8 +30,17 @@ Related skills: `read-the-source` (a dependency's actual code), `read-the-damn-d
 Stop with a plain message if any of these fails:
 
 1. `package.json` exists beside an npm, pnpm or yarn lockfile.
-2. `gh auth status` passes. Calling `gh api repos/<owner>/<repo>/dependabot/alerts` must give back data. Dismissing alerts later needs write access.
+2. `gh auth status` passes. Calling `gh api repos/<owner>/<repo>/dependabot/alerts` must give back data, or answer `Dependabot alerts are disabled for this repository`, which switches the run to PR mode (below). gh may append a hint about the `admin:repo_hook` scope to that 403; the `disabled` message is what counts. Dismissing alerts later needs write access.
 3. The user has okayed the cost. Say how many subagents you plan to launch and that each can burn 100k+ tokens. Skip the question only when the user's instruction files or a message in this session already waive it.
+
+## PR mode
+
+With alerts disabled, the open Dependabot PRs and the audit stand in for the alert list. Every phase runs as written, with these swaps:
+
+- Census: the audit, run in every workspace, is the advisory list. Key each advisory by its GHSA id wherever the phases say alert number, and count advisories in the headline.
+- PR inventory: every open npm Dependabot PR is a unit, version updates that fix no advisory included. Tag those "version update" and verify them like the rest. PRs for other ecosystems get listed as out of scope, with GitHub Actions bumps pointed at `infra-review`.
+- Leftovers: an advisory with no fix goes under "No fix available" with its ways out. There is nothing to dismiss, so the Phase 7 dismissal offers are skipped.
+- Close-out: the posture sweep opens by recommending Dependabot alerts be turned on.
 
 ## Repo facts
 
@@ -174,7 +183,7 @@ Send one message in report style:
 
 ## Out of bounds for findings
 
-- Non-security version-update PRs (labeled "not security").
+- Non-security version-update PRs (labeled "not security"), outside PR mode.
 - CI failures from Dependabot's empty tokens.
 - Failures that also occur on the base branch.
 - Alerts from non-JS ecosystems.

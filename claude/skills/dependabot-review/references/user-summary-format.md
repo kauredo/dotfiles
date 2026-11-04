@@ -4,7 +4,7 @@ Governs the Phase 5 report and the Phase 8 close-out. Assume the reader has neve
 
 ## Layout
 
-Present summaries as a table, one row per package, led by an emoji. Columns: emoji, package, alerts, purpose, verdict, note.
+Present summaries as a table, one row per package, led by an emoji. Columns: emoji, package, alerts (GHSA ids in PR mode, or "version update"), purpose, verdict, note.
 
 The note is one or two short sentences saying what the package is for and how the verdict affects the product. Leave commands, versions and mechanisms out; they belong in the PR body, shown on request.
 

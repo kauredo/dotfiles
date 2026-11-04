@@ -40,7 +40,7 @@ When a check fails, repeat it in a separate checkout of the base branch. A failu
 
 - unit
 - bump: package, from, to
-- alerts closed
+- alerts or advisories closed, or "version update"
 - verdict (defined below)
 - evidence, one line per check: what ran, the command, what came back
 - where the running code was inspected, and the version found
@@ -54,7 +54,7 @@ When a check fails, repeat it in a separate checkout of the base branch. A failu
 
 ## Verdict definitions
 
-- **SAFE**: the running code has the fixed version, checks pass or equal the baseline, and the changelog shows nothing risky on paths we use.
+- **SAFE**: the running code has the target version (the fixed one, for a security bump), checks pass or equal the baseline, and the changelog shows nothing risky on paths we use.
 - **SAFE WITH CHANGE**: safe only if the planned fix is altered (stay in the major, refresh rather than override). State the change and its evidence.
 - **NEEDS TESTING**: checks pass, yet a key path stays unexercised (real data, auth, a protected preview).
 - **PAPER FIX**: audit is green but vulnerable code keeps running from a bundled or CDN copy. Say where.
