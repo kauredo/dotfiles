@@ -1,4 +1,5 @@
 ---
+name: polish-loop
 description: Full QA pipeline: audit, fix, then critique-loop until clean. Use when finishing work before commit.
 ---
 

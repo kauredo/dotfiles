@@ -6,7 +6,7 @@ import { homedir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const BUILTINS = ["mcp", "run", "goal", "help", "init", "loop", "clear", "hooks", "model", "agents", "config", "doctor", "effort", "memory", "plugin", "resume", "skills", "compact", "context", "schedule", "simplify", "workflows", "permissions"];
+const BUILTINS = ["mcp", "run", "goal", "help", "init", "loop", "clear", "hooks", "model", "agents", "config", "doctor", "effort", "memory", "plugin", "resume", "skills", "compact", "context", "rename", "schedule", "simplify", "workflows", "permissions"];
 // visual-edit cites the Design bridge's HTTP routes (snapshot, health and the rest).
 const NON_SKILL_PATHS = ["foo", "tmp", "apps", "blog", "css2", "poll", "team", "about", "admin", "plans", "health", "upload", "clients", "company", "connect", "product", "about-us", "features", "insights", "packages", "platform", "snapshot", "changelog", "customers", "read-file", "resources", "solutions", "write-file", "case-studies", "command-name", "integrations", "pricing-plans", "success-stories", "live-edit-bridge"];
 const UNINSTALLED_UPSTREAM = ["figma", "slideshow", "hooks-trust", "pr-to-video", "animate-text", "general-video", "music-to-video", "embedded-captions", "faceless-explainer", "talking-head-recut", "regenerate-examples", "product-launch-video", "remotion-to-hyperframes", "impeccable-asset-producer", "impeccable-finish-reviewer"];

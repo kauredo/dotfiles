@@ -1,4 +1,5 @@
 ---
+name: code-audit
 description: Audit the whole repo for over-engineering and get back a prioritized delete-list.
 disable-model-invocation: true
 argument-hint: "[path | --area <dir>]"

@@ -1,4 +1,5 @@
 ---
+name: code-review
 description: Multi-agent code review of local changes or a GitHub PR. Fans out to specialized reviewers in parallel and aggregates findings.
 argument-hint: "[pr-number | --staged | --branch | --commit <sha> | --base <ref>]"
 ---

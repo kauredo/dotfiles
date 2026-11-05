@@ -12,7 +12,7 @@ If you only ever run tier 1, most of the value of this file is already banked.
 
 **Tier 2 is the full 14-check pass, and it is mandatory for anything a human other than me will read.** PR and issue comments, code-review comments, replies to other reviewers, Slack and JIRA messages, marketing copy, landing and content pages, blog posts, READMEs, PR descriptions, release notes, email, and any draft shown to me for approval before it goes out.
 
-Commit messages take tier 1 on the body. The conventional-commit format itself is exempt, and so are code comments, which have their own standards in `~/.claude/commands/code-review.md`.
+Commit messages take tier 1 on the body. The conventional-commit format itself is exempt, and so are code comments, which have their own standards in `~/.claude/skills/code-review/SKILL.md`.
 
 ## Tier 1: write toward these
 

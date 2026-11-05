@@ -1,3 +1,8 @@
+---
+name: portfolio-critique
+description: "Rate a whole portfolio of apps at once: one leaderboard across every surface, a brand verdict per product, and a count of which AI tells repeat. Use when critiquing more than one project, comparing the surfaces of one product, or ranking apps against each other."
+---
+
 Rate a whole portfolio of apps at once: one leaderboard across every surface, a
 brand verdict per product, and a count of which AI tells repeat. Use when
 critiquing more than one project, comparing the surfaces of one product, or

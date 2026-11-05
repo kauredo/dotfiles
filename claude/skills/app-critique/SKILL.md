@@ -1,3 +1,8 @@
+---
+name: app-critique
+description: "Deep design audit of one app, ending in plans: every route, the whole scroll of each, phone and desktop, hover and focus and open-menu states, the load sequence as frames, and the product interior behind the login, then one plan in `plans/` per fix, written by `improve`. Use when the ask is 'critique this app properly', when a logo or brand needs judging on its own, or when `/portfolio-critique` has pointed at a product and the next step is the full treatment."
+---
+
 Deep design audit of one app, ending in plans: every route, the whole scroll of
 each, phone and desktop, hover and focus and open-menu states, the load
 sequence as frames, and the product interior behind the login, then one plan in

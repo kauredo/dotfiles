@@ -14,7 +14,7 @@ This repository contains scripts and configuration files to quickly set up a con
 - **Agent config** (`claude/`, symlinked into `~/.claude` and shared with other tools):
 
   - Global instructions (`CLAUDE.md`, `RTK.md`, `github-pending-review.md`)
-  - `settings.json`, custom `commands/`, `agents/`, `hooks/`, `scripts/`, and hand-written `skills/`
+  - `settings.json`, `agents/`, `hooks/`, `scripts/`, and hand-written `skills/`
   - The same skills reach Codex and anything else reading `~/.agents/skills`.
     `lib/render-agent-configs.py` renders the rest into the shapes those tools
     need. See "Other agent tools" below

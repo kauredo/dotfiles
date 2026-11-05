@@ -59,7 +59,7 @@ Third-party API, library, framework, CLI, cloud service, or SDK behavior: invoke
 
 ### 5. Git Commits
 
-- When I say `/commit`: stage relevant files, write a concise commit message, and commit. No push unless asked.
+- When I ask you to commit: stage relevant files, write a concise commit message, and commit. No push unless asked.
 - **Never mention Anthropic or Claude** in commit messages or co-author lines.
 - Follow the repo's commit convention (`feat:`, `fix:`, `refactor:`, etc.). Read `git log --oneline -5` first if the convention isn't obvious.
 - Stage files **by name**. Never `git add -A` or `git add .`, and never stage anything that could hold secrets (`.env`, credentials, keys).

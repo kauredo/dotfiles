@@ -1,4 +1,5 @@
 ---
+name: ship
 description: Take a task from plan to opened PR with screenshots. Unattended by default; `--gated` puts the approval gates back.
 disable-model-invocation: true
 argument-hint: "<task description> [--gated|--ask] [--full-approve|-y|--fix-all] [--no-pr] [--ui|--no-ui] [--recap] [--local] [--base <branch>] [--plan <path>|--no-plan] [--grill|--no-grill]"
@@ -92,7 +93,7 @@ Done when every repo the plan touches has a `## Repo rules` section in `STATE.md
 Run the full multi-agent review on the diff (the `/code-review` workflow, inlined here):
 
 1. Assemble the diff (`git diff <base>...HEAD`) and read project context (`CLAUDE.md`, `AGENTS.md`, manifests).
-2. **Triage, then fan out.** Read Step 3 of `~/.claude/commands/code-review.md` and apply its table to the changed paths. Its "Skip when" column names what drops each reviewer. Invoke the ones it selects **in parallel, in one message**, and name the ones you dropped and what dropped them. On a small diff that adds no table, index or new module, also drop `performance-reviewer` and `architecture-reviewer`. `security-reviewer` and `correctness-reviewer` always run.
+2. **Triage, then fan out.** Read Step 3 of `~/.claude/skills/code-review/SKILL.md` and apply its table to the changed paths. Its "Skip when" column names what drops each reviewer. Invoke the ones it selects **in parallel, in one message**, and name the ones you dropped and what dropped them. On a small diff that adds no table, index or new module, also drop `performance-reviewer` and `architecture-reviewer`. `security-reviewer` and `correctness-reviewer` always run.
 3. **Vet** the findings, open the cited code and confirm each CRIT/HIGH and any finding resting on a factual claim before trusting it. Drop the ones whose premise doesn't hold. (Reviewers over-report.)
 4. Aggregate into the severity table + per-file format.
 
