@@ -54,7 +54,7 @@ Invoke the **`improve`** skill (Skill tool) as `improve plan <task>` to produce 
 
 **Sort every open question** the plan raises into one of four bins: the code answers it (go read), a safe default exists (take it and note it), a real fork (send it to `grilling`; unattended, record your recommendation in the plan), or a one-way door (ask the user, always, unattended included). `~/.claude/one-way-doors.md` says what counts as one.
 
-**Independent plan review.** Before approval, hand the plan and the original task text to a fresh subagent. It checks the plan against the task's stated requirements, never against the plan's own framing, and returns approve, approve-with-fixes, or revise. Apply fixes and redo a revise. A blocker stops the run.
+**Goldfish review.** `improve plan` ends with one, run against the task text from `$ARGUMENTS` with the flags stripped. Its rules live in `~/.claude/skills/improve/references/goldfish-review.md`. A blocker that review leaves standing stops the run.
 
 **Gate (only with `--gated`):** show the plan as a short numbered list (steps + the verify check for each, plus one "done when" line for the whole task) and ask the user to approve, adjust, or cancel via `AskUserQuestion`. Don't touch code until approved. Without `--gated`, state the plan in a few lines, including the "done when" line, and start building.
 
