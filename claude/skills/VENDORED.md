@@ -98,11 +98,11 @@ Last synced to upstream main `1a2c459` (2.13.0) on 2026-10-09. Everything outsid
 over all but `SKILL.md` and merges that file by hand.
 
 ## pbakaus/impeccable: Apache-2.0
-https://github.com/pbakaus/impeccable, `c5ae03e` (v4.5.1), from `plugin/skills/impeccable`
+https://github.com/pbakaus/impeccable, `655be24` (v4.8.1), from `plugin/skills/impeccable`
 
 | Skill | Local changes |
 |---|---|
-| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table, prints `Critic score: N/10` second, and skips its questions when a loop calls it; em dashes replaced; description trimmed from about 895 to about 290 characters |
+| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table, prints `Critic score: N/10` second, keeps C on the native-platform path, and skips its questions when a loop calls it; em dashes replaced; description trimmed from about 895 to about 290 characters |
 
 Replaces the old commands `adapt`, `audit`, `bolder`, `clarify`, `colorize`,
 `critique`, `extract`, `harden`, `normalize` (now `polish`), `onboard`,
