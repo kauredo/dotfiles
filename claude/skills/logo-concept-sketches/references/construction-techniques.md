@@ -8,7 +8,7 @@ Shape play (step 2) finds the idea; these are the concrete ways to build whateve
 
 **It reads through repetition** — the found form only appears once an element repeats (a stack, a fan, a ring). Use a `<g>` with the element duplicated 3-7 times via explicit `transform` per copy, varying one parameter linearly (angle, spacing, or size) so the repeat has a direction, not just a tile.
 
-**It reads through a single swap** — the found form is an expected letterform with exactly one sub-part replaced by something from the brand's own vocabulary. Fill the glyph's silhouette (`parts[0]`), then cut the new sub-part at the old one's box (`parts[1].box` is the first counter): replace only the one most-identifying sub-part. Swapping more than one part loses the read.
+**It reads through the silhouette** — the letter's outer contour is reshaped until the whole letter is the object: the P's stem tapers into a jug's body, its bowl opens into the handle, its top serif becomes a pour lip. Start from the glyph's silhouette (`parts[0]`) and move its edges; keep the counter a plain opening at its natural size, so it stays a counter (the jug's handle hole) and holds at 24px. A counter carries a second reading only when the typeface's own counter already is that shape.
 
 **It reads through alignment** — the found form only resolves once several pieces line up along one implied line or curve. Align 2+ shape edges or centers on that line, and taper size or spacing along it rather than keeping every piece uniform.
 
@@ -24,14 +24,13 @@ Draw the found form as a centerline first, then dress it. Peters' marks rarely s
 
 - **Line system.** `lines(d, { n, w, gap })` turns one centerline into 2-5 parallel strokes that stay parallel through curves and corners (a three-line A, a concentric G). Keep each crossing of a multi-line stroke out of the design or weave it: two line systems laid over each other turn to noise.
 - **Weave.** Where strokes cross, one passes over and the other gets a gap: `weave(under, overD, { width })`. Compute each crossing point from the line equations before cutting, alternate over and under along every stroke, and keep crossings at least two stroke widths apart or the gaps merge.
-- **Container with interior.** A circle, shield, drop or leaf holding the subject plus one interior texture: `rays()` for a sun or burst, `hatch()` for sky or shade, stacked waves for water. One texture per mark.
 - **One system per mark.** One stroke weight, one corner treatment, one way of ending a stroke, carried through every part including the double meaning.
 
 ## What the critics keep catching
 
-From blind critics scoring Dois Agentes against Peters' grid. Build every refined mark to pass these:
+From blind critics scoring Dois Agentes and ProTasca against Peters' grid. Build every refined mark to pass these:
 
-- **Fused, not nested.** The second idea lives inside the first silhouette, usually in its negative space: the nib's shoulders are the roof. A bird inside a circle inside a pin is three stickers.
+- **Silhouette, not decal.** The outline itself is both things: the nib's shoulders are the roof; the P's whole contour is the jug. When the second idea is a shape cut into a counter or set inside a circle, tile or box, critics call it a decal or a sticker and score it as a stock icon, and strangers name parking signs and Pinterest. On ProTasca every counter-cut vessel (a P holding a plate, a soup bowl, a tumbler) topped out at 6.
 - **One ink first.** The mark works in black alone before any accent colour is added. If the idea disappears in black, it was carried by the colour.
 - **One construction.** Same stroke weight, same corner radius, same terminal everywhere; a monoline hook on a solid mass reads as two kits.
 - **Arcs fitted to the drawing.** Critics want curves with a visible logic, but a bird rebuilt stiffly from circles lost every blind A/B to the drawn one. Draw the shape that reads, then fit true arcs to it.
@@ -55,4 +54,9 @@ Some shapes carry a reading wherever they go. Know them before sketching, becaus
 - Two forms flush left with a gap read as a capital B; a small dot high at the right reads as a notification badge.
 - A staircase or single zigzag reads as a lightning bolt and, turned, loosely as the Sig rune; a container around it weakens that.
 - A cupped arc holding dots reads as a smiley; a domed arch as a tombstone or the Arc browser; two split bubbles as thumbs up and down.
+- Two profiles facing each other (the Rubin vase) read as kissing in every version; a big and a small profile mouth to mouth read as an adult kissing a child. Never put two faces mouth to mouth.
+- A curled form inside a teardrop or ear loop reads as a foetus. A big hooked nose on a profile reads as caricature. A slot sticking out of a mouth reads as a cigarette. An almond slit in a disc reads as a vulva; a disc split by a band as a Poké Ball; a wedge cut from a disc as Pac-Man.
+- An S's two ball terminals each sitting in its bowl read as the yin-yang's two dots, most of all in the gap view; balls set clear of the bowls (on the stroke ends, outside the counters) did not. Two glossy stacked spheres read as testicles.
+- For a health brand, a flat line with one bump reads as a heart monitor going flat.
+- Two tall bars with a bird or winged shape at or crossing the top read as the 9/11 towers and plane (all three viewers, twice). Two equal bars alone read as a pause button.
 - A round-ended post beside a round bowl (a p, a stem with a ball) reads phallic or as a pipe; a "u" fused to a p reads as Upwork's mark.

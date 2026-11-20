@@ -15,20 +15,28 @@ You are looking at numbered sketches of possible logo marks. Read each image wit
 
 <one line per image path>
 
-<If the images are look-again pages, add: "Each numbered row shows one sketch four ways: as drawn, its enclosed gaps filled black, then both of those upside down.">
+<If the images are look-again pages, add: "Each numbered row shows one sketch four ways: as drawn, its enclosed gaps filled black, then both of those upside down."> <If any cells come from the image pass, add: "Some sketches sit on a pale grey ground, so their gap views may be noisy; read their drawn and upside-down views hardest.">
+Also name anything a sketch calls to mind that someone could find offensive or upsetting, even if it is not on the list below.
 
 For every number, answer in this order:
 1. What you see, first reading first. Up to three readings, including what the shape looks like turned, mirrored, or read through its gaps. Name objects, letters, numerals, animals, symbols: whatever is actually there.
-2. Red flags: does it resemble, even loosely, any of these: genitals or anything phallic; a swastika or any hate symbol, including rotational four-arm shapes and runes; a religious symbol (cross, crescent and star, star of David, and so on); a weapon; an obscene or rude gesture; a gang sign; anything mocking a group of people<for a children's brand, add: "; any contact between an adult and a child that a parent would object to">? Say which, and in which view.
+2. Red flags: does it resemble, even loosely, any of these: genitals or anything phallic; a swastika or any hate symbol, including rotational four-arm shapes and runes; a religious symbol (cross, crescent and star, star of David, and so on); a weapon; an obscene or rude gesture; a gang sign; anything mocking a group of people<for a children's brand, add: "; any contact between an adult and a child that a parent would object to">? Also name any well-known existing logo it resembles. Say which, and in which view.
 
-Keep each number to two or three lines. Report what you see, not what you think it is meant to be. Read-only: edit nothing.
+Keep each number to two or three lines. Report what you see, not what you think it is meant to be.
+
+Write your full answers to <blind dir>/viewer-<N>.md with the Write tool, saving after each page so nothing is lost. That file is the only thing you may create or change. Then reply with only: the file path, and every number where you raised a red flag or named an existing logo, with the category and view, one line each.
 ```
+
+Read the readings back from the files with a script that prints one number's three answers side by side; the replies carry only the flags.
 
 ## Using the answers
 
-- **Look again:** add every reading two or more viewers named, and that touches a word in the brand-notes list (cut words included), to the finds sheet.
+- **Look again:** add every reading two or more viewers named, and that touches a word in the brand-notes list (cut words included), to the found-shape ledger, and name it beside the cell when you show the user the board.
 - **Aha test:** a concept passes when two of three viewers name its intended double reading unprompted.
 - **Red flags:** a cutting flag removes the cell and every variant built from the same shape arrangement (two balls with a shaft between them stays phallic however it is dressed). Log it in the found-shape ledger with the viewer's words. A cutting flag is settled by cutting, never by arguing it away.
+- **Lookalikes:** an existing logo that two viewers name cuts the cell the same way. Two- and three-letter monograms are the densest lookalike zone, because app icons and company initials already claim most of them: on SINAIA "AIA" read as the AIA insurance group, "AA" as American Airlines, "Ai" as Adobe Illustrator, "iA" as iA Writer and "in" as LinkedIn. A seed that collides survives only as a shape, never spelled.
+- **Readings off the list** (attack imagery, disasters, a tombstone) cut by the same two-viewer rule. On SINAIA two tall bars with a swallow at the top read to all three viewers as the 9/11 towers and plane.
+- **The user's board:** after the cuts, build it with `scripts/board.mjs` (cut cells faded and labelled with their reason, numbering unchanged), so the user picks from what stands and sees what went.
 
 ## Critic prompt (refinement rounds)
 
