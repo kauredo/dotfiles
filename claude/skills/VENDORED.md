@@ -71,7 +71,7 @@ https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
 
 | Skill | Local changes |
 |---|---|
-| frontend-design | rewritten around a "Mandatory preparation" block and a local "Match complexity to the vision" paragraph; upstream's typography, structure, motion, cliché-cluster, plan and writing rules merged in beside them on 2026-10-09; "confirm the subject with the client" skipped, since the preparation block covers it; em dashes replaced |
+| frontend-design | rewritten around a "Mandatory preparation" block and a local "Match complexity to the vision" paragraph; upstream's typography, structure, motion, cliché-cluster, plan and writing rules merged in beside them on 2026-10-09; "confirm the subject with the client" skipped, since the preparation block covers it; the preparation block takes `docs/design-system.md` or a `build-ui` brief as its answer instead of asking again; em dashes replaced |
 
 Copied from the Claude plugin installation. The licence is stored beside the
 skill. The `frontend-design@claude-plugins-official` plugin is uninstalled, so
@@ -102,7 +102,7 @@ https://github.com/pbakaus/impeccable, `655be24` (v4.8.1), from `plugin/skills/i
 
 | Skill | Local changes |
 |---|---|
-| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table, prints `Critic score: N/10` second, keeps C on the native-platform path, and skips its questions when a loop calls it; em dashes replaced; description trimmed from about 895 to about 290 characters |
+| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table (Step 0 screenshots with Hallmark's `capture.mjs` first, the chrome-devtools MCP second), prints `Critic score: N/10` second, keeps C on the native-platform path, and skips its questions when a loop calls it; the override section also hands new-work's `concept-seed` direction roll to `build-ui` Phase 2, since the binary refuses to roll without a root `PRODUCT.md`; em dashes replaced; description trimmed from about 895 to about 290 characters |
 
 Replaces the old commands `adapt`, `audit`, `bolder`, `clarify`, `colorize`,
 `critique`, `extract`, `harden`, `normalize` (now `polish`), `onboard`,
@@ -267,6 +267,33 @@ and Claude Code can't turn off one skill inside a plugin. Those two installed
 builds still tell the agent to avoid the `builder-skills:` copies, which no
 longer load. To refresh, re-enable the plugin long enough to update its cache,
 or clone the repo, and copy the folders over.
+
+## nutlope/hallmark: MIT
+https://github.com/nutlope/hallmark, `04977e1` (v2.0.0), 2026-11-22
+
+| Skill | Local changes |
+|---|---|
+| hallmark | description rewritten to fire only when named and to defer to `build-ui`; `agents/openai.yaml` dropped; `scripts/capture.mjs` renders light unless `--dark` (upstream follows the machine's scheme), and with `--full` scrolls the page first so lazy images and scroll reveals load |
+
+The skill folder only (`skills/hallmark/`: references, the 50 themes with their
+pictures, scripts, the photo library index). The site, eval harness and plugin
+manifests stay upstream. The licence is stored beside the skill. Its Markdown
+had no em dashes to replace.
+
+`build-ui` uses two parts of it without running Hallmark's flow:
+`scripts/sloplint.mjs`, through `build-ui/scripts/lint.mjs` (which drops gate
+20, the missing Hallmark stamp, and takes `--waive`), and the page anatomy,
+rewritten into `build-ui/ANATOMY.md`. The render tier needs `puppeteer-core`
+installed globally (`lib/setup-common.sh` does it) and Chrome. sloplint writes
+`.hallmark/` into its working directory; `lint.mjs` runs it from
+`~/.cache/build-ui-lint/<repo>-<hash>/` so nothing lands in the project, and
+`gitignore_global` ignores `.hallmark/` for the cases that still write beside a
+file (rendering an `.html` file directly, or running sloplint by hand).
+`lint.mjs` also drops or demotes the gates that misfired on six real apps
+(2026-11-22); its header lists them with the reason.
+
+To refresh, clone the repo and copy `skills/hallmark/` over, then re-apply the
+description. Check `build-ui/scripts/lint.mjs` still parses `--json` output.
 
 ## The em dash rule applies to these too
 

@@ -245,19 +245,19 @@ with the full-page captures alongside the findings. Structure:
   keep-list under it:
   - **Rebrand the product** when the brand critic's flavour test came back
     "nothing" or the mark verdict is START OVER, *and* users are `none` or
-    `few`. Route: `build-ui` from step 1, direction hunt included, plus
+    `few`. Route: `build-ui`, redesign branch at depth full, plus
     `ui-ux-pro-max:design` for the mark. A rebrand with daily users is a
     risk the report names and does not recommend; it says "rebrand candidate,
     blocked on users" and routes to fix instead.
   - **Rebuild a surface** when one surface's composition or interaction is at
     5 or below while the product's identity holds on another surface (the
-    Bitola app under the Bitola landing). Route: `build-ui` from step 2,
-    identity settled, carrying the strong surface's system into the weak one.
+    Bitola app under the Bitola landing). Route: `build-ui`, redesign branch,
+    full depth with the identity frozen, carrying the strong surface's system into the weak one.
   - **Keep and fix** otherwise. Route: the table below.
 
   The **keep-list** is mandatory under every verdict, including a rebrand:
   the things the flavour test named, quoted. A rebrand that starts from the
-  direction hunt and carries these forward beats one that starts from
+  direction fan-out and carries these forward beats one that starts from
   nothing, and a fix that drops them is a regression.
 - **The one thing.** If they fix a single thing, which. Pick it from the five
   critics' top changes, and say why it outranks the others.
@@ -277,8 +277,8 @@ with the full-page captures alongside the findings. Structure:
   |---|---|
   | A bug with a stack trace or a measured overflow | `/ship`, no plan needed beyond the row |
   | A token change across codebases (accent, radius, label colour) | `/improve plan` then `/ship` |
-  | A page or component that needs its composition rethought | `/build-ui` from step 2, identity settled |
-  | The whole identity, per the verdict | `/build-ui` from step 1, direction hunt included, seeded with the keep-list |
+  | A page or component that needs its composition rethought | `/build-ui`, redesign branch (full, identity frozen) |
+  | The whole identity, per the verdict | `/build-ui`, redesign branch at depth full, the keep-list in its keeps contract |
   | A mark or logo | `ui-ux-pro-max:design` for the exploration, then `/impeccable critique` |
   | Imagery the page is missing | a real screenshot first; `genmedia` only for what cannot be photographed |
   | Contrast, states, empty states, error paths | `/impeccable harden` |

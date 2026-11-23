@@ -1,136 +1,97 @@
 ---
 name: build-ui
-description: My end-to-end flow for building UIs, pages, and sites. Use when starting UI work, building components/pages, or asked how to build an interface. Runs design context > style (ui-ux-pro-max) > build (frontend-design) > review/polish > code-review + polish-loop.
+description: My end-to-end flow for building UIs, pages, and sites. Use when starting UI work, building components/pages, redesigning, restyling or polishing an existing design, or asked how to build an interface. Runs design context > shape > blind direction fan-out > build > lint and outside critique > code-review + polish-loop.
 ---
 
 # build-ui
 
-You are following the UI Finesse Playbook workflow for building exceptional user interfaces.
+`LINT` in this skill's files means `node ~/.claude/skills/build-ui/scripts/lint.mjs`: Hallmark's rendered linter, tuned for pages that are not Hallmark builds. Gate meanings live in `~/.claude/skills/hallmark/references/gates.md`. `<work>` is a scratch folder outside the project, such as the session scratchpad.
 
-## Phase 0: Mode Detection
+## Phase 0: Branch and mode
 
-Before starting, determine which mode applies:
+**Branch.** Name it in your first reply. This table, and `REDESIGN.md` §1 for redesigns, say which phases run.
 
-### Enhancement Mode (Existing Component Library)
-Detected when ANY of these are true:
-- `components/ui/button.tsx` exists (shadcn/ui pattern)
-- `@radix-ui/*` packages in dependencies
-- `@headlessui/*` packages in dependencies
+| Request | Branch | Phases |
+|---|---|---|
+| A page, site or surface that does not exist yet | **new** | 1, 2 (Shape, Directions, Look), 3, 4, 5 |
+| Redesign, restyle, reskin or polish of something that exists, or "it looks generated" | **redesign** | Read [`REDESIGN.md`](REDESIGN.md) now. Its §1 names the depth (full, restyle or polish) and the phases for it |
+| A new section, state or screen inside a surface whose identity is settled | **extension** | 1, 2 (Look only), 3, 4, 5 |
 
-### Standalone Mode (Greenfield)
-Detected when NONE of the above are present.
+**Mode.**
+- **Enhancement mode**: the project has a component library that carries its own tokens, such as shadcn/ui (`components/ui/button.tsx` with CSS variables) or a themed kit. Its tokens are the system.
+- **Standalone mode**: no such library. Headless primitives (`@radix-ui/*`, `@headlessui/*`) carry behaviour, not tokens, so a project with only those is standalone, and its tokens live wherever its CSS defines them (a Tailwind `@theme`, a `:root` block).
 
-## Phase 1: Context Gathering
+## Phase 1: Context
 
-**ALWAYS start here before building UI.**
+Read `docs/design-system.md`, or wherever the project already keeps its design context: a doc its `CLAUDE.md` or `AGENTS.md` names (`docs/design.md`, `DESIGN.md`, a brand file), or a `## Design Context` section inside `CLAUDE.md` or `AGENTS.md` itself. That place is the Design Context's home for this project, and later steps write to it. When none exists, run `/impeccable init`, which interviews the user and writes `docs/design-system.md`, linked from the project `CLAUDE.md`. Init leaves visual taste to later steps, so ask for the rest yourself and add it under `# Product` as `## Design Context`.
 
-Check for `docs/design-system.md` (the persisted Design Context).
-- **If it exists**, read it and use it, do not re-interview.
-- **If it doesn't**, run `/impeccable init`. It interviews the user (via `AskUserQuestion`) for the product record and persists it to `docs/design-system.md`, linked from the project `CLAUDE.md`. Init leaves visual taste to later steps, so ask for the rest yourself (brand personality in three words, reference sites, anti-references, light or dark, colors to use or avoid) and add it to the same file under a `## Design Context` section. Then continue.
+Rules the project's own docs set (a touch-target size, a font count, an illustration style) win over any skill's or LINT's default where the two disagree; waive the LINT gate with the doc as the reason.
 
-The context you need either way: target audience and use cases, brand personality (3 words), aesthetic direction and references, anti-references (what to avoid).
+Phase 1 is done when the Design Context names the audience and use cases, the brand personality in three words, reference sites, anti-references, light or dark, and the colours to use or avoid. With nobody to ask, fill the gaps yourself and mark each as your choice.
 
 ## Phase 2: Foundation
 
-**First, diverge.** Skip this for a small tweak. For a new page, a new site, or a redesign, produce three or four genuinely different directions before committing to one.
+### Shape
 
-**Inside a project that already has an identity** (tokens, a design-system doc, shipped screens), that identity is frozen. Write the frozen and variable lists from `critique-loop`'s [constraint contract](../critique-loop/REDESIGN-FANOUT.md) first. Every direction then uses the project's fonts, palette, icons and components, and its seed steers only the variable list: layout, density, hierarchy, motion. A seed picks palette and type only on a new project or an approved redesign.
+Write these down before any direction exists. Each direction agent receives them, so the fan-out varies the look and keeps the substance.
 
+1. **The job.** The one thing a visitor comes to do (subscribe, book, visit, attend, buy, try, sign up, hire, join, listen). Read that job in [`ANATOMY.md`](ANATOMY.md) and write its three lines for this page: where the action sits, the sections that belong to it, how the page ends. An app screen's job is the task the person repeats there: name the task, the information it needs and its states, and skip the anatomy.
+2. **The material inventory**, three lists:
+   - *real*: every concrete thing the brief and the project supply (name, claims, numbers, places, dates, images, the product itself)
+   - *pictures*: what the page will show and where each comes from (the user's files, screenshots of the running product, the product built in code, imagery generated with `genmedia`)
+   - *absent*: every proof nobody gave (logos, quotes, metrics, reviews)
 
-- Give the model a source of randomness from outside itself so it stops reaching for its defaults. Have it run `openssl rand -hex 24` and derive the creative direction from that string: palette, layout, typography, texture. Tell it to read past the surface of the string, into subpatterns, repeated characters, numbers that mean something, and to keep the string out of the design itself. It is inspiration, not content. Prompting for "something unique" or "decide at random" does not work, because the model predicts what random-sounding looks like, which is its own template.
-- Or write a brief with a reference borrowed from outside software: a video game, an interior design trend, an art installation. "Each section is a still from a 16-bit platformer." "An isometric city where the features are neighborhoods." The more specific the brief, the more the model has to decide against.
-- **Build the directions in parallel, one subagent each, in a single message.** Generating three directions in a row inside one context does not give you three directions. The second is written by an agent that has already seen the first, the third has seen both, and they converge on whatever the first one committed to. That is the same failure the seed string exists to prevent, one level up. Spawn a `general-purpose` agent per direction, give each the Design Context, plus the frozen list when there is one, and nothing else, and have each generate its own seed inside its own context. No agent sees another's output, and none of them sees this conversation.
-- Build each direction as a rough throwaway, show them side by side, say which one you would pick and why, then ask the user. Write down their reaction, especially what they dislike, and feed that back as the sharpening prompt.
-- Try the direction that sounds like it cannot work. "There is no way this looks good" is a signal you have left the median, and the agent will sometimes land it. When it does not, throw the result away and keep the prompt. Retry the ones that failed when a new model ships, since a brief that was too ambitious for one generation is often exactly what the next one needs.
+   Only *real* items reach the page as fact. Sections built on *absent* content follow `ANATOMY.md`'s sample rule.
+3. **The signature.** The one thing a visitor would remember: the strongest *real* item shown at its best (the photograph that is the place, the product doing its one job, a price set huge because it is the offer). It sits on the first screen.
+4. **On a redesign, the keeps contract** from `REDESIGN.md` §3.
 
-**Then decide the look.** Use the `ui-ux-pro-max` skill to pick a concrete UI style, color palette, font pairing, and (if needed) chart type that fit the Design Context. These choices feed the design tokens below, don't invent palettes/type from scratch when the database has vetted options. Inside an existing identity the frozen list already is the look: this step only fills gaps the tokens leave, such as a chart palette or a missing state colour, and keeps every font. If the Design Context names a real product as a reference, run `ui-ux-pro-max`'s Step 1b (Refero Styles) first to get its actual DESIGN.md.
+### Directions
 
-### Standalone Mode
-1. Define tokens (color, type, spacing, radius, shadow) as CSS custom properties, and record them in the `# Design System` section of `docs/design-system.md`
-2. Theme by swapping token values, so components never hold a raw color
+Read [`DIRECTIONS.md`](DIRECTIONS.md) and follow it: freeze what is settled, seed three or four directions from outside the model, build them blind in parallel, and put them on impeccable's decision page for the user to pick. The step is done when a direction is picked and recorded in the Design Context.
 
-### Enhancement Mode
-1. Use the library's existing token system, as recorded in `docs/design-system.md`
-2. Wrap library components instead of copying their styles
-3. Override defaults through tokens and `className`; reach for new CSS only where the library has no slot
+### Look
+
+- **After Directions**: the picked card's palette and type stand. Use the `ui-ux-pro-max` skill for what the card leaves open (a UI style, a body face to pair with the display face, a chart type).
+- **On an extension**: the Design Context's tokens are the look. Use `ui-ux-pro-max` only for a gap they leave, such as a chart palette or a missing state colour, and keep every font. With no gap, skip it.
+
+Start from the database's vetted options. If the Design Context names a real product as a reference, run `ui-ux-pro-max`'s Step 1b (Refero Styles) first to get its actual DESIGN.md.
+
+**Standalone mode:** define tokens (color, type, spacing, radius, shadow) as CSS custom properties and record them in the Design Context's home under `# Design System`. Theme by swapping token values, so every component reads its colors from a token.
+
+**Enhancement mode:** use the library's token system, as the Design Context records it. Wrap library components and extend them through their props and `className`. Write new CSS only where the library has no slot.
 
 ## Phase 3: Building
 
-For every component:
-1. Consult the `frontend-design` skill for aesthetic direction
-2. Follow `interface-guidelines` skill for interaction patterns
+For the page and every component in it:
+1. Consult the `frontend-design` skill for aesthetic direction. Its "Process" section holds the one list of looks generated pages fall into; on any axis the brief leaves free, pick something that list does not name.
+2. Follow the `interface-guidelines` skill for interaction patterns. Use the platform's own controls: a stock button, select or text field looks better than a hand-rolled one, and keeps its accessibility.
 3. When the component moves with the user's hand (drag, swipe, sheet, carousel, pull-to-refresh), build its motion from the `apple-design` skill: springs, velocity handoff, momentum, rubber-banding. Its code targets `motion` on the web; on React Native, carry the same physics over to Reanimated and Gesture Handler.
-4. Write the styles with the `good-css` skill, the source for CSS technique (layout, container queries, show-and-hide, motion)
-5. Use composition over duplication
-6. When a section needs visual weight, generate real imagery with the `genmedia` skill (fal.ai) rather than reaching for a CSS gradient or a blurred blob. Coding agents default to gradients and shapes because those are code, and that reflex is one of the clearest signs nobody art-directed the page.
-
-### Motion beyond CSS
-
-CSS transitions cover most of what a page needs. For the two cases below, generate the motion with a video model through `genmedia`.
-
-**Animated graphics that do not read as video.** Generate a looping clip against a solid background, then chroma key it out, or run a video matting model when the edges are complex. What you get back is an animation you can layer anywhere in the UI. For anything glassy, chrome, or refractive, render the clip over the page's own background colors first so the refraction bakes into the pixels, then matte the background out. Render it on a neutral background and composite afterwards and the glass looks fake.
-
-**Scroll and gesture transitions.** Many video models interpolate between two keyframe images, so two product stills become a transition clip you can scrub frame by frame as the user scrolls or swipes. Chain several by seeding each clip with the previous clip's final frame, which keeps the sequence continuous. Ask `genmedia` for a model with strong physics and temporal consistency.
-
-Video is billed per clip. Check `genmedia pricing <endpoint_id>` before a batch and keep the clips short.
+4. Write the styles with the `good-css` skill, the source for CSS technique (layout, container queries, show-and-hide, motion). In files that already exist, the codebase's own conventions win where the two differ.
+5. On a new page or a full redesign, build the sections below the first screen from the picked card's `sections` list. Each section's composition comes from what it holds: a sequence reads as a timeline, a comparison as the same data side by side, a set of facts as a table, a single proof as one large picture. Done when no two sections in a row share a composition and each one's composition names its content.
+6. When a section needs visual weight, use a real picture from the Shape inventory: the user's files, a screenshot of the running product, or imagery generated with the `genmedia` skill (fal.ai).
+7. When a section needs generated motion (a matted loop or a scroll-scrubbed transition), read [`MOTION.md`](MOTION.md).
 
 ## Phase 4: Refinement
 
-Reviewing your own design is not an independent check. You can see the code, the rationale, and the last three attempts, so you grade generously. The judgment has to come from outside that context.
+Your own context grades too kindly: it holds the code, the rationale and the last three attempts. The mechanical checks run first, then a critic that cannot see the code.
 
-After building:
-1. Run `/impeccable critique`. Its Step 0 screenshots the running page and hands the judgment to a fresh subagent that cannot see the code. Apply what holds up.
-2. Run `design-polish` skill for systematic final pass
-3. Run `design-review` skill for accessibility verification
+0. **LINT.** Read [`LINT.md`](LINT.md) and follow it. Done when LINT reports 0 FAIL on every route.
+1. **Critique.** Run `/impeccable critique`. Its Step 0 screenshots the running page and hands the judgment to a fresh subagent. Give it the Shape notes, the Design Context's reference sites as its bar (critics with no references all reach for the same few sites from memory) and, on a redesign, the before screenshots and the question in `REDESIGN.md` §5 item 4. When it reaches the ship line (a score of 8; at restyle and polish, the one in `REDESIGN.md` §5 item 3), fix each finding or write down why it stays. When it misses, leave the findings unapplied and run `critique-loop`. Its round 1 saves a baseline, critiques again and keeps each fix only if it wins a blind A/B against that baseline; fixes applied before the loop starts would have nothing to be measured against. The loop scores every round as the median of three critics; compare those medians with each other, not with this single score.
+2. **Subtraction.** A separate pass with its own prompt: simplify the layout around the pictures, and cut every gradient, glow, container and label that carries nothing the page needs. Done when each one left has a job you can name.
+3. **Polish.** Run the `design-polish` skill. Done when its checklist is ticked.
+4. **Accessibility.** Run the `design-review` skill. Done when it reports no critical issue.
 
 ## Phase 5: Quality Gate
 
-Before shipping, verify:
-- Every item on the Polish Checklist in `design-polish` is ticked
-- `design-review` reports no critical accessibility issues
-- Passes the "AI slop test" (doesn't look generic)
-- **Every line of copy has been rewritten by hand.** Whatever the model wrote into the design is placeholder text, there to show the structure and the line lengths. Rewrite each string against `~/.claude/writing-style.md`, in one voice, and expect it to get shorter. Ask the user for the lines you cannot write yourself, like a product claim or a price
+Confirm each, and list any that fails for the user:
+- LINT reports 0 FAIL on every route built, and each waiver has its reason written down.
+- The last critique reached the ship line (a score of 8; at restyle and polish, the one in `REDESIGN.md` §5 item 3), or its open findings are listed.
+- Phase 4 steps 2 to 4 are done.
+- On a redesign, `REDESIGN.md` §5 and §6 are done.
+- **Copy.** On new and extension pages, every line the model wrote is placeholder: rewrite each against `~/.claude/writing-style.md` in one voice, expect it to get shorter, and ask the user for lines you cannot write (a product claim, a price). On a redesign, `REDESIGN.md` §3 "Words" decides which lines change.
 
-Then close out the feature:
+**Invoked from `/ship`?** Pass this gate, then stop. Ship owns the close-out at its Steps 3 and 4.
+
+Otherwise close out the feature:
 1. Run `/code-review` and apply all fixes.
 2. Run `/polish-loop` until it comes back clean.
-
-**Invoked from `/ship`?** Stop after Phase 4. Ship owns this close-out at its own Steps 3 and 4.
-
-## Quick Reference
-
-| Need | Resource |
-|------|----------|
-| Persisted design context | `docs/design-system.md` (via `/impeccable init`) |
-| Divergent directions | seed string (`openssl rand -hex 24`) or an outside-reference brief |
-| Style / palette / type / charts | `ui-ux-pro-max` skill |
-| Aesthetic direction | `frontend-design` skill |
-| Real imagery and motion | `genmedia` skill (fal.ai) |
-| Interaction patterns | `interface-guidelines` skill |
-| CSS technique | `good-css` skill |
-| Gesture-driven motion, springs, materials | `apple-design` skill |
-| Independent design judgment | `/impeccable critique` (its Step 0) |
-| Named AI tells and their alternatives | `/impeccable critique` (its AI tells table) |
-| Copy that ships | rewrite by hand against `~/.claude/writing-style.md` |
-| Final polish | `design-polish` skill |
-| Accessibility review | `design-review` skill |
-| Close-out review | `/code-review` (apply fixes) then `/polish-loop` |
-
-## Anti-Patterns to Avoid
-
-### Building
-- Starting without design context
-- Copying styles instead of wrapping components
-- Hardcoding colors/spacing instead of using tokens
-
-### Aesthetics
-- Generic "AI slop" (purple gradients, glowing accents, Inter font)
-- Glassmorphism everywhere
-- Same-sized card grids
-- Gradient text on metrics
-- Custom controls where the platform ships a real one. A hand-rolled button, select, or text field almost always looks worse than the stock iOS, Android, or browser component, and rolling your own throws away the accessibility that came with it
-
-### Refinement
-- Shipping the copy the model wrote, without a human rewriting each line
-- Adding when the fix is subtracting. AI piles things on and rarely takes them away: glow effects, highlighted words, labels repeating what the image already says, custom controls that beat the platform ones at nothing. The subtraction pass is its own prompt: simplify the layout into an image-centric grid, strip gradients, glows, and containers holding nothing, and fall back to native components.
-- Grading your own work from inside the context that produced it

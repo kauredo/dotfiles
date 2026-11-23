@@ -16,12 +16,13 @@ Which door:
 
 | Situation | Entry point |
 |---|---|
-| New project, or a full redesign | `build-ui`, Phases 0 to 5, direction hunt included (first block of Phase 2) |
+| New project or new page | `build-ui` |
 | New feature with UI | `/ship`, which invokes `build-ui` at its implement step |
-| Reworking a page whose identity is already settled | `build-ui` from "Then decide the look" in Phase 2, skipping the direction hunt above it |
+| Redesign, restyle, reskin or polish of something that exists | `build-ui`, redesign branch |
+| A new section, state or screen inside a settled identity | `build-ui`, extension branch |
 | Small tweak (spacing, one color, one component) | Just do it, then `/impeccable critique` if it is user-facing |
 | A value I can only judge by eye (radius, shadow, easing, spring) | `dial-in`: live sliders in the running app, written back to source |
-| "Does this look AI-generated?" | `/impeccable critique` alone. It screenshots and asks an outside subagent |
+| "Does this look AI-generated?" | `build-ui` Phase 4 steps 0 and 1: LINT, then `/impeccable critique` |
 
 Full detail lives in the `build-ui` skill.
 

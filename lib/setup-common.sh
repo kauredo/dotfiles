@@ -29,6 +29,8 @@ setup_node() {
 
   echo "Installing common global npm packages..."
   npm install -g yarn
+  # Hallmark's sloplint renders pages through it (build-ui Phase 4)
+  npm install -g puppeteer-core
 
   echo "Node.js environment setup complete!"
 }

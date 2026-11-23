@@ -8,9 +8,11 @@ Scope it to one screen, the worst-scoring one. The winning direction reaches the
 
 Split the design system in two, and write both lists down before generating anything.
 
-**Frozen** is identity: the palette, the type roles, the icon set, the component primitives, the voice. Find them in the project's design-system doc, its token file, and its `AGENTS.md` or `CLAUDE.md`, and point at those rather than restating them. A candidate that moves one of these is a different product, not a candidate. Where a linter already enforces part of the list, it fails those candidates before a critic sees them.
+**Frozen** is identity: the palette, the type roles, the icon set, the component primitives, the voice. Find them in the project's design-system doc, its token file, and its `AGENTS.md` or `CLAUDE.md`, and point at those rather than restating them. A candidate that moves one of these is a different product, not a candidate. Where a linter already enforces part of the list, it fails those candidates before a critic sees them. Run `node ~/.claude/skills/build-ui/scripts/lint.mjs <candidate> --render --url <scratch route>` on every candidate and drop any with a FAIL before ranking; when the screen came from a redesign, add `--kept` against that redesign's before record so a candidate that lost a link or a field never reaches the critic.
 
 **Variable** is composition: what leads the page, density, how much chrome and containment, the hierarchy between primary and secondary actions, the layout shape, the type scale, how hard the accent font works, motion.
+
+On a `build-ui` run, `build-ui/DIRECTIONS.md` §1 defines the two lists for each branch.
 
 Plateaus live in the variable list almost every time, which is what lets the fan-out be aggressive and still land inside the app.
 

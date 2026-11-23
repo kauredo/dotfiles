@@ -39,13 +39,13 @@ One file, `<work>/LEDGER.md`, the loop's memory. Each critic is fresh and rememb
 - **Rejected**: every replaced shape, with the element and the reason it lost. Every critic receives this list too.
 - **Applied**: each finding you acted on, the round, and the change it made. Triage reads it to catch reversals.
 
-Seed settled before round 1 with the project's design decisions and anything the user asked to keep.
+Seed settled before round 1 with the project's design decisions, anything the user asked to keep, and, when `build-ui`'s redesign branch called the loop, its keeps contract, the read's first two lines, the depth, and at restyle and polish the frozen layout and that depth's ship line.
 
 ## Each round
 
 1. **Save the baseline.** Write the current diff of the target files to `<work>/round-N.base.patch`, so this round's change can be undone exactly.
 2. **Capture** every state on the list into `round-N/`, under the same file names every round.
-3. **Critique** with `/impeccable critique` on the target with those screenshots and the list, run three times, each in its own fresh subagent, with the same prompt. The round's score is their median. A finding is **consensus** when two or more critics raise it; findings only one critic raised are **minority**, recorded and not acted on. Add four things to the critique prompt:
+3. **Critique** with `/impeccable critique` on the target with those screenshots and the list. Its Step 0 outside critic (Assessment C) runs three times, each in its own fresh subagent, with the same prompt; its Assessments A and B run in round 1 and once more on the final screens before the loop stops, since markup and heuristics move slowly between rounds. Rounds in between cost three subagents. The round's score is the median of the three critics. A finding is **consensus** when two or more critics raise it; findings only one critic raised are **minority**, recorded and not acted on. Add four things to the critique prompt:
 
    > For each graphic element, name the established UI pattern its shape quotes, and say whether that pattern's conventional meaning matches what this element is for.
 
@@ -87,6 +87,8 @@ Every command this loop reaches for works inside a design direction, and none of
 | 8 and up | At the ceiling, and the ceiling is high | Ship |
 | 6 to 7.9 | Direction holds, execution falls short | Re-ask, below |
 | Below 6 | Wrong direction | [`REDESIGN-FANOUT.md`](REDESIGN-FANOUT.md) |
+
+When `build-ui`'s redesign branch called the loop at restyle or polish, the layout is frozen and every row above goes to the user instead: the ship line is "no open finding inside the depth's scope", and a plateau becomes a recommendation to run a full redesign, never a fan-out.
 
 ### Confirm the round happened
 

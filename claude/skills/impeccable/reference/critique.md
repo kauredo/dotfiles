@@ -4,9 +4,15 @@ This step comes first and is mine, not upstream's. You cannot answer the AI slop
 
 If the target can be rendered, do this before Setup. When a caller (`critique-loop`, `design-loop`, `app-critique`, `portfolio-critique`) hands you screenshots and a state list, use those instead of rendering again.
 
-1. **Render it.** Launch the app with the `run` skill or the project's dev script, wait for it to be ready, then use the **chrome-devtools** MCP to navigate to each affected route and screenshot it. Desktop width, plus 390px if the change is responsive. Save the files to a temp dir. Reuse a dev server already running from an earlier round.
+1. **Render it.** Launch the app with the `run` skill or the project's dev script, wait for it to be ready, then screenshot each affected route at desktop width, plus 390px if the change is responsive, in every colour scheme the app ships. Reuse a dev server already running from an earlier round. Use Hallmark's capture script, which runs its own headless browser, so it never collides with the user's Chrome or another session's:
 
-   The MCP refuses to attach when a Chrome is already running on its profile (`The browser is already running for ~/.cache/chrome-devtools-mcp/chrome-profile`). That browser may be the user's, so do not kill it. Screenshot headless instead, against a scratch profile of your own:
+   ```
+   node ~/.claude/skills/hallmark/scripts/capture.mjs http://localhost:<port> --routes /,/pricing --sizes desktop,phone --full --name <page> --out <scratch dir> [--dark]
+   ```
+
+   `--full` captures the whole scroll height of the document; past about 16,000px (a long page on a phone) the stitched image loops back to the top, so capture those in viewport slices instead. Without `--dark` it renders light. An app that scrolls an inner element (React Native web, a fixed app shell) gets one viewport per shot whatever the flag, so say so in the state list and capture the lower states separately. When the script is missing or fails, fall back to the chrome-devtools MCP, which saves only inside its workspace roots, so pass a path under the project and delete the files after.
+
+   With neither available, screenshot headless against a scratch profile of your own:
 
    ```
    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
@@ -21,7 +27,7 @@ If the target can be rendered, do this before Setup. When a caller (`critique-lo
 5. **Ask for a score out of 10** alongside the ranking: how close is this to what a good studio would ship. Never tell the critic what score you are aiming for. A critic that knows the bar is 9 starts handing out 9s.
 6. Its verdict and its score open the report, in the Anti-Patterns Verdict below.
 
-Reuse this prompt verbatim on every round. Editing it between rounds means the scores are no longer comparable, and a rising score is the only evidence you have that the fixes are working.
+Reuse this prompt verbatim on every round. Editing it between rounds means the scores are no longer comparable, and a rising score is the only evidence you have that the fixes are working. A caller's additions are part of the prompt from round 1 on: `build-ui`'s before screenshots and "what did the old page do better?", and `critique-loop`'s settled and rejected lists, which grow each round as data in a fixed slot while the wording around them stays the same.
 
 **With no reference images available**, tell the critic to name three or four real products in the same genre and rank against those from memory. Say in the report that the bar was self-supplied, which makes it softer.
 
@@ -186,7 +192,7 @@ Be honest with scores. A 4 means genuinely excellent. Most real interfaces score
 
 #### Anti-Patterns Verdict (Design Specificity)
 
-**Start here, right under the Method line.** Open with the outside critic's score on its own line, as `Critic score: N/10`, so a loop can compare rounds. If the critique was code-only with no screenshot, write `Critic score: none (code-only)` instead, and say why. Then the critic's ranking and verdict, and pass/fail: does this look AI-generated? Name every tell you found, both the four in the AI tells table and the ones in the frontend-design skill's Anti-Patterns section. Be brutally honest.
+**Start here, right under the Method line.** Open with the outside critic's score on its own line, as `Critic score: N/10`, so a loop can compare rounds. If the critique was code-only with no screenshot, write `Critic score: none (code-only)` instead, and say why. Then the critic's ranking and verdict, and pass/fail: does this look AI-generated? Name every tell you found, both the four in the AI tells table and the five looks in the frontend-design skill's "Process" section. Be brutally honest.
 
 Then: does the result feel authored for this product, or category-interchangeable?
 
