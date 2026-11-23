@@ -33,8 +33,6 @@ Columns:
 | Basketball Stats | basketballstatsapp.com | product | https://www.basketballstatsapp.com | sports-app | public | 0 | personal/basketball-stats-app |
 | Basketball Video Analyzer | website | marketing | https://basketballvideoanalyzer.com | desktop-app-marketing | public | **17px** | personal/basketball-video-analyzer |
 | Basketball Video Analyzer | desktop app | desktop | local:electron | desktop-app | n/a | n/a | personal/basketball-video-analyzer/app |
-| Bitola | bitola.app | marketing | https://bitola.app | car-marketplace-marketing | public | 0 | personal/bitola/landing |
-| Bitola | app | product | https://app.bitola.app | car-marketplace-app | public | **128px** | personal/bitola |
 | Delivered Photos | delivered.photos | marketing | https://delivered.photos | saas-marketing | public | 0 | personal/delivered-photos |
 | Delivered Photos | app | product | https://app.delivered.photos | gallery-app | wall | 0 | personal/delivered-photos |
 | Cadence Studio | cadence-studio | product | https://cadence-studio-theta.vercel.app | writing-tool | public | 0 | personal/cadence-studio |
@@ -53,7 +51,6 @@ Columns:
 
 | Product | Surface | Kind | Render | Genre | Repo |
 |---|---|---|---|---|---|
-| Loadwell | mobile app | mobile | local:expo | mobile-app | personal/loadwell |
 | Agents for Agents | web | product | local:rails | ai-tool | personal/agents-for-agents |
 | FPB Calendar | web | product | local:rails | sports-app | personal/fpb-calendar |
 | D&D Project | web | product | local:node | game-tool | personal/dnd-project |
