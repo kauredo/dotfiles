@@ -84,7 +84,7 @@ https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 
 | Skill | Local changes |
 |---|---|
-| ui-ux-pro-max | plugin-root paths replaced with the cross-tool `~/.agents/skills` path; em dashes replaced |
+| ui-ux-pro-max | plugin-root paths replaced with the cross-tool `~/.agents/skills` path; em dashes replaced; `data/landing.csv` row 14 (Pricing-Focused Landing) names the recommended plan instead of filling its card |
 
 Only the `ui-ux-pro-max` runtime skill is vendored, including its search scripts,
 data, and references. The plugin's other specialist skills and development files
@@ -102,7 +102,7 @@ https://github.com/pbakaus/impeccable, `655be24` (v4.8.1), from `plugin/skills/i
 
 | Skill | Local changes |
 |---|---|
-| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table (Step 0 screenshots with Hallmark's `capture.mjs` first, the chrome-devtools MCP second), prints `Critic score: N/10` second, keeps C on the native-platform path, and skips its questions when a loop calls it; the override section also hands new-work's `concept-seed` direction roll to `build-ui` Phase 2, since the binary refuses to roll without a root `PRODUCT.md`; em dashes replaced; description trimmed from about 895 to about 290 characters |
+| impeccable | `PRODUCT.md` and `DESIGN.md` become `docs/design-system.md#product` and `#design` throughout the Markdown, with an override section in `SKILL.md` that explains it; `document.md` writes a section into that file instead of a new one; `init.md` adds the `CLAUDE.md` pointer step from the old `teach-impeccable`; `critique.md` opens with the local Step 0 outside critic and AI tells table (Step 0 screenshots with Hallmark's `capture.mjs` first, the chrome-devtools MCP second), prints `Critic score: N/10` second, keeps C on the native-platform path, and skips its questions when a loop calls it; its AI tells table carries the nine generated-site tells and points at `build-ui/scripts/lint.mjs`; Assessment B scans URLs with the CLI as well as files; the override section also hands new-work's `concept-seed` direction roll to `build-ui` Phase 2, since the binary refuses to roll without a root `PRODUCT.md`; em dashes replaced; description trimmed from about 895 to about 290 characters |
 
 Replaces the old commands `adapt`, `audit`, `bolder`, `clarify`, `colorize`,
 `critique`, `extract`, `harden`, `normalize` (now `polish`), `onboard`,
@@ -188,7 +188,7 @@ https://github.com/coreyhaines31/marketingskills, `1efedbc` (skills v2.1.3), 202
 
 | Skill | Local changes |
 |---|---|
-| pricing | `evals/` dropped; em dashes replaced; description trimmed from about 870 to about 300 characters |
+| pricing | `evals/` dropped; em dashes replaced; description trimmed from about 870 to about 300 characters; "Recommended tier highlighted" under Pricing Page Best Practices becomes a named tier with the primary button and a shared card fill, to match `build-ui/ANATOMY.md` |
 | competitor-profiling | `evals/` dropped; em dashes replaced; description trimmed from about 690 to about 280 characters |
 
 Cloned and copied, never in the `npx skills` lock. The licence is stored beside

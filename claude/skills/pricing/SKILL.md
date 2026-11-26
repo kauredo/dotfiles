@@ -218,7 +218,7 @@ Expect, and accept, some churn. The customers most likely to leave over a justif
 
 ### Above the Fold
 - Clear tier comparison table
-- Recommended tier highlighted
+- Recommended tier named on its card and given the primary button, with every card in the same fill
 - Monthly/annual toggle
 - Primary CTA for each tier
 

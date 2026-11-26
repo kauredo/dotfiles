@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+const t = (k: string) => k;
+const notes = ['Cancel any time', 'VAT included'];
+---
+<Layout>
+  <section class="py-24">
+    <h2 class="text-4xl">Simple pricing. Powerful results.</h2>
+    <div class="grid grid-cols-3 gap-6">
+      <div class="rounded-2xl border p-6">
+        <h3>Starter</h3>
+        <p>€9 /mês</p>
+        <a class="rounded-md border px-4 py-2" href="/signup?plan=starter">Choose</a>
+      </div>
+      <div class="rounded-2xl border p-6">
+        <h3>Team</h3>
+        <p>€29 /mês</p>
+        <a class="rounded-md border px-4 py-2" href="/signup?plan=team">Choose</a>
+      </div>
+      <div class="rounded-2xl border-2 border-primary p-6 md:scale-105">
+        <span class="rounded-full bg-primary px-2 text-xs">Mais popular</span>
+        <h3>Business</h3>
+        <p>€79 /mês</p>
+        <a class="rounded-md bg-primary px-4 py-2" href="/signup?plan=business">Choose</a>
+      </div>
+    </div>
+    <ul>{notes.map((n) => <li>{n}</li>)}</ul>
+    <a class="text-sm underline" href="/tour">Find out more &rarr;</a>
+    <a class="text-sm" href="/terms">{t("pricing.footer.read_the_full_terms_of_service_before_you_buy")}</a>
+  </section>
+</Layout>

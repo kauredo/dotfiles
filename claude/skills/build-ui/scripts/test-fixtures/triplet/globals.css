@@ -1,0 +1,17 @@
+@layer base {
+  :root {
+    --background: 40 38% 95%;
+    --foreground: 24 10% 10%;
+    --primary: 16 62% 52%;
+    --primary-foreground: 0 0% 100%;
+  }
+  .dark {
+    --background: 24 10% 8%;
+    --primary: 16 62% 60%;
+  }
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
