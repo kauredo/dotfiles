@@ -137,7 +137,7 @@ AI tells: every pattern that marks this as model-generated. Go through the AI
 color palette, gradient text, dark mode with glowing accents, glassmorphism,
 hero metric layouts, identical card grids, generic fonts, an eyebrow label on
 section after section, headlines of short full-stopped fragments ("Less X.
-More Y."), a filled and outlined pill pair with an arrow, one pricing card
+More Y."), a filled and outlined button pair with an arrow, one pricing card
 filled or badged, emoji as icons, a cream ground with a clay accent and a
 serif display, a stock indigo or violet primary, star rows or "trusted by N+",
 background gradients, cards around everything, and more than four type styles. Name the ones you find and where.

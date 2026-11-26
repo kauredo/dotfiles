@@ -43,7 +43,7 @@ Then walk this list. Look for each pattern by name, and where you find one, try 
 |---|---|
 | Eyebrow text, meaning the small label above a heading, on section after section | Delete it. Keep one, on the section whose heading cannot name its category |
 | A headline of short full-stopped fragments: "Less paperwork. More time for patients.", "Stop guessing. Start tracking.", "Your workflow, simplified." | One sentence with a verb that says what the product does, for whom |
-| Pill buttons in a filled-plus-outlined pair, an arrow after the label | One primary with the corner radius the fields use, the verb alone as its label; the second action as a text link |
+| A filled button beside an outlined "Learn more", an arrow after the label | One primary, its label the action alone; the second action as a text link. Pill or square corners are the design's choice |
 | One pricing card filled in the brand colour or badged "Most popular" | Every card the same fill; the recommended plan named in a word on its card and given the primary button |
 | Emoji standing in for icons | The project's icon set, or no icon |
 | Cream ground, clay or terracotta accent, serif display | A palette from the subject. Where the brand owns these values, keep them and change their use: how much surface each covers, where the accent lands |

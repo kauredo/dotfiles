@@ -182,7 +182,7 @@ the phone layout stop being designed?
 
 Then the AI tells in this dimension: hero metric rows, identical card grids,
 cards around everything, an eyebrow label on section after section, a filled
-and outlined pill pair with an arrow, one pricing card filled or badged "Most
+and outlined button pair with an arrow, one pricing card filled or badged "Most
 popular", emoji standing in for icons, a row of stars or "trusted by N+",
 background gradients, empty hero halves, cookie banners over live content. Name each, with the route
 and the screen number.
