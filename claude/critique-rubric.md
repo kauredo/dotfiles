@@ -57,5 +57,6 @@ Loaded by `/impeccable critique`. The AI tells check stays in the impeccable ski
 - Does it sound like a human (the right human for this brand)?
 - Are labels and buttons unambiguous?
 - Does error copy help users fix the problem?
+- Does each headline have a subject and a verb that say what the product does? Two clipped fragments in matching rhythm ("Less X. More Y.") say nothing a visitor can check.
 - **Has anyone rewritten the copy since the model wrote it?** Model-written copy is placeholder text. It shows you the structure and the line lengths, the same way Lorem ipsum does, and then it has to be replaced. Readers who see a wall of AI-generated text skim past it, so this can decide whether a page reads as tasteful faster than any of the visual checks above. Flag every string still in its generated form and rewrite it against `~/.claude/writing-style.md`. The rewrite is almost always shorter.
 

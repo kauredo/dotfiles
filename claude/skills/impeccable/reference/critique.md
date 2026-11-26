@@ -41,12 +41,19 @@ Then walk this list. Look for each pattern by name, and where you find one, try 
 
 | Overused pattern | Try instead |
 |---|---|
-| Eyebrow text, meaning the small label above a heading that restates what the heading already says | Delete it. Nine times out of ten nothing is lost |
+| Eyebrow text, meaning the small label above a heading, on section after section | Delete it. Keep one, on the section whose heading cannot name its category |
+| A headline of short full-stopped fragments: "Less paperwork. More time for patients.", "Stop guessing. Start tracking.", "Your workflow, simplified." | One sentence with a verb that says what the product does, for whom |
+| A filled button beside an outlined "Learn more", an arrow after the label | One primary, its label the action alone; the second action as a text link. Pill or square corners are the design's choice |
+| One pricing card filled in the brand colour or badged "Most popular" | Every card the same fill; the recommended plan named in a word on its card and given the primary button |
+| Emoji standing in for icons | The project's icon set, or no icon |
+| Cream ground, clay or terracotta accent, serif display | A palette from the subject. Where the brand owns these values, keep them and change their use: how much surface each covers, where the accent lands |
+| A stock indigo or violet primary, a lavender wash, blurred colour blobs | A hue from the product's own world on a flat ground |
+| A row of stars, "Trusted by 2,500+ teams" | A named customer's words with their role, or nothing |
 | Background gradients | A photograph, a texture, a pattern, or a flat solid color |
 | Cards and containers around everything | A flatter layout. A grid or tiles, with the borders gone |
 | Many fonts, text styles, and heading levels | One or two fonts and two to four styles. Accent colors and italics used a few times, not throughout |
 
-None of these is banned. A gradient, a card, or a label can be the right call, and prompting a model to avoid all four from the start makes it overthink and reach for stranger patterns instead. That is why this list belongs here in refinement, where you are looking at a rendered page, and not in the build prompt.
+Each row is a default, and a single instance can be the right call: one label, one gradient, one card. The tell is the default repeated, a label on every section, the same pill pair on every page. Prompting a model to avoid all of these from the start makes it overthink and reach for stranger patterns, which is why this list lives here in refinement, where you are looking at a rendered page, and not in the build prompt. `build-ui/scripts/lint.mjs` checks most rows mechanically (gates T1 to T6, 54, 30a, 65); run it on the source when the caller has not.
 
 **The test**: If you showed this to someone and said "AI made this," would they believe you immediately? If yes, that's the problem.
 
@@ -124,7 +131,7 @@ CLI scan:
 ```
 
 - Pass markup files/directories as `[target]`; do not pass CSS-only files.
-- For URLs, skip CLI scan and use browser visualization.
+- For a URL, scan it with the CLI too (`detect --json <url>`, plus `--viewport 390x844` for phone), alongside browser visualization. On a React, Svelte, Vue or Astro app the file scan finds almost nothing and reads as clean, so scan the dev-server URL as well as the source.
 - For very large trees (500+ scannable files), narrow scope or ask.
 - Exit code 0 = clean; 2 = findings.
 - If the detector entrypoint is missing or fails to load, report deterministic scan unavailable and continue with browser/manual review.

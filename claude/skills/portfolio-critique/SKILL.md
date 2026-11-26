@@ -99,6 +99,11 @@ The three that are not a URL:
 means `public`, and either answer gets written back to the manifest. A login
 screen scored as if it were the app is a wrong number rather than a rough one.
 
+Scan every deployed surface with `~/.claude/skills/impeccable/scripts/impeccable
+detect --json <url>` as well, and keep each result for the Step 5 tells count;
+the build-ui sweep script (`~/.claude/skills/build-ui/scripts/sweep.mjs`) runs
+the same scan across the manifest in one go.
+
 **Done when** every surface in the manifest has a PNG on disk or a line in the
 failure list. The report prints that list, so an absent surface reads as absent
 rather than as a low score.
@@ -130,9 +135,12 @@ How close is this to what a good design studio would ship?
 
 AI tells: every pattern that marks this as model-generated. Go through the AI
 color palette, gradient text, dark mode with glowing accents, glassmorphism,
-hero metric layouts, identical card grids, generic fonts, eyebrow text that
-restates the heading below it, background gradients, cards around everything,
-and more than four type styles. Name the ones you find and where.
+hero metric layouts, identical card grids, generic fonts, an eyebrow label on
+section after section, headlines of short full-stopped fragments ("Less X.
+More Y."), a filled and outlined button pair with an arrow, one pricing card
+filled or badged, emoji as icons, a cream ground with a clay accent and a
+serif display, a stock indigo or violet primary, star rows or "trusted by N+",
+background gradients, cards around everything, and more than four type styles. Name the ones you find and where.
 
 Copy: is the writing still in the form a model would have produced? Quote the
 worst two strings.
@@ -216,7 +224,8 @@ Then:
   `apple-design` for gesture motion), `/impeccable polish`.
 - **Brand verdicts**, one paragraph per multi-surface product, worst
   inconsistency first.
-- **Tells across the portfolio**: how many surfaces show each one. A pattern on
+- **Tells across the portfolio**: how many surfaces show each one, counting the
+  critics' findings and each surface's detect result together. A pattern on
   fifteen surfaces is a habit, and fixing the habit beats fixing fifteen pages.
 - **Copy**: every surface still carrying model-written strings, quoted. Rewrite
   against `~/.claude/writing-style.md`. The rewrite is almost always shorter.

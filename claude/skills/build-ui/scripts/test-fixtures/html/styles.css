@@ -1,0 +1,21 @@
+:root {
+  --color-paper: #F4F1EA;
+  --color-ink: #1F1B16;
+  --color-accent: #D97757;
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+}
+html, body { overflow-x: clip; }
+body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); }
+h1, h2 { font-family: var(--font-display); }
+.hero { background: linear-gradient(180deg, #EDE9FE 0%, #F5F3FF 60%, #FFFFFF 100%); }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-accent); }
+.btn { border-radius: 9999px; padding: 12px 24px; }
+.btn-primary { background: var(--color-accent); color: #fff; }
+.btn-ghost { background: transparent; border: 1px solid var(--color-ink); }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.feature-icon { width: 48px; height: 48px; border-radius: 12px; background: #EEF2FF; display: grid; place-items: center; }
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); }
+.tier { background: white; border-radius: 16px; }
+.tier-featured { background: #4F46E5; color: white; }
+.badge { border-radius: 9999px; background: #6366F1; }

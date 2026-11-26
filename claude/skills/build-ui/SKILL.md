@@ -54,7 +54,7 @@ Read [`DIRECTIONS.md`](DIRECTIONS.md) and follow it: freeze what is settled, see
 - **After Directions**: the picked card's palette and type stand. Use the `ui-ux-pro-max` skill for what the card leaves open (a UI style, a body face to pair with the display face, a chart type).
 - **On an extension**: the Design Context's tokens are the look. Use `ui-ux-pro-max` only for a gap they leave, such as a chart palette or a missing state colour, and keep every font. With no gap, skip it.
 
-Start from the database's vetted options. If the Design Context names a real product as a reference, run `ui-ux-pro-max`'s Step 1b (Refero Styles) first to get its actual DESIGN.md.
+Treat the database's palettes as starting hues: most rows are stock Tailwind swatches, so move each one toward the product's own world before it becomes a token. If the Design Context names a real product as a reference, run `ui-ux-pro-max`'s Step 1b (Refero Styles) first to get its actual DESIGN.md.
 
 **Standalone mode:** define tokens (color, type, spacing, radius, shadow) as CSS custom properties and record them in the Design Context's home under `# Design System`. Theme by swapping token values, so every component reads its colors from a token.
 
@@ -70,6 +70,7 @@ For the page and every component in it:
 5. On a new page or a full redesign, build the sections below the first screen from the picked card's `sections` list. Each section's composition comes from what it holds: a sequence reads as a timeline, a comparison as the same data side by side, a set of facts as a table, a single proof as one large picture. Done when no two sections in a row share a composition and each one's composition names its content.
 6. When a section needs visual weight, use a real picture from the Shape inventory: the user's files, a screenshot of the running product, or imagery generated with the `genmedia` skill (fal.ai).
 7. When a section needs generated motion (a matted loop or a scroll-scrubbed transition), read [`MOTION.md`](MOTION.md).
+8. **Copy, section openings, buttons and plan cards** come from Hallmark's `references/craft.md` §6, §7 and §9 (`~/.claude/skills/hallmark/`); read them before writing any of the four.
 
 ## Phase 4: Refinement
 
@@ -88,7 +89,7 @@ Confirm each, and list any that fails for the user:
 - The last critique reached the ship line (a score of 8; at restyle and polish, the one in `REDESIGN.md` §5 item 3), or its open findings are listed.
 - Phase 4 steps 2 to 4 are done.
 - On a redesign, `REDESIGN.md` §5 and §6 are done.
-- **Copy.** On new and extension pages, every line the model wrote is placeholder: rewrite each against `~/.claude/writing-style.md` in one voice, expect it to get shorter, and ask the user for lines you cannot write (a product claim, a price). On a redesign, `REDESIGN.md` §3 "Words" decides which lines change.
+- **Copy.** On new and extension pages, every line the model wrote is placeholder: rewrite each against `~/.claude/writing-style.md` in one voice, expect it to get shorter, give each headline a verb and a subject, and ask the user for lines you cannot write (a product claim, a price). On a redesign, `REDESIGN.md` §3 "Words" decides which lines change.
 
 **Invoked from `/ship`?** Pass this gate, then stop. Ship owns the close-out at its Steps 3 and 4.
 

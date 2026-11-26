@@ -3,9 +3,14 @@
 // short report. Defaults are calibrated on six real apps (2026-11-22):
 //   - dropped: gates that only make sense for a Hallmark build or that
 //     misread common stacks (see DROPPED)
-//   - text-reading gates skip component sources (.svelte, .tsx, .jsx, .vue),
-//     where they read template expressions as copy
+//   - text-reading gates skip component sources (.svelte, .tsx, .jsx, .vue,
+//     .astro), where they read template expressions as copy
 //   - house-taste gates print as notes (see HOUSE_NOTES)
+//   - tells.mjs adds the T checks, graded like any gate: T1 glued arrow or stock
+//     second action, T2 cream + clay, T3 fragment headlines, T4 one pricing tier
+//     styled apart, T5 star runs and "trusted by N+", T6 stock indigo and
+//     lavender washes. They read markup, CSS, Tailwind config and locale files,
+//     with no render. Waive one like a gate: `--waive T4@Pricing`.
 // sloplint writes `.hallmark/` (before record, URL screenshots, compare.html)
 // into its working directory. This wrapper runs it from a cache folder per
 // project, ~/.cache/build-ui-lint/<repo>-<hash>/, so nothing lands in the
@@ -33,6 +38,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, dirname, join, relative, resolve } from 'node:path';
+import { runTells } from './tells.mjs';
 
 const SLOPLINT = join(homedir(), '.claude/skills/hallmark/scripts/sloplint.mjs');
 const DROPPED = new Set([
@@ -44,7 +50,7 @@ const DROPPED = new Set([
   '41',  // static dark-surface/text pairing; ignores theme-scoped tokens
 ]);
 const TEXT_GATES = new Set(['19', '49', '50', '63']);
-const COMPONENT_SOURCE = /\.(svelte|tsx|jsx|vue)$/;
+const COMPONENT_SOURCE = /\.(svelte|tsx|jsx|vue|astro)$/;
 // 24b: the 4px scale. 77: "thin section", which flags the short closing bands
 // ANATOMY.md asks for. 26b: disabled-state styling, which fired on plain links and
 // on pages with no control that can be disabled in three of six runs. 72: "text
@@ -91,6 +97,9 @@ for (const l of run.stderr.split('\n')) if (l.trim()) console.error(l);
 let report;
 try { report = JSON.parse(run.stdout); }
 catch { process.stdout.write(run.stdout); process.exit(run.status ?? 2); }
+let tells = [];
+try { tells = runTells(paths.map((p) => resolve(p))); } catch (e) { console.error(`tells: T checks did not run (${e.message})`); }
+report.findings = [...(report.findings || []), ...tells];
 
 const noted = new Set([...HOUSE_NOTES, ...(depth ? NOTES_BY_DEPTH[depth] : []), ...(doc ? LAYOUT : [])]);
 const order = { FAIL: 0, REFLEX: 1, WARN: 2 };

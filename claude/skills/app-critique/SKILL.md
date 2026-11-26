@@ -86,7 +86,14 @@ did not stick. Both look like design defects to a critic. Whatever the
 environment did to the captures goes into every critic prompt as one sentence,
 the same way the impeccable critique tells a critic a login wall is a login wall.
 
-**Done when** every surface has a `capture.json` and the control reads clean.
+Then scan each captured route with `~/.claude/skills/impeccable/scripts/impeccable
+detect --json <url>`, once at desktop and once with `--viewport 390x844`, and
+save the output beside its captures. It catches kickers above headings, cream
+palettes and icon tiles from the rendered page, and the synthesis in Step 3
+weighs it against the critics.
+
+**Done when** every surface has a `capture.json` and a `detect.json`, and the
+control reads clean.
 
 ## Step 2: Five critics, one dimension each
 
@@ -146,8 +153,10 @@ landing route, and say which ones earn their place. Is the body measure
 comfortable? Does the hierarchy signal what to read first, second, third? Do the
 choices say anything about this product, or would they sit on any product?
 
-Then the AI tells in this dimension: the AI palette, gradient text, dark mode
-with glow, generic fonts, more than four type styles. Name the ones present and
+Then the AI tells in this dimension: the AI palette, a cream ground with a clay
+or terracotta accent and a serif display, a stock indigo or violet primary,
+lavender washes and blurred colour blobs, gradient text, dark mode with glow,
+generic fonts, more than four type styles. Name the ones present and
 where.
 
 Colour score: N/10. Type score: N/10. The two changes that would move each up.
@@ -172,8 +181,10 @@ Compare desktop to phone: same page, or two pages that share content? Where did
 the phone layout stop being designed?
 
 Then the AI tells in this dimension: hero metric rows, identical card grids,
-cards around everything, eyebrows restating headings, background gradients,
-empty hero halves, cookie banners over live content. Name each, with the route
+cards around everything, an eyebrow label on section after section, a filled
+and outlined button pair with an arrow, one pricing card filled or badged "Most
+popular", emoji standing in for icons, a row of stars or "trusted by N+",
+background gradients, empty hero halves, cookie banners over live content. Name each, with the route
 and the screen number.
 
 Composition score: N/10. The two changes that would move it up.
@@ -187,8 +198,10 @@ Read every image in <dir>. They are one product, <name>.
 Transcribe the headline, subhead, primary CTA label, and the first sentence of
 each section on the landing route. Then answer: has a person rewritten any of
 this since a model produced it? Look for em dashes, "not X, Y" antithesis,
-rule-of-three lists, aphoristic closers, "beautiful", "seamless", "the tools you
-need", stock CTAs ("See how it works", "Get started today").
+rule-of-three lists, aphoristic closers, headlines built from short
+full-stopped fragments ("Less paperwork. More time for patients.", "Stop
+guessing. Start tracking.", "X, simplified."), "beautiful", "seamless", "the
+tools you need", stock CTAs ("See how it works", "Get started today").
 
 Quote the five worst strings and rewrite each, shorter, naming the mechanism or
 the number instead of the adjective. Quote the strings a person clearly wrote
@@ -266,6 +279,8 @@ with the full-page captures alongside the findings. Structure:
   reasoning that led to them.
 - **Measured**: overflow, clipped elements, page heights, the control, from
   `capture.json`.
+- **Detector**: per route, what `detect.json` flagged at each width, and which
+  critic findings it confirms or contradicts.
 - **Not seen**: routes discovery skipped, interiors not reached, anything
   `stillHiddenAfterScroll` flagged.
 - **Where each fix goes.** One row per change the critics named, routed to the

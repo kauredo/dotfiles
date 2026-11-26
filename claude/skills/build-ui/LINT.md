@@ -15,7 +15,7 @@ Read at Phase 4 step 0, and before `REDESIGN.md` §2's before record. `LINT` mea
 LINT <files and dirs> --render --url http://localhost:<port>/<route> [--url ...]
 ```
 
-- **What to pass:** the files you built or changed, the shared components they render, and the global stylesheets the page loads (reset, tokens, base styles), which hold rules such as the focus ring. Leave out any directory holding an HTML shell template such as SvelteKit's `src/app.html`, which LINT would lint as a page.
+- **What to pass:** the files you built or changed, the shared components they render, and the global stylesheets the page loads (reset, tokens, base styles), which hold rules such as the focus ring. Include the locale files (`src/locales`, `src/i18n`, `config/locales`) when the copy lives there, since the headline check reads them. Leave out any directory holding an HTML shell template such as SvelteKit's `src/app.html`, which LINT would lint as a page.
 - **Flags:** `--scope app` for app screens, `--scope component` for a lone component, `--doc` for a document page (privacy, terms, docs), `--depth <depth>` on a redesign.
 - LINT keeps its records (the before record, URL screenshots, `compare.html`) in a cache folder per project and prints its path on the first line.
 

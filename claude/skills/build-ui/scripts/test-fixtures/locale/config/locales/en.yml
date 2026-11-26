@@ -1,0 +1,7 @@
+en:
+  home:
+    hero_title: "Your entire workflow, simplified."
+    tagline: A better way to run your clinic.
+    body: "We help. You grow."
+  dialogs:
+    delete_title: "Delete this appointment?"

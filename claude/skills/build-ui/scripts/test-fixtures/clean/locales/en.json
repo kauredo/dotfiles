@@ -1,0 +1,10 @@
+{
+  "closing": {
+    "title": "Try it with next week's appointments.",
+    "cta": "Book a call"
+  },
+  "dialog": {
+    "title": "Delete this appointment?",
+    "body": "The patient gets an email. You can book them again later."
+  }
+}
