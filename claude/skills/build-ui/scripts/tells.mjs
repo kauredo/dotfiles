@@ -3,10 +3,11 @@
 // sloplint's report. T1 glued arrow / stock second action, T2 cream + clay,
 // T3 fragment headlines, T4 one highlighted pricing tier, T5 star runs and
 // "trusted by N+", T6 stock indigo and lavender washes.
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 
-const SKIP_DIRS = new Set(['node_modules', 'dist', 'build', '.next', '.astro', '.svelte-kit', 'coverage', 'vendor', '__tests__']);
+const SKIP_DIRS = new Set(['node_modules', 'dist', 'build', 'out', '.next', '.astro', '.svelte-kit', 'coverage', 'vendor', '__tests__']);
+const MAX_BYTES = 1.5 * 1024 * 1024;
 const MARKUP = new Set(['.html', '.jsx', '.tsx', '.vue', '.svelte', '.astro']);
 const LOCALE_DIR = /[\\/](locales?|i18n|lang|messages|translations)[\\/]/;
 const LANG = /^[a-z]{2}(?:[-_][A-Za-z]{2,4})?$/;
@@ -26,14 +27,19 @@ const FIX = {
 // ---------- files ----------
 export function collectFiles(paths) {
   const files = new Set();
+  const seen = new Set();
   const visit = (p, top) => {
-    let st;
-    try { st = statSync(p); } catch { return; }
+    let st, real;
+    try { st = statSync(p); real = realpathSync(p); } catch { return; }
+    if (seen.has(real)) return;
+    seen.add(real);
     const base = basename(p);
     if (st.isDirectory()) {
       if (!top && (SKIP_DIRS.has(base) || base.startsWith('.'))) return;
-      for (const e of readdirSync(p)) visit(join(p, e), false);
-    } else if (top || !/\.(test|spec)\.[^.]+$/.test(base)) files.add(p);
+      let entries;
+      try { entries = readdirSync(p); } catch { return; }
+      for (const e of entries) visit(join(p, e), false);
+    } else if (st.size <= MAX_BYTES && !/\.min\.[^.]+$/.test(base) && (top || !/\.(test|spec)\.[^.]+$/.test(base))) files.add(p);
   };
   for (const p of paths) {
     visit(resolve(p), true);
@@ -194,7 +200,7 @@ export function parseMarkup(src, ext) {
   let textPos = 0;
   if (ext === '.astro') { const m = /^\s*---[\s\S]*?\n---/.exec(src); if (m) i = m[0].length; }
   const top = () => frames[frames.length - 1];
-  const nearestExpr = () => { for (let k = frames.length - 1; k >= 0; k--) if (frames[k].kind === 'expr') return frames[k].node; return null; };
+  const nearestExpr = () => top().exprNode || null;
   const flushText = () => {
     if (text && top().kind === 'children') top().el.children.push({ type: 'text', value: text, pos: textPos, line: line(textPos) });
     text = '';
@@ -212,7 +218,7 @@ export function parseMarkup(src, ext) {
       const close = src.indexOf('>', stop);
       return close < 0 ? src.length : close + 1;
     }
-    frames.push({ kind: 'children', el });
+    frames.push({ kind: 'children', el, exprNode: top().exprNode });
     return tag.end;
   };
   const closeTag = (name) => {
@@ -238,7 +244,7 @@ export function parseMarkup(src, ext) {
         flushText();
         const node = { type: 'expr', pos: i + 1, line: line(i), raw: '' };
         f.el.children.push(node);
-        frames.push({ kind: 'expr', el: f.el, node, depth: 0 });
+        frames.push({ kind: 'expr', el: f.el, node, depth: 0, exprNode: node });
         i++;
         continue;
       }
@@ -267,9 +273,14 @@ export function parseMarkup(src, ext) {
   return { root, styles };
 }
 
+// Iterative pre-order walk: unclosed tags can nest far deeper than the call stack.
 function walk(node, fn) {
-  fn(node);
-  if (node.children) for (const ch of node.children) walk(ch, fn);
+  const stack = [node];
+  while (stack.length) {
+    const n = stack.pop();
+    fn(n);
+    if (n.children) for (let k = n.children.length - 1; k >= 0; k--) stack.push(n.children[k]);
+  }
 }
 function findAll(node, pred) { const out = []; walk(node, (n) => { if (n.type === 'el' && pred(n)) out.push(n); }); return out; }
 function ancestors(el) { const out = []; for (let p = el.parent; p; p = p.parent) out.push(p); return out; }
@@ -284,14 +295,16 @@ function literalOf(raw) {
 }
 // Expressions that hold markup (`{x && <b/>}`) are skipped here: their elements are children too.
 function textOf(node, withExprs = false) {
-  if (node.type === 'text') return decode(node.value);
-  if (node.type === 'expr') {
-    const lit = literalOf(node.raw);
-    if (lit != null) return lit;
-    return withExprs && !node.raw.includes('<') ? `{${node.raw.trim()}}` : '';
-  }
-  if (node.name === 'br') return ' ';
-  return node.children.map((ch) => textOf(ch, withExprs)).join('');
+  let out = '';
+  walk(node, (n) => {
+    if (n.type === 'text') out += decode(n.value);
+    else if (n.type === 'expr') {
+      const lit = literalOf(n.raw);
+      if (lit != null) out += lit;
+      else if (withExprs && !n.raw.includes('<')) out += `{${n.raw.trim()}}`;
+    } else if (n.name === 'br') out += ' ';
+  });
+  return out;
 }
 const hasDynamicText = (el) => { let dyn = false; walk(el, (n) => { if (n.type === 'expr' && literalOf(n.raw) == null && !n.raw.includes('<') && n.raw.trim()) dyn = true; }); return dyn; };
 
@@ -783,7 +796,7 @@ function cardLike(el) {
   const rounded = has(/^rounded/), border = has(/^border(-\d)?$/), bg = has(/^bg-/), shadow = has(/^shadow/), pad = has(/^p[xy]?-/);
   return (rounded || border) && [rounded, border, bg, shadow, pad].filter(Boolean).length >= 3;
 }
-const elCount = (el) => { let n = 0; walk(el, (x) => { if (x.type === 'el') n++; }); return n - 1; };
+const hasTwoElements = (el) => { let n = 0; for (const c of el.children) if (c.type === 'el' && ++n >= 2) return true; return el.children.some((c) => c.type === 'el' && c.children.some((g) => g.type === 'el')); };
 function isPill(el) {
   if (/Badge|Pill|Chip|Ribbon/.test(el.name)) return true;
   const b = baseTokens(classOf(el));
@@ -827,7 +840,7 @@ function checkT4(doc, flagSources, report) {
   const cards = new Set();
   walk(doc.root, (n) => {
     if (n.type !== 'el' || !ownPriceSignal(n)) return;
-    for (let p = n, d = 0; p && p.name !== '#root' && d < 8; p = p.parent, d++) if (cardLike(p) && elCount(p) >= 2) { cards.add(p); break; }
+    for (let p = n, d = 0; p && p.name !== '#root' && d < 8; p = p.parent, d++) if (cardLike(p) && hasTwoElements(p)) { cards.add(p); break; }
   });
   const inner = [...cards].filter((c) => ![...cards].some((o) => o !== c && ancestors(o).includes(c)));
   let reported = false;
@@ -880,11 +893,24 @@ function checkT5(doc, report) {
       else if (STAR_EL.test(n.name) && n.expr && FIVE.test(n.expr.raw)) once(n.line, `${n.name} repeated five times in the hero`);
     });
   }
-  walk(doc.root, (n) => {
-    if (n.type !== 'el' || n.name === '#root') return;
-    const hit = proofIn(squash(textOf(n)));
-    if (hit && !n.children.some((c) => c.type === 'el' && proofIn(squash(textOf(c))))) once(n.line, `unsourced social proof "${hit}"`);
-  });
+  // Each element's text built once from its children's; null past 300 chars (a proof line is short).
+  const els = findAll(doc.root, () => true);
+  const text = new Map();
+  for (let k = els.length - 1; k >= 0; k--) {
+    const n = els[k];
+    let s = '';
+    for (const c of n.children) {
+      const t = c.type === 'el' ? (c.name === 'br' ? ' ' : text.get(c)) : textOf(c);
+      if (t == null || s.length > 300) { s = null; break; }
+      s += t;
+    }
+    text.set(n, s && s.length <= 300 ? squash(s) : null);
+  }
+  for (const n of els) {
+    if (n.name === '#root' || !text.get(n)) continue;
+    const hit = proofIn(text.get(n));
+    if (hit && !n.children.some((c) => c.type === 'el' && text.get(c) && proofIn(text.get(c)))) once(n.line, `unsourced social proof "${hit}"`);
+  }
 }
 
 const trunc = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
@@ -896,31 +922,45 @@ export function runTells(paths) {
   const files = collectFiles(paths);
   const kinds = new Map(files.map((f) => [f, classify(f)]));
   const read = (f) => { try { return readFileSync(f, 'utf8'); } catch { return ''; } };
+  // One unreadable or pathological file costs its own findings, never the run.
+  const skip = (f, e) => console.error(`tells: skipped ${f} (${e.message.split('\n')[0]})`);
   const docs = [], cssList = [], configEntries = [], localeEntries = [], flagSources = [];
   for (const f of files) {
     const kind = kinds.get(f);
     if (!kind) continue;
-    const src = read(f);
-    if (kind === 'markup') {
-      const { root, styles } = parseMarkup(src, extname(f).toLowerCase());
-      docs.push({ file: f, ext: extname(f).toLowerCase(), src, root, line: lineIndex(src) });
-      for (const s of styles) cssList.push(...cssDecls(s.css, f, s.line));
-    } else if (kind === 'css') cssList.push(...cssDecls(src, f));
-    else if (kind === 'twconfig') configEntries.push(...scanObject(src).map((e) => ({ ...e, file: f })));
-    if (kind === 'markup' || kind === 'script') {
-      const m = FLAG_TRUE.exec(src);
-      if (m) flagSources.push({ file: f, line: lineIndex(src)(m.index) });
-    }
+    try {
+      const src = read(f);
+      if (kind === 'markup') {
+        const { root, styles } = parseMarkup(src, extname(f).toLowerCase());
+        docs.push({ file: f, ext: extname(f).toLowerCase(), src, root, line: lineIndex(src) });
+        for (const s of styles) cssList.push(...cssDecls(s.css, f, s.line));
+      } else if (kind === 'css') cssList.push(...cssDecls(src, f));
+      else if (kind === 'twconfig') configEntries.push(...scanObject(src).map((e) => ({ ...e, file: f })));
+      if (kind === 'markup' || kind === 'script') {
+        const m = FLAG_TRUE.exec(src);
+        if (m) flagSources.push({ file: f, line: lineIndex(src)(m.index) });
+      }
+    } catch (e) { skip(f, e); }
   }
   for (const f of englishOnly(files.filter((x) => kinds.get(x) === 'locale'))) {
-    const src = read(f);
-    const entries = /\.ya?ml$/i.test(f) ? scanYaml(src) : scanObject(src);
-    localeEntries.push(...entries.map((e) => ({ ...e, file: f })));
+    try {
+      const src = read(f);
+      const entries = /\.ya?ml$/i.test(f) ? scanYaml(src) : scanObject(src);
+      localeEntries.push(...entries.map((e) => ({ ...e, file: f })));
+    } catch (e) { skip(f, e); }
   }
 
-  for (const doc of docs) { checkT1(doc, report); checkT4(doc, flagSources, report); checkT5(doc, report); }
+  const heads = [];
+  for (const doc of [...docs]) {
+    const mine = [];
+    const local = (...a) => mine.push(a);
+    try {
+      checkT1(doc, local); checkT4(doc, flagSources, local); checkT5(doc, local);
+      heads.push(...markupHeadlines(doc));
+      for (const a of mine) report(...a);
+    } catch (e) { skip(doc.file, e); docs.splice(docs.indexOf(doc), 1); }
+  }
 
-  const heads = docs.flatMap(markupHeadlines);
   for (const e of localeEntries) if (HEADLINE_KEY.test(leafKey(e.path))) heads.push({ file: e.file, line: e.line, text: squash(e.value) });
   const fragments = heads.filter((h) => isFragment(h.text));
   const uniq = [...new Map(fragments.map((h) => [`${h.file}:${h.line}:${h.text}`, h])).values()];

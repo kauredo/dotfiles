@@ -39,10 +39,14 @@ const repoPath = (r) => {
 function sourceRoots(root) {
   const found = [];
   const walk = (dir, depth) => {
-    for (const name of readdirSync(dir)) {
+    let names;
+    try { names = readdirSync(dir); } catch { return; }
+    for (const name of names) {
       if (SKIP.has(name) || name.startsWith('.')) continue;
       const p = join(dir, name);
-      if (!statSync(p).isDirectory()) continue;
+      let isDir;
+      try { isDir = statSync(p).isDirectory(); } catch { continue; }
+      if (!isDir) continue;
       if (name === 'src') { found.push(p); continue; }
       if (depth < 3) walk(p, depth + 1);
     }
@@ -62,6 +66,10 @@ if (!flag('--repos-only')) {
   for (const r of rows.filter((x) => /^https?:/.test(x.render))) {
     const scan = (extra) => {
       const run = spawnSync(DETECT, ['detect', '--json', ...extra, r.render], { encoding: 'utf8', timeout: 180000, maxBuffer: 32 * 1024 * 1024 });
+      // detect prints `[]` and exits 1 on an unreachable host, so an empty list alone is not "clean".
+      const err = (run.stderr || '').trim();
+      const why = run.error?.code || run.signal || (!(run.stdout || '').trim() && `status ${run.status}, no output`) || (/^Error/.test(err) && err.split('\n')[0].replace(/\|/g, '/').slice(0, 80));
+      if (why) return `failed (${why})`;
       try {
         const counts = {};
         for (const f of JSON.parse(run.stdout || '[]')) if (f.category !== 'quality') counts[f.antipattern] = (counts[f.antipattern] || 0) + 1;
@@ -92,7 +100,8 @@ if (!flag('--urls-only')) {
       if (m && TELL_GATES.test(m[2])) counts[`${m[2]} ${m[1]}`] = (counts[`${m[2]} ${m[1]}`] || 0) + 1;
     }
     const cell = Object.entries(counts).sort().map(([k, n]) => `${k}${n > 1 ? ` ×${n}` : ''}`).join(', ');
-    print(`| ${r.repo} | ${run.status === null ? 'timed out' : cell || 'clean'} |`);
+    const failed = run.status === 2 || !/^lint:/m.test(run.stdout || '');
+    print(`| ${r.repo} | ${run.status === null ? 'timed out' : failed ? `failed (${run.status})` : cell || 'clean'} |`);
   }
 }
 

@@ -97,7 +97,9 @@ for (const l of run.stderr.split('\n')) if (l.trim()) console.error(l);
 let report;
 try { report = JSON.parse(run.stdout); }
 catch { process.stdout.write(run.stdout); process.exit(run.status ?? 2); }
-report.findings = [...(report.findings || []), ...runTells(paths.map((p) => resolve(p)))];
+let tells = [];
+try { tells = runTells(paths.map((p) => resolve(p))); } catch (e) { console.error(`tells: T checks did not run (${e.message})`); }
+report.findings = [...(report.findings || []), ...tells];
 
 const noted = new Set([...HOUSE_NOTES, ...(depth ? NOTES_BY_DEPTH[depth] : []), ...(doc ? LAYOUT : [])]);
 const order = { FAIL: 0, REFLEX: 1, WARN: 2 };

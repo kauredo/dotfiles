@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { copyFileSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runTells, parseColor, toOklch } from './tells.mjs';
 
@@ -94,6 +97,29 @@ test('colour parsing: channel triplets and oklch', () => {
   assert.deepEqual(toOklch(parseColor('oklch(62% 0.14 40)')), { L: 0.62, C: 0.14, H: 40 });
   const white = toOklch(parseColor('#fff'));
   assert.ok(white.L > 0.99 && white.C < 0.001);
+});
+
+test('a symlink loop is walked once', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'tells-loop-'));
+  try {
+    mkdirSync(join(dir, 'a'));
+    copyFileSync(fixture('tsx/Landing.tsx'), join(dir, 'a', 'Landing.tsx'));
+    symlinkSync(dir, join(dir, 'a', 'loop'));
+    symlinkSync(join(dir, 'a'), join(dir, 'b'));
+    const f = runTells([dir]);
+    assert.equal(of(f, 'T4').length, 1);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('deep unclosed nesting costs nothing but its own findings', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'tells-deep-'));
+  try {
+    writeFileSync(join(dir, 'deep.html'), '<div>'.repeat(200000));
+    writeFileSync(join(dir, 'Deep.tsx'), `export const X = () => (${'<div>'.repeat(200000)}<a href="/x">Go →</a>);`);
+    copyFileSync(fixture('tsx/Landing.tsx'), join(dir, 'Landing.tsx'));
+    const f = runTells([dir]);
+    fires(f, 'T4', 'FAIL', /Landing\.tsx:47/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
 test('lint.mjs merges T findings and honours --waive', () => {
