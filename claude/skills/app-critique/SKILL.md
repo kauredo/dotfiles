@@ -279,6 +279,8 @@ with the full-page captures alongside the findings. Structure:
   reasoning that led to them.
 - **Measured**: overflow, clipped elements, page heights, the control, from
   `capture.json`.
+- **Detector**: per route, what `detect.json` flagged at each width, and which
+  critic findings it confirms or contradicts.
 - **Not seen**: routes discovery skipped, interiors not reached, anything
   `stillHiddenAfterScroll` flagged.
 - **Where each fix goes.** One row per change the critics named, routed to the

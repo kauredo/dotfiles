@@ -70,7 +70,7 @@ For the page and every component in it:
 5. On a new page or a full redesign, build the sections below the first screen from the picked card's `sections` list. Each section's composition comes from what it holds: a sequence reads as a timeline, a comparison as the same data side by side, a set of facts as a table, a single proof as one large picture. Done when no two sections in a row share a composition and each one's composition names its content.
 6. When a section needs visual weight, use a real picture from the Shape inventory: the user's files, a screenshot of the running product, or imagery generated with the `genmedia` skill (fal.ai).
 7. When a section needs generated motion (a matted loop or a scroll-scrubbed transition), read [`MOTION.md`](MOTION.md).
-8. When you write a headline, a section opening, a button or a plan card, read Hallmark's `references/craft.md` §6, §7 and §9 (`~/.claude/skills/hallmark/`). A headline is one sentence with a verb that says what the product does; a section opens with its heading.
+8. **Copy, section openings, buttons and plan cards** come from Hallmark's `references/craft.md` §6, §7 and §9 (`~/.claude/skills/hallmark/`); read them before writing any of the four.
 
 ## Phase 4: Refinement
 

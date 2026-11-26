@@ -7,7 +7,7 @@ Read at Phase 2's Shape step, for the one job the page serves. The job sets wher
 - The nav carries the job's own action word: Book, Tickets, Shop, Listen, Start free.
 - The hero shows the thing itself: the room, the cover, the dates, the product's screen.
 - Proof comes in the category's own form: a menu, a lineup, a client list, a changelog. A band of numbers is proof only when someone gave the numbers.
-- Plans and tiers share one card style. The owner names the recommended plan and the reason for it; that plan carries the word on its card and the primary button.
+- The recommended plan is the owner's call, with their reason. When the brief lists plans without a pick, ask.
 
 ## Content nobody supplied
 

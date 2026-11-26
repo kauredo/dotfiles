@@ -15,10 +15,10 @@ const TW_CONFIG = /^tailwind\.config\.(js|cjs|mjs|ts)$/;
 
 const FIX = {
   arrow: 'End the label on its verb; the control already says it goes somewhere',
-  second: 'Give the hero one action; if a second one earns its place, name what it opens in its own words',
-  clay: 'Pick the accent from the product\'s own world, off the clay hues, or set the page on a background other than cream',
+  second: 'Give the hero one primary button; a second action is a text link that names what it opens',
+  clay: 'Pick the accent from the product\'s own world, off the clay hues, or set the page on a background other than cream. When the brand chose these values, keep them, change how much surface each covers, and waive T2 with that reason',
   fragment: 'Write the headline as one plain sentence that says what the product does',
-  tier: 'Name the recommended tier in a word on the card and give it the primary button; keep every card the same fill.',
+  tier: 'Name the recommended tier in a word on the card and give it the primary button; keep every card the same fill',
   proof: 'Show proof a visitor can check: a named customer, a quote with a name, or a real count with its date',
   indigo: 'Choose the primary from the brand\'s own colours, away from the stock indigo-violet band',
   lavender: 'Let the hero sit on the page background, or on a tint of the brand colour',

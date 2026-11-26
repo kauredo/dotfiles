@@ -224,7 +224,8 @@ Then:
   `apple-design` for gesture motion), `/impeccable polish`.
 - **Brand verdicts**, one paragraph per multi-surface product, worst
   inconsistency first.
-- **Tells across the portfolio**: how many surfaces show each one. A pattern on
+- **Tells across the portfolio**: how many surfaces show each one, counting the
+  critics' findings and each surface's detect result together. A pattern on
   fifteen surfaces is a habit, and fixing the habit beats fixing fifteen pages.
 - **Copy**: every surface still carrying model-written strings, quoted. Rewrite
   against `~/.claude/writing-style.md`. The rewrite is almost always shorter.
