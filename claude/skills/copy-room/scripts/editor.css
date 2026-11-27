@@ -1,0 +1,56 @@
+/* Copy room editor chrome. Neutral, so it sits on any site; all rules are scoped to .room-* and [data-copy]. */
+:root { --room-ink:#1f2328; --room-paper:#ffffff; --room-line:rgba(31,35,40,.16); --room-accent:#0b6bcb; --room-changed:#d9480f; --room-legal:#9a3412; --room-soft:#f3f4f6; }
+body.room-on { padding-top: 52px !important; }
+.room-ui[hidden] { display: none !important; }
+.room-ui, .room-ui * { box-sizing: border-box; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: normal; text-transform: none; }
+.room-bar { position: fixed; inset: 0 0 auto; z-index: 2147483000; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-height: 52px;
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  background: var(--room-paper); color: var(--room-ink); border-bottom: 1px solid var(--room-line); font-size: 14px; }
+.room-title { font-size: 15px; }
+.room-seg { display: inline-flex; border: 1px solid var(--room-line); border-radius: 8px; overflow: hidden; }
+.room-seg button { border: 0; background: none; padding: 6px 12px; font-size: 13px; cursor: pointer; color: var(--room-ink); min-height: 34px; }
+.room-seg button[aria-pressed="true"] { background: var(--room-ink); color: var(--room-paper); }
+.room-btn { border: 1px solid var(--room-line); background: var(--room-soft); border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; color: var(--room-ink); min-height: 34px; }
+.room-rules { position: relative; font-size: 13px; }
+.room-rules summary { cursor: pointer; padding: 6px 4px; }
+.room-rules ul { position: absolute; top: 34px; left: 0; width: min(420px, 86vw); margin: 0; padding: 12px 14px 12px 28px; background: var(--room-paper); border: 1px solid var(--room-line); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); line-height: 1.45; }
+.room-status { margin-left: auto; color: rgba(31,35,40,.72); font-size: 13px; }
+
+[data-copy] { outline: 1.5px dashed transparent; outline-offset: 3px; border-radius: 2px; cursor: text; transition: outline-color .12s; }
+body.room-on [data-copy]:hover { outline-color: rgba(11,107,203,.6); }
+[data-copy].room-changed { outline: 1.5px solid var(--room-changed); }
+[data-copy].room-selected, [data-copy][contenteditable="true"], [data-copy][contenteditable="plaintext-only"] { outline: 2px solid var(--room-accent); background: rgba(11,107,203,.06); }
+[data-copy-attr] { cursor: pointer; }
+
+.room-panel { position: fixed; z-index: 2147483001; right: max(12px, env(safe-area-inset-right, 0px)); top: 64px; width: min(400px, calc(100vw - 24px)); max-height: calc(100vh - 80px); overflow: auto;
+  background: var(--room-paper); color: var(--room-ink); border: 1px solid var(--room-line); border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.16); padding: 14px 16px 16px; font-size: 14px; line-height: 1.45; }
+.room-close { position: absolute; top: 6px; right: 8px; border: 0; background: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--room-ink); width: 36px; height: 36px; }
+.room-entry { display: grid; gap: 6px; }
+.room-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-right: 30px; }
+.room-name { font-weight: 700; }
+.room-head code { font: 11.5px ui-monospace, Menlo, monospace; color: rgba(31,35,40,.6); }
+.room-chip { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: var(--room-soft); color: rgba(31,35,40,.75); }
+.room-chip.legal { background: #ffedd5; color: var(--room-legal); }
+.room-chip.edited { background: var(--room-changed); color: #fff; }
+.room-lang { font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(31,35,40,.6); margin-top: 4px; }
+.room-ui textarea, .room-ui input[type="search"] { width: 100%; font: 14px/1.45 system-ui, -apple-system, sans-serif; color: var(--room-ink); background: var(--room-paper); border: 1px solid var(--room-line); border-radius: 8px; padding: 8px 10px; resize: vertical; field-sizing: content; min-height: 40px; }
+.room-ui textarea[aria-label="Note for Claude"] { border-style: dashed; min-height: 34px; font-size: 13px; }
+.room-was { margin: 0; font-size: 12.5px; color: rgba(31,35,40,.65); }
+.room-words { margin: 0; padding: 8px 10px; background: var(--room-soft); border-radius: 8px; }
+.room-raw summary { cursor: pointer; font-size: 12.5px; color: rgba(31,35,40,.7); padding: 2px 0 6px; }
+.room-hint, .room-who { margin: 0; font-size: 12.5px; color: rgba(31,35,40,.65); }
+.room-link { justify-self: start; border: 0; background: none; padding: 4px 0; color: var(--room-accent); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; }
+.room-ui :focus-visible { outline: 2px solid var(--room-accent); outline-offset: 2px; }
+
+.room-list { position: fixed; z-index: 2147483002; inset: 52px 0 0 auto; width: min(560px, 100vw); background: var(--room-paper); color: var(--room-ink); border-left: 1px solid var(--room-line); box-shadow: -12px 0 32px rgba(0,0,0,.12); display: flex; flex-direction: column; font-size: 14px; }
+.room-list-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 52px 12px 16px; border-bottom: 1px solid var(--room-line); position: relative; }
+.room-list-head input[type="search"] { flex: 1 1 180px; width: auto; min-height: 36px; }
+.room-only { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.room-list-body { overflow: auto; padding: 4px 16px 40px; }
+.room-list-body h3 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: rgba(31,35,40,.6); margin: 22px 0 8px; }
+.room-list-body .room-entry { padding: 12px 0; border-top: 1px solid var(--room-line); }
+.room-list-body .room-entry.is-changed { box-shadow: inset 3px 0 0 var(--room-changed); padding-left: 10px; }
+.room-toast { position: fixed; z-index: 2147483003; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 8px); background: var(--room-ink); color: var(--room-paper); padding: 8px 14px; border-radius: 99px; font-size: 13px; font-weight: 600; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; }
+.room-toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (max-width: 640px) { .room-panel { top: auto; bottom: 0; right: 0; width: 100vw; max-height: 60vh; border-radius: 12px 12px 0 0; } .room-status { margin-left: 0; width: 100%; } body.room-on { padding-top: 92px !important; } .room-list { inset: 92px 0 0 0; width: 100vw; } }
+@media (prefers-reduced-motion: reduce) { [data-copy], .room-toast { transition: none; } }
