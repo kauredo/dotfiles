@@ -1,0 +1,6 @@
+h1 { font-size: 4rem; }
+.note { font-size: 0.9375rem; }
+.aside { font-size: 15px; }
+@media (min-width: 900px) {
+  .note { font-size: 1.0625rem; }
+}

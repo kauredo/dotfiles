@@ -2,7 +2,8 @@
 // source (markup, CSS, Tailwind config, locale files). lint.mjs merges them into
 // sloplint's report. T1 glued arrow / stock second action, T2 cream + clay,
 // T3 fragment headlines, T4 one highlighted pricing tier, T5 star runs and
-// "trusted by N+", T6 stock indigo and lavender washes.
+// "trusted by N+", T6 stock indigo and lavender washes, T7 split hero and hero
+// stat row, T8 more than four font sizes below the hero.
 import { existsSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 
@@ -22,6 +23,9 @@ const FIX = {
   proof: 'Show proof a visitor can check: a named customer, a quote with a name, or a real count with its date',
   indigo: 'Choose the primary from the brand\'s own colours, away from the stock indigo-violet band',
   lavender: 'Let the hero sit on the page background, or on a tint of the brand colour',
+  splitHero: 'Give the headline and lead visual the full width, the center or the depth of the viewport, with one short line and one action under the headline',
+  stats: 'Move each number into the page below, beside the claim it proves',
+  sizes: 'Run the page below the hero on three sizes (heading, body, small) and tell subheads, buttons and labels apart by weight, family and colour; fold the least-used size into its neighbour',
 };
 
 // ---------- files ----------
@@ -283,6 +287,18 @@ function walk(node, fn) {
   }
 }
 function findAll(node, pred) { const out = []; walk(node, (n) => { if (n.type === 'el' && pred(n)) out.push(n); }); return out; }
+// Elements under node, leaving out every subtree whose root `prune` accepts.
+function elementsOutside(node, prune) {
+  const out = [];
+  const stack = [node];
+  while (stack.length) {
+    const n = stack.pop();
+    if (n !== node && n.type === 'el' && prune(n)) continue;
+    if (n.type === 'el') out.push(n);
+    if (n.children) for (let k = n.children.length - 1; k >= 0; k--) stack.push(n.children[k]);
+  }
+  return out;
+}
 function ancestors(el) { const out = []; for (let p = el.parent; p; p = p.parent) out.push(p); return out; }
 
 const ENT = { rarr: '→', larr: '←', raquo: '»', rsaquo: '›', amp: '&', nbsp: ' ', gt: '>', lt: '<', quot: '"', apos: "'", rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', mdash: '—', ndash: '–', hellip: '…', middot: '·', starf: '★', bull: '•' };
@@ -913,6 +929,104 @@ function checkT5(doc, report) {
   }
 }
 
+// ---------- T7 ----------
+// Top-level tracks of a grid-template-columns value: `1.1fr 0.9fr` is two, `repeat(2, 1fr)` is two.
+function trackCount(v) {
+  const r = /^\s*repeat\(\s*(\d+)\s*,/.exec(v);
+  if (r) return Number(r[1]);
+  let depth = 0, n = 0, inTrack = false;
+  for (const c of v.trim()) {
+    if (c === '(') depth++;
+    else if (c === ')') depth--;
+    if (depth === 0 && /\s/.test(c)) inTrack = false;
+    else if (!inTrack) { inTrack = true; n++; }
+  }
+  return n;
+}
+const MEDIA_TAG = /^(img|picture|video|svg|canvas|iframe)$/;
+const MEDIA_NAME = /(Image|Img|Picture|Video|Screenshot|Illustration|Mockup|Media|Visual|Lottie|Player)$/;
+const MEDIA_CLASS = /(^|[\s_-])(media|visual|image|mockup|screenshot|illustration)([\s_-]|$)/i;
+const hasMedia = (el) => findAll(el, (n) => MEDIA_TAG.test(n.name) || MEDIA_NAME.test(n.name) || MEDIA_CLASS.test(classOf(n))).length > 0;
+// The two-column evidence on an element, from its Tailwind classes or a CSS rule on one of its classes.
+function splitEvidence(el, gridRules) {
+  const kids = el.children.filter((c) => c.type === 'el');
+  if (kids.length !== 2) return null;
+  const base = baseTokens(classOf(el));
+  const tw = base.find((t) => t === 'grid-cols-2' || (/^grid-cols-\[/.test(t) && trackCount(t.slice(11, -1).replace(/_/g, ' ')) === 2));
+  if (tw) return tw;
+  if (kids.every((k) => baseTokens(classOf(k)).some((t) => /^(w-1\/2|basis-1\/2|flex-1)$/.test(t)))) return 'two half-width columns';
+  for (const cls of classOf(el).split(/\s+/).filter(Boolean)) {
+    const rule = gridRules.find((d) => new RegExp(`\\.${cls.replace(/[^\w-]/g, '\\$&')}(?![\\w-])`).test(d.selector.split(' > ').pop()));
+    if (rule) return `grid-template-columns: ${rule.value}`;
+  }
+  return null;
+}
+// A row of three or more short items that each carry a number: the hero stat strip.
+function statRow(region, h1) {
+  const h1Line = new Set(h1 ? [h1, ...ancestors(h1)] : []);
+  for (const el of elementsOutside(region, (n) => n.name === 'nav')) {
+    if (h1Line.has(el)) continue;
+    const kids = el.children.filter((c) => c.type === 'el');
+    if (kids.length < 3 || kids.some(isClickable)) continue;
+    const texts = kids.map((k) => squash(textOf(k)));
+    if (texts.every((t) => t.length && t.length <= 40 && /\d/.test(t) && !STARS.test(t))) return { el, n: kids.length };
+  }
+  return null;
+}
+function checkT7(doc, gridRules, report) {
+  const h1 = findAll(doc.root, (n) => n.name === 'h1')[0];
+  if (!h1) return;
+  const regions = heroRegions(doc).filter((r) => r === doc.root || r === h1 || ancestors(h1).includes(r));
+  const region = regions[0];
+  if (!region) return;
+  let split = null;
+  for (let p = h1.parent; p && p !== region.parent; p = p.parent) {
+    const ev = splitEvidence(p, gridRules);
+    if (ev && p.children.some((c) => c.type === 'el' && c !== h1 && !ancestors(h1).includes(c) && hasMedia(c))) { split = { el: p, ev }; break; }
+  }
+  const stats = statRow(region, h1);
+  if (split && stats) report('T7', 'FAIL', doc.file, split.el.line, `split hero (${split.ev}) with a row of ${stats.n} stats at line ${stats.el.line}`, FIX.splitHero);
+  else if (split) report('T7', 'REFLEX', doc.file, split.el.line, `split hero: the H1 in one of two columns beside media (${split.ev})`, FIX.splitHero);
+  else if (stats) report('T7', 'REFLEX', doc.file, stats.el.line, `row of ${stats.n} stats in the hero`, FIX.stats);
+}
+
+// ---------- T8 ----------
+const TW_SIZE = { xs: 12, sm: 14, base: 16, lg: 18, xl: 20, '2xl': 24, '3xl': 30, '4xl': 36, '5xl': 48, '6xl': 60, '7xl': 72, '8xl': 96, '9xl': 128 };
+const EXEMPT_SEL = /(^|[^\w-])(h1|html|:root|body)(?![\w-])|hero|brand|logo|wordmark|masthead|display/i;
+// A font-size value as a comparable key: px and rem fold together, clamp() and calc() keep their text.
+function sizeKey(v, tokens, depth = 0) {
+  v = v.replace(/\s*!important$/, '').trim();
+  const ref = /^var\(\s*(--[\w-]+)\s*(?:,\s*([^)]+))?\)$/.exec(v);
+  if (ref) { const t = tokens.get(ref[1]); return depth < 4 && (t || ref[2]) ? sizeKey(t ?? ref[2], tokens, depth + 1) : null; }
+  const m = /^(\d*\.?\d+)(px|rem)$/.exec(v);
+  if (m) return `${+(Number(m[1]) * (m[2] === 'rem' ? 16 : 1)).toFixed(2)}px`;
+  return /^(clamp|calc|min|max)\(/.test(v) ? v : null;
+}
+function checkT8(docs, cssList, report) {
+  const tokens = new Map();
+  for (const d of cssList) if (d.prop.startsWith('--') && !d.dark && !tokens.has(d.prop)) tokens.set(d.prop, d.value);
+  const uses = new Map();
+  const add = (key, file, line) => { if (!key) return; if (!uses.has(key)) uses.set(key, []); uses.get(key).push({ file, line }); };
+  for (const d of cssList) {
+    if (d.prop !== 'font-size' || /@(media|container|supports)/.test(d.selector) || EXEMPT_SEL.test(d.selector)) continue;
+    add(sizeKey(d.value, tokens), d.file, d.line);
+  }
+  for (const doc of docs) {
+    const hero = new Set(heroRegions(doc));
+    if (hero.has(doc.root)) continue;
+    for (const el of elementsOutside(doc.root, (n) => n.name === 'h1' || hero.has(n))) {
+      for (const t of staticClassOf(el).split(/\s+/)) {
+        const m = /^text-(xs|sm|base|lg|[2-9]?xl|\[(.+)\])$/.exec(t.replace(/^!/, ''));
+        if (m) add(m[2] ? sizeKey(m[2].replace(/_/g, ' '), tokens) : `${TW_SIZE[m[1]]}px`, doc.file, el.line);
+      }
+    }
+  }
+  if (uses.size < 5) return;
+  const sizes = [...uses.keys()].sort((a, b) => (parseFloat(b) || 0) - (parseFloat(a) || 0));
+  const [rarest, at] = [...uses].sort((a, b) => a[1].length - b[1].length)[0];
+  report('T8', 'WARN', at[0].file, at[0].line, `${sizes.length} font sizes below the hero (${sizes.join(', ')}); ${rarest} is used least`, FIX.sizes);
+}
+
 const trunc = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 
 // ---------- run ----------
@@ -951,11 +1065,12 @@ export function runTells(paths) {
   }
 
   const heads = [];
+  const gridRules = cssList.filter((d) => d.prop === 'grid-template-columns' && trackCount(d.value) === 2);
   for (const doc of [...docs]) {
     const mine = [];
     const local = (...a) => mine.push(a);
     try {
-      checkT1(doc, local); checkT4(doc, flagSources, local); checkT5(doc, local);
+      checkT1(doc, local); checkT4(doc, flagSources, local); checkT5(doc, local); checkT7(doc, gridRules, local);
       heads.push(...markupHeadlines(doc));
       for (const a of mine) report(...a);
     } catch (e) { skip(doc.file, e); docs.splice(docs.indexOf(doc), 1); }
@@ -974,5 +1089,6 @@ export function runTells(paths) {
   const pal = buildPalette(cssList, configEntries, docs);
   checkT2(pal, report);
   checkT6(pal, docs, cssList, report);
+  checkT8(docs, cssList, report);
   return findings;
 }

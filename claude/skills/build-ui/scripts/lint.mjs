@@ -9,7 +9,8 @@
 //   - tells.mjs adds the T checks, graded like any gate: T1 glued arrow or stock
 //     second action, T2 cream + clay, T3 fragment headlines, T4 one pricing tier
 //     styled apart, T5 star runs and "trusted by N+", T6 stock indigo and
-//     lavender washes. They read markup, CSS, Tailwind config and locale files,
+//     lavender washes, T7 split hero and hero stat row, T8 more than four font
+//     sizes below the hero. They read markup, CSS, Tailwind config and locale files,
 //     with no render. Waive one like a gate: `--waive T4@Pricing`.
 // sloplint writes `.hallmark/` (before record, URL screenshots, compare.html)
 // into its working directory. This wrapper runs it from a cache folder per

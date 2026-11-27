@@ -84,6 +84,21 @@ test('data-driven pricing: featured flag read in a className', () => {
   fires(f, 'T4', 'FAIL', /PricingCards\.tsx:10 .*plan\.featured/);
 });
 
+test('split hero with a stat row fails; a split alone is a reflex', () => {
+  const split = runTells([fixture('hero-split')]);
+  fires(split, 'T7', 'FAIL', /index\.html:6 .*3 stats/);
+  assert.equal(of(split, 'T8').length, 0);
+  const css = runTells([fixture('hero-css')]);
+  fires(css, 'T7', 'REFLEX', /Landing\.tsx:6 .*1\.1fr 0\.9fr/);
+  assert.equal(of(css, 'T7', 'FAIL').length, 0);
+});
+
+test('type ladder: sizes below the hero are counted once each', () => {
+  const f = runTells([fixture('type-ladder')]);
+  const [hit] = fires(f, 'T8', 'WARN', /6 font sizes/);
+  assert.doesNotMatch(hit.evidence, /60px|64px|20px|17px/, 'hero, h1 and @media sizes stay out');
+});
+
 test('clean fixture has no T findings', () => {
   const f = runTells([fixture('clean')]);
   assert.deepEqual(f.map((x) => `${x.gate} ${x.file}:${x.line} ${x.evidence}`), []);
