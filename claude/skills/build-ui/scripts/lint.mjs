@@ -57,7 +57,7 @@ const COMPONENT_SOURCE = /\.(svelte|tsx|jsx|vue|astro)$/;
 // on pages with no control that can be disabled in three of six runs. 72: "text
 // crowds the edge", which measured text inside closed <details> and cropped mockups.
 const HOUSE_NOTES = ['24b', '77', '26b', '72'];
-const LAYOUT = ['6b', '8', '9', '32', '42', '44a', '44c', '58', '77', '79'];
+const LAYOUT = ['6b', '8', '9', '32', '42', '44a', '44c', '58', '77', '79', 'T7'];
 const SPACING = ['24b', '59', '78'];
 const NOTES_BY_DEPTH = { full: ['58'], restyle: [...LAYOUT, ...SPACING], polish: [...LAYOUT, ...SPACING] };
 

@@ -49,6 +49,7 @@ Then walk this list. Look for each pattern by name, and where you find one, try 
 | Cream ground, clay or terracotta accent, serif display | A palette from the subject. Where the brand owns these values, keep them and change their use: how much surface each covers, where the accent lands |
 | A stock indigo or violet primary, a lavender wash, blurred colour blobs | A hue from the product's own world on a flat ground |
 | A row of stars, "Trusted by 2,500+ teams" | A named customer's words with their role, or nothing |
+| A split hero: a half-width headline beside a media box, a row of stats under it | The headline and lead visual across the full width, the center or the depth of the viewport; each number moved down beside the claim it proves |
 | Background gradients | A photograph, a texture, a pattern, or a flat solid color |
 | Cards and containers around everything | A flatter layout. A grid or tiles, with the borders gone |
 | Many fonts, text styles, and heading levels | One or two fonts and two to four styles. Accent colors and italics used a few times, not throughout |

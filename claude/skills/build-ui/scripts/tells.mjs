@@ -1022,9 +1022,10 @@ function checkT8(docs, cssList, report) {
     }
   }
   if (uses.size < 5) return;
-  const sizes = [...uses.keys()].sort((a, b) => (parseFloat(b) || 0) - (parseFloat(a) || 0));
+  const sizes = [...uses.keys()].sort((a, b) => (parseFloat(b) || 0) - (parseFloat(a) || 0)).map((s) => trunc(s, 24));
   const [rarest, at] = [...uses].sort((a, b) => a[1].length - b[1].length)[0];
-  report('T8', 'WARN', at[0].file, at[0].line, `${sizes.length} font sizes below the hero (${sizes.join(', ')}); ${rarest} is used least`, FIX.sizes);
+  const shown = sizes.length > 10 ? `${sizes.slice(0, 10).join(', ')} and ${sizes.length - 10} more` : sizes.join(', ');
+  report('T8', 'WARN', at[0].file, at[0].line, `${sizes.length} font sizes below the hero (${shown}); ${trunc(rarest, 24)} is used least`, FIX.sizes);
 }
 
 const trunc = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);

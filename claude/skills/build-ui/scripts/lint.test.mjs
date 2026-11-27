@@ -144,6 +144,8 @@ test('lint.mjs merges T findings and honours --waive', () => {
   assert.equal(loud.status, 1);
   const waived = run(fixture('tsx'), '--waive', 'T4@Landing');
   assert.doesNotMatch(waived.stdout, / T4 /);
+  assert.match(run(fixture('hero-split')).stdout, /^FAIL +T7 /m);
+  assert.match(run(fixture('hero-split'), '--depth', 'restyle').stdout, /^note +T7 /m, 'a restyle keeps the layout, so T7 is a note');
   const clean = run(fixture('clean'));
   assert.doesNotMatch(clean.stdout, /^\w+ +T\d /m);
 });
